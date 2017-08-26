@@ -1,0 +1,6 @@
+{
+	"token":"YOUR_SUPERSECRET_BOT_TOKEN_HERE",
+	"hostID" : "YOUR_DISCORD_ID_HERE",
+	"prefix" : "YOUR_PREFIX_HERE",
+	"minecraft" : "MINECRAFT_SERVER_IP"
+}

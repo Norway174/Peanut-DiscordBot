@@ -1,0 +1,18 @@
+{
+  "name": "peanut",
+  "version": "0.0.1",
+  "description": "Just a general all-purpose utility Discord bot.",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "discord",
+    "bot"
+  ],
+  "author": "Norway174",
+  "license": "SEE LICENSE IN license.txt",
+  "dependencies": {
+    "discord.js": "^11.1.0"
+  }
+}

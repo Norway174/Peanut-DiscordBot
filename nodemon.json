@@ -1,0 +1,3 @@
+{
+	"ignore": ["channels.json", "cache.json"]
+}

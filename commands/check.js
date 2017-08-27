@@ -2,11 +2,15 @@ const settings = require("../settings.json");
 const Discord = require("discord.js");
 const ms = require('../minestat/minestat.js');
 
-exports.run = function(client, message){
+exports.run = function(client, message, args){
 	
 	//var hostname = "minecraft.frag.land";
 	var hostname = settings.minecraft;
 	var port = 25565;
+	
+	if(args != 0){
+		hostname = args.join(" ");
+	}
 	
 	//Make the first emblem, for checking status
 	const embed = new Discord.RichEmbed()
@@ -81,6 +85,6 @@ exports.conf = {
 
 exports.help = {
   name: 'check',
-  description: 'Check the status of a minecraft server. [' + settings.minecraft + ']',
-  usage: 'check'
+  description: 'Check the status of a minecraft server. Default: [' + settings.minecraft + ']',
+  usage: 'check <optional IP/Hostname>'
 };

@@ -73,6 +73,7 @@ module.exports =
       //callback();
       client.end();
       //process.exit();
+	  return;
     });
 
     client.on('end', () =>
@@ -102,7 +103,7 @@ module.exports =
       callback();
 
       // Uncomment the line below for more details pertaining to network errors.
-      console.log("MINESTAT ERR: " + err);
+      //console.log("MINESTAT ERR: " + err);
     });
   }
 };

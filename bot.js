@@ -52,15 +52,28 @@ client.reload = command => {
 };
 
 client.elevation = message => {
-  /* This function should resolve to an ELEVATION level which
-     is then sent to the command handler for verification*/
-  let permlvl = 0;
-  let mod_role = message.guild.roles.find('name', settings.modrolename);
-  if (mod_role && message.member.roles.has(mod_role.id)) permlvl = 2;
-  let admin_role = message.guild.roles.find('name', settings.adminrolename);
-  if (admin_role && message.member.roles.has(admin_role.id)) permlvl = 3;
-  if (message.author.id === settings.ownerid) permlvl = 4;
-  return permlvl;
+	/* This function should resolve to an ELEVATION level which
+	 is then sent to the command handler for verification*/
+	let permlvl = 0;
+
+	//console.log(`MessageID: ${message.author.id} | OwnerID: ${settings.ownerid}`)
+
+	//It will crash if we continue past this point and it's in a private chat.
+	//So we default to perm level 0 here. To make sure no one can run any harmful
+	// commands in private.
+
+	if (message.channel.type == "dm") {
+		if (message.author.id === settings.ownerid) permlvl = 4;
+		return permlvl;
+	}
+
+
+	let mod_role = message.guild.roles.find('name', settings.modrolename);
+	if (mod_role && message.member.roles.has(mod_role.id)) permlvl = 2;
+	let admin_role = message.guild.roles.find('name', settings.adminrolename);
+	if (admin_role && message.member.roles.has(admin_role.id)) permlvl = 3;
+	if (message.author.id === settings.ownerid) permlvl = 4;
+	return permlvl;
 };
 
 

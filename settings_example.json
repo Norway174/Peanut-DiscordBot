@@ -1,6 +1,8 @@
 {
 	"token":"YOUR_SUPERSECRET_BOT_TOKEN_HERE",
-	"hostID" : "YOUR_DISCORD_ID_HERE",
 	"prefix" : "YOUR_PREFIX_HERE",
+	"ownerid" : "YOUR_DISCORD_ID_HERE",
+	"modrolename" : "THE_NAME_OF_YOUR_MOD_ROLE",
+	"adminrolename" : "THE_NAME_OF_YOUR_ADMIN_ROLE",
 	"minecraft" : "MINECRAFT_SERVER_IP"
 }

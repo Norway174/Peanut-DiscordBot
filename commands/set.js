@@ -1,4 +1,6 @@
 const settings = require('../settings.json');
+const Discord = require("discord.js");
+
 exports.run = function(client, message, args){
 	//let messagecount = parseInt(args.join(" "));
 	
@@ -6,19 +8,30 @@ exports.run = function(client, message, args){
 	args.splice(0, 1)
 	let arg = args.join(" ");
 	
-	/*if (!arg){
-		console.log("missing args!");
-		//return;
-	}*/
+	const embed = new Discord.RichEmbed()
+	/*
+	.setTitle(hostname + ":" + port)
+	.setColor(0x009600)
+	.setDescription( ms.current_players + " / " + ms.max_players + " Online\nMessage of the day:```\n" + ms.motd + "```")
+	.setFooter("Minecraft status checker", "http://www.rw-designer.com/icon-image/5547-256x256x32.png")
+	.setThumbnail("http://i.imgur.com/2JUhMfW.png")
+	.setTimestamp()*/
 	
-	//console.log(arg)
+	
 	if (arg == "") arg = null
 	if(type == "game"){
 		//console.log("Game selected!");
 		// Set Game
 		client.user.setPresence({ game: { name: arg, type: 0 } })
 			.then(user => {
-				console.log("Game set to " + arg);
+				//console.log("Game set to " + arg);
+				if (!arg) arg = "nothing."
+				const embed = new Discord.RichEmbed()
+				.setTitle("Game updated")
+				.setColor(0x7EFF00)
+				.setDescription("Game set to " + arg)
+				message.channel.send({embed});
+				
 			})
 			.catch(console.error);
 	} else
@@ -27,20 +40,36 @@ exports.run = function(client, message, args){
 		// Set the status
 		client.user.setPresence({ status: arg })
 			.then(user => {
-				console.log("Status set to " + arg);
+				//console.log("Status set to " + arg);
+				const embed = new Discord.RichEmbed()
+				.setTitle("Status updated")
+				.setColor(0x7EFF00)
+				.setDescription("Status set to " + arg)
+				message.channel.send({embed});
+				
 			})
 			.catch(console.error);
 	} else
 	if (type == "avatar"){
-		console.log("Avatar selected!");
+		//console.log("Avatar selected!");
 		// Set avatar
+		console.log("New avatar set: " + arg);
 		client.user.setAvatar(arg)
-			.then(user => console.log(`New avatar set!`))
+			.then(user => {
+				const embed = new Discord.RichEmbed()
+				.setTitle("Avatar updated")
+				.setColor(0x7EFF00)
+				//.setDescription("Avatar updated.")
+				.setImage(arg)
+				message.channel.send({embed});
+				
+			})
 			.catch(console.error);
 	} else
 	{
-		console.log("Not supported!");
+		//console.log("Not supported!");
 	}
+	
 };
 
 exports.conf = {

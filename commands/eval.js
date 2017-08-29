@@ -5,8 +5,13 @@ exports.run = function(client, message, args){
 	//VERY DANGEROUS COMMAND TO GIVE ACCESS TOO!
 
 	//Run Javascript, and output the result to chat.
+	
+	
 	try {
-		const code = args.join(" ");
+		let code = args.join(" ");
+		if(code.startsWith("```js")) code = code.replace("```js", "");
+		if(code.endsWith("```")) code = code.replace("```", "");
+		
 		let evaled = eval(code);
 
 		if (typeof evaled !== "string")

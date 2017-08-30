@@ -17,7 +17,7 @@ exports.run = function(client, message, args){
 		if (typeof evaled !== "string")
 		evaled = require("util").inspect(evaled);
 
-		message.channel.send(evalClean(evaled), {code:"xl"});
+		message.channel.send(evalClean(evaled), {code:"xl",split:true});
 		
 	} catch (err) {
 	message.channel.send(`\`ERROR\` \`\`\`xl\n${evalClean(err)}\n\`\`\``);

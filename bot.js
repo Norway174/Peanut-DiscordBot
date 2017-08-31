@@ -2,15 +2,19 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const fs = require("fs");
 const moment = require('moment');
+const PersistentCollection = require("djs-collection-persistent");
+const widgets = new PersistentCollection({name: 'widgets'});
+//client.widgets = new PersistentCollection({name: 'widgets'});
+client.widgets = widgets;
 
-/*
-const util = require('util');
-*/
+//widgets.set("0", "Test")
+//console.log(widgets.get("0"));
 
 const settings = require("./settings.json");
 
 
 require('./util/eventLoader')(client);
+require('./util/widgetLoader')(client);
 
 const log = message => {
   console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] ${message}`);
@@ -76,6 +80,31 @@ client.elevation = message => {
 	return permlvl;
 };
 
+
+client.widgetsType = new Discord.Collection();
+fs.readdir('./widgets/', (err, files) => {
+	if (err) console.error(err);
+	log(`Loading a total of ${files.length} widgets.`);
+	files.forEach(f => {
+		let props = require(`./widgets/${f}`);
+		log(`Loading Widget: ${props.help.name}`);
+		client.widgetsType.set(props.help.name, props);
+	});
+});
+
+client.reloadWidget = widget => {
+	return new Promise((resolve, reject) => {
+		try {
+			delete require.cache[require.resolve(`./widgets/${widget}`)];
+			let cmd = require(`./widgets/${widget}`);
+			client.widgets.delete(widget);
+			client.widgetsType.set(widget, cmd);
+			resolve();
+		} catch (e){
+			reject(e);
+		}
+	});
+};
 
 
 client.login(settings.token)

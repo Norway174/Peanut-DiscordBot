@@ -1,6 +1,6 @@
 const settings = require("../settings.json");
 const Discord = require("discord.js");
-const ms = require('../minestat/minestat.js');
+const mcPinger = require('minecraft-pinger');
 const moment = require('moment');
 const log = message => {
 	console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] ${message}`);
@@ -29,8 +29,8 @@ exports.run = function(client, widget, data){
 	client.guilds.get(widget.serverID).channels.get(widget.channelID).fetchMessage(widget.messageID).then(m => {
 
 		//var hostname = "minecraft.frag.land";
-	var hostname = widget.data;
-	var port = 25565;
+	let hostname = widget.data;
+	let port = 25565;
 	
 	//Make the first emblem, for checking status
 	const embed = new Discord.RichEmbed()
@@ -47,23 +47,23 @@ exports.run = function(client, widget, data){
 	.then(message2 => {
 	 
 		//Then we do the check.
-		ms.init(hostname, port, function(result) {
+		mcPinger.ping(hostname, port, (error, result) => {
 		
-			console.log("Minecraft server status of " + ms.address + " on port " + ms.port + ":");
+			//console.log("Minecraft server status of " + ms.address + " on port " + ms.port + ":");
 			
 			//And if it's online then we do this...
-			if(ms.online) {
+			if(!error) {
 			  
 			  
-				console.log("Server is online running version " + ms.version + " with " + ms.current_players + " out of " + ms.max_players + " players.");
-				console.log("Message of the day: " + ms.motd);
+				//console.log("Server is online running version " + result.version.name + " with " + result.players.max + " out of " + result.players.online + " players.");
+				//console.log("Message of the day: " + result.description.text);
 				
 				//Here, we build the emblem for the online server.
 				const embed = new Discord.RichEmbed()
 					.setTitle(hostname + ":" + port)
 					.setColor(0x009600)
-					.setDescription( ms.current_players + " / " + ms.max_players + " Online\nMessage of the day:```\n" + ms.motd + "```")
-					.setFooter("ID: " + widget.name, "http://www.rw-designer.com/icon-image/5547-256x256x32.png")
+					.setDescription( "Message of the day:```\n" + JSON.stringify(result.description) + "```\n" + result.players.online + " / " + result.players.max + " Players online:\n```" + result.players.sample.map(c => `${c.name}`).join('\n') + "```")
+					.setFooter("Widget ID: " + widget.name, "http://www.rw-designer.com/icon-image/5547-256x256x32.png")
 					.setThumbnail("http://i.imgur.com/2JUhMfW.png")
 					.setTimestamp()
 				
@@ -72,14 +72,14 @@ exports.run = function(client, widget, data){
 			
 			
 			} else {  
-				console.log("Server is offline!");
+				//console.log("Server is offline!");
 				
 				//Here we build the offline message
 				const embed = new Discord.RichEmbed()
 					.setTitle(hostname + ":" + port)
 					.setColor(0xE40000)
 					.setDescription("Offline")
-					.setFooter("ID: " + widget.name, "http://www.rw-designer.com/icon-image/5547-256x256x32.png")
+					.setFooter("Widget ID: " + widget.name, "http://www.rw-designer.com/icon-image/5547-256x256x32.png")
 					.setThumbnail("http://i.imgur.com/AhMUw4E.png")
 					.setTimestamp()
 				

@@ -7,7 +7,7 @@ const log = message => {
 };
 
 exports.run = function(client, widget, data){
-	log(`WIDGET PROCESSED: ${widget.name}`);
+	//log(`WIDGET PROCESSED: ${widget.name}`);
 	//message.channel.send("Current time: '" + Date.now() + "'");
 	
 	/*

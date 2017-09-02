@@ -39,7 +39,7 @@ module.exports = client => {
 				
 				let intervalCount = widget.intervalCount + 1;
 				
-				log(`WIDGET ${widget.name}, ${widget.type}, ${widget.interval} / ${widget.intervalCount}`);
+				//log(`WIDGET ${widget.name}, ${widget.type}, ${widget.interval} / ${widget.intervalCount}`);
 				
 				//log(`WIDGET Interval: ${widget.interval} Count: ${widget.intervalCount}`);
 				if(intervalCount >= widget.interval){

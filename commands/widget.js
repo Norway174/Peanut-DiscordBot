@@ -24,7 +24,7 @@ exports.run = function(client, message, args){
 				name: id,
 				type: type,
 				interval: interval,
-				intervalCount: 0,
+				intervalCount: interval,
 				data: data
 			}
 			

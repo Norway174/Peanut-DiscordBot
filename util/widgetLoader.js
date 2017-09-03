@@ -12,7 +12,7 @@ module.exports = client => {
 		//client.widgets
 		
 		function processWidget() {
-			//console.log(`Procesing ${client.widgets.size}`);
+			//log(`Procesing ${client.widgets.size}`);
 
 			client.widgets.forEach(widget => {
 				widget = JSON.parse(widget);
@@ -73,10 +73,17 @@ module.exports = client => {
 			});
 		}
 		
-		processWidget();
+		
+		var interval = 60 * 1000;
+		let now = new Date();
+        let delay = interval - now % interval;
+
 		
 		// 60000 miliseconds = 1 minute
-		setInterval(processWidget, 60000);
+		setTimeout(() => {
+			processWidget();
+			setInterval(processWidget, interval);
+		}, delay);
 
 	});
 };

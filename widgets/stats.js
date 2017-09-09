@@ -1,12 +1,10 @@
 const { version } = require('discord.js');
 const moment = require('moment');
 require('moment-duration-format');
-const log = message => {
-	console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] ${message}`);
-};
+
 
 exports.run = function(client, widget, data){
-	log(`WIDGET PROCESSED: ${widget.name}`);
+	//client.log(`WIDGET PROCESSED: ${widget.name}`);
 	//message.channel.send("Current time: '" + Date.now() + "'");
 	
 	/*
@@ -21,7 +19,7 @@ exports.run = function(client, widget, data){
 		data: widget.data
 	}
 	
-	//console.log(widgetSettings)
+	//client.log(widgetSettings)
 	client.widgets.set(widget.name, widgetSettings);
 	*/
 	
@@ -29,7 +27,7 @@ exports.run = function(client, widget, data){
 			this.client = client;
 	
     // const guilds = (await client.shard.broadcastEval('this.guilds.size'));//.reduce((a, b) => a + b, 0);
-    // console.log(guilds);
+    // client.log(guilds);
     const duration = moment.duration(this.client.uptime).format(' D [days], H [hrs], m [mins], s [secs]');
     m.edit(`= STATISTICS =
   • Mem Usage   :: ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB

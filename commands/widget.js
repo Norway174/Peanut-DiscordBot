@@ -28,7 +28,7 @@ exports.run = function(client, message, args){
 				data: data
 			}
 			
-			console.log(widgetSettings)
+			client.log(widgetSettings)
 			client.widgets.set(id, widgetSettings);
 		});
 		
@@ -62,6 +62,7 @@ exports.conf = {
   aliases: ["w"],
   permLevel: 3
 };
+
 
 exports.help = {
   name: 'widget',

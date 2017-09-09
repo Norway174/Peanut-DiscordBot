@@ -16,18 +16,18 @@ const settings = require("./settings.json");
 require('./util/eventLoader')(client);
 require('./util/widgetLoader')(client);
 
-const log = message => {
-  console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] ${message}`);
+client.log = message => {
+  console.log(`TEST: [${moment().format('YYYY-MM-DD HH:mm:ss')}] ${message}`);
 };
 
 client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
 fs.readdir('./commands/', (err, files) => {
   if (err) console.error(err);
-  log(`Loading a total of ${files.length} commands.`);
+  client.log(`Loading a total of ${files.length} commands.`);
   files.forEach(f => {
     let props = require(`./commands/${f}`);
-    log(`Loading Command: ${props.help.name}`);
+    client.log(`Loading Command: ${props.help.name}`);
     client.commands.set(props.help.name, props);
     props.conf.aliases.forEach(alias => {
       client.aliases.set(alias, props.help.name);
@@ -84,10 +84,10 @@ client.elevation = message => {
 client.widgetsType = new Discord.Collection();
 fs.readdir('./widgets/', (err, files) => {
 	if (err) console.error(err);
-	log(`Loading a total of ${files.length} widgets.`);
+	client.log(`Loading a total of ${files.length} widgets.`);
 	files.forEach(f => {
 		let props = require(`./widgets/${f}`);
-		log(`Loading Widget: ${props.help.name}`);
+		client.log(`Loading Widget: ${props.help.name}`);
 		client.widgetsType.set(props.help.name, props);
 	});
 });

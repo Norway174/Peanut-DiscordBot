@@ -17,10 +17,11 @@ exports.run = function(client, message, args){
 	.setThumbnail("http://i.imgur.com/2JUhMfW.png")
 	.setTimestamp()*/
 	
+	client.log("Selected: " + type)
 	
 	if (arg == "") arg = null
-	if(type == "game"){
-		//console.log("Game selected!");
+	if(type == "game"  || type == "g"){
+		//client.log("Game selected!");
 		// Set Game
 		client.user.setPresence({ game: { name: arg, type: 0 } })
 			.then(user => {
@@ -35,12 +36,12 @@ exports.run = function(client, message, args){
 			})
 			.catch(console.error);
 	} else
-	if (type == "status"){
+	if (type == "status" || type == "s"){
 		if (!arg) arg = "online"
 		// Set the status
 		client.user.setPresence({ status: arg })
 			.then(user => {
-				//console.log("Status set to " + arg);
+				//client.log("Status set to " + arg);
 				const embed = new Discord.RichEmbed()
 				.setTitle("Status updated")
 				.setColor(0x7EFF00)
@@ -50,12 +51,12 @@ exports.run = function(client, message, args){
 			})
 			.catch(console.error);
 	} else
-	if (type == "avatar"){
-		//console.log("Avatar selected!");
+	if (type == "avatar" || type == "a"){
+		//client.log("Avatar selected!");
 		// Set avatar
-		console.log("New avatar set: " + arg);
 		client.user.setAvatar(arg)
 			.then(user => {
+				console.log("New avatar set: " + arg);
 				const embed = new Discord.RichEmbed()
 				.setTitle("Avatar updated")
 				.setColor(0x7EFF00)
@@ -64,10 +65,13 @@ exports.run = function(client, message, args){
 				message.channel.send({embed});
 				
 			})
-			.catch(console.error);
+			.catch(err =>{
+				console.error(err);
+				console.log("Type: " + type + "\nArg: " + arg);
+			});
 	} else
 	{
-		//console.log("Not supported!");
+		//client.log("Not supported!");
 	}
 	
 };

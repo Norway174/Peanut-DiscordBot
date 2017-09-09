@@ -1,8 +1,6 @@
 const Discord = require("discord.js");
 const moment = require('moment');
-const log = message => {
-  console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] ${message}`);
-};
+
 const colors = Array(0xE7F32E, 0xABF32E, 0x37F32E, 0x2EF3DE, 0x2E8FF3, 0x662EF3, 0x62E7A1, 0x1BC10E, 0x97F207);
 const color = () => {
 	return colors[Math.floor(Math.random()*colors.length)];
@@ -32,7 +30,7 @@ exports.run = (client, message, params) => {
 		question.splice(1, 1);
 	}
 	
-	//console.log(params + "\n" + params.length)
+	//client.log(params + "\n" + params.length)
 
 	const str = params.join();
 	
@@ -45,12 +43,12 @@ exports.run = (client, message, params) => {
 
 		// The result can be accessed through the `m`-variable.
 		m.forEach((match, groupIndex) => {
-			//console.log(`Found Unicode, group ${groupIndex}: ${match}`);
+			//client.log(`Found Unicode, group ${groupIndex}: ${match}`);
 			
 			reactions.push(match);
 			
 			let index = params.indexOf(match);
-			//console.log(`Removing Index of Unicode: ${index}: ${match}`);
+			//client.log(`Removing Index of Unicode: ${index}: ${match}`);
 			if(index != -1) {
 				params.splice(index, 1);
 			}
@@ -95,11 +93,11 @@ exports.run = (client, message, params) => {
 	//Send the message.
 	message.channel.send({embed})
 	.then(message2 => {
-		//log("Poll started!")
+		//client.log("Poll started!")
 		
 		reactions.forEach(emoji => {
 			message2.react(emoji);
-			//log("Reactions: " + emoji);
+			//client.log("Reactions: " + emoji);
 		});
 	
 		// Create a reaction collector
@@ -108,10 +106,10 @@ exports.run = (client, message, params) => {
 			{ time: moment.duration(time, 'minutes') }
 		);
 		collector.on('collect', r => {
-			//console.log(`Collected ${require("util").inspect(r)}`);
+			//client.log(`Collected ${require("util").inspect(r)}`);
 		});
 		collector.on('end', collected => {
-			//console.log(`Collected ${require("util").inspect(collected)} items`);
+			//client.log(`Collected ${require("util").inspect(collected)} items`);
 			
 			let resultBuilder = "";
 			collected.forEach(item => {
@@ -127,7 +125,7 @@ exports.run = (client, message, params) => {
 				let emoji = item.emoji.name;
 				if(item.emoji.id) emoji = client.emojis.get(item.emoji.id);
 				resultBuilder += `**${item.users.size - 1}** - ${emoji} Voters: ${voters}\n`;
-				//log("result builder: " + item.emoji.name);
+				//client.log("result builder: " + item.emoji.name);
 			});
 			
 			const embed = new Discord.RichEmbed()

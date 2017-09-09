@@ -38,8 +38,8 @@ exports.run = function(client, message, args){
 			if(!error) {
 			  
 			  
-				console.log("Server is online running version " + result.version.name + " with " + result.players.max + " out of " + result.players.online + " players.");
-				console.log("Message of the day: " + result.description);
+				client.log("Server is online running version " + result.version.name + " with " + result.players.max + " out of " + result.players.online + " players.");
+				client.log("Message of the day: " + result.description);
 				
 				//Here, we build the emblem for the online server.
 				const embed = new Discord.RichEmbed()
@@ -55,7 +55,7 @@ exports.run = function(client, message, args){
 			
 			
 			} else {  
-				console.log("Server is offline!");
+				client.log("Server is offline!");
 				
 				//Here we build the offline message
 				const embed = new Discord.RichEmbed()

@@ -2,12 +2,8 @@ const settings = require("../settings.json");
 const Discord = require("discord.js");
 const mcPinger = require('minecraft-pinger');
 const moment = require('moment');
-const log = message => {
-	console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] ${message}`);
-};
 
 exports.run = function(client, widget, data){
-	//log(`WIDGET PROCESSED: ${widget.name}`);
 	//message.channel.send("Current time: '" + Date.now() + "'");
 	
 	/*
@@ -22,7 +18,6 @@ exports.run = function(client, widget, data){
 		data: widget.data
 	}
 	
-	//console.log(widgetSettings)
 	client.widgets.set(widget.name, widgetSettings);
 	*/
 	
@@ -49,14 +44,12 @@ exports.run = function(client, widget, data){
 		//Then we do the check.
 		mcPinger.ping(hostname, port, (error, result) => {
 		
-			//console.log("Minecraft server status of " + ms.address + " on port " + ms.port + ":");
 			
 			//And if it's online then we do this...
 			if(!error) {
 			  
 			  
 				//console.log("Server is online running version " + result.version.name + " with " + result.players.max + " out of " + result.players.online + " players.");
-				//console.log("Message of the day: " + result.description.text);
 				
 				//Here, we build the emblem for the online server.
 				const embed = new Discord.RichEmbed()
@@ -72,7 +65,6 @@ exports.run = function(client, widget, data){
 			
 			
 			} else {  
-				//console.log("Server is offline!");
 				
 				//Here we build the offline message
 				const embed = new Discord.RichEmbed()
@@ -98,6 +90,7 @@ exports.run = function(client, widget, data){
 		
 		
 		
+					// client.log("Server is offline!");
 	});
 	
 };

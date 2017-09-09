@@ -1,10 +1,7 @@
 const moment = require('moment');
-const log = message => {
-	console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] ${message}`);
-};
 
 exports.run = function(client, widget, data){
-	log(`WIDGET PROCESSED: ${widget.name}`);
+	//client.log(`WIDGET PROCESSED: ${widget.name}`);
 	//message.channel.send("Current time: '" + Date.now() + "'");
 	
 	/*

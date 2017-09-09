@@ -1,8 +1,5 @@
 const settings = require('../settings.json');
 const moment = require('moment');
-const log = message => {
-  console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] ${message}`);
-};
 
 module.exports = message => {
 	
@@ -37,17 +34,17 @@ module.exports = message => {
 	} else if (client.aliases.has(command)) {
 		cmd = client.commands.get(client.aliases.get(command));
 	} else {
-		log(`[USER: ${message.author.tag}] [${sourceLoc}] [COMMAND: ${msg}] [RESULT: Not found.]`)
+		client.log(`[USER: ${message.author.tag}] [${sourceLoc}] [COMMAND: ${msg}] [RESULT: Not found.]`)
 		message.channel.send(`No command found. Type '${settings.prefix}help'`, {code:"xl"});
 	}
 	if (cmd) {
 		if (perms < cmd.conf.permLevel){
-			log(`[USER: ${message.author.tag}] [${sourceLoc}] [COMMAND: ${msg}] [RESULT: No access.]`)
+			client.log(`[USER: ${message.author.tag}] [${sourceLoc}] [COMMAND: ${msg}] [RESULT: No access.]`)
 			message.channel.send("Access denied!", {code:"xl"});
 			return;
 		}
 		cmd.run(client, message, params, perms);
-		log(`[USER: ${message.author.tag}] [${sourceLoc}] [COMMAND: ${msg}] [RESULT: Success.]`)
+		client.log(`[USER: ${message.author.tag}] [${sourceLoc}] [COMMAND: ${msg}] [RESULT: Success.]`)
 	}
 
 };

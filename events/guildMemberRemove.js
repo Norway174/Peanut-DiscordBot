@@ -9,4 +9,6 @@ module.exports = member => {
 		.setColor(0xF13F3F)
 		.setDescription(`${member.user.tag} has left ${guild.name}.`)
 	guild.defaultChannel.send({embed});
+	
+	client.log(`${member.user.tag} has left ${guild.name}.`);
 };

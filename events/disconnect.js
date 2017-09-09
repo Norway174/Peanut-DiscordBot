@@ -1,3 +1,3 @@
 module.exports = client => {
-  console.log(`You have been disconnected at ${new Date()}`);
+  client.log(`You have been disconnected at ${new Date()}`);
 };

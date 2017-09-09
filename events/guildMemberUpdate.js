@@ -1,4 +1,4 @@
 
 module.exports = (oMember, nMember) => {
-  console.log("A member has updated.");
+  client.log("A member has updated.");
 };

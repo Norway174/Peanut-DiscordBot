@@ -28,6 +28,6 @@ exports.run = function(client, widget, data){
 
 exports.help = {
   name: 'time',
-  description: 'Used to display the time.',
-  usage: 'NA'
+  description: 'Proof of concept. A very simple clock widget.',
+  usage: 'No additional data required.'
 };

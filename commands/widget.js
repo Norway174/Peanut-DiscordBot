@@ -67,5 +67,5 @@ exports.conf = {
 exports.help = {
   name: 'widget',
   description: 'Controls for dynamaically updated messages, called widgets.',
-  usage: 'widget add <unique name> <type>\n${settings.prefix}widget delete <unique name>'
+  usage: `widget add <unique name> <type> [data]\n${settings.prefix}widget delete <unique name>\n\n= Avalible widget types =\n{widgets}`
 };

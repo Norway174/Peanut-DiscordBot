@@ -48,6 +48,6 @@ exports.run = function(client, widget, data){
 
 exports.help = {
   name: 'stats',
-  description: 'Used to display the bot stats.',
-  usage: 'NA'
+  description: 'Display the bot stats in a neatly formated emblem.',
+  usage: 'No additional data required.'
 };

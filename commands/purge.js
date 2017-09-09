@@ -3,12 +3,13 @@ exports.run = function(client, message, args){
 	message.channel.fetchMessages({
 		limit: messagecount
 	}).then(messages => message.channel.bulkDelete(messages));
+	message.delete(1);
 };
 
 exports.conf = {
   enabled: true,
   guildOnly: false,
-  aliases: [],
+  aliases: ["delete", "del", "remove", "pu"],
   permLevel: 3
 };
 

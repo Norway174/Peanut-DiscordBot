@@ -3,6 +3,7 @@ const settings = require('../settings.json');
 
 module.exports = member => {
 	let guild = member.guild;
+	let client = member.client;
 	//guild.defaultChannel.send(`Please welcome ${member.user.username} to the server!`);
 
 	const embed = new Discord.RichEmbed()

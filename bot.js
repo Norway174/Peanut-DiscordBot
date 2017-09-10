@@ -17,7 +17,7 @@ require('./util/eventLoader')(client);
 require('./util/widgetLoader')(client);
 
 client.log = message => {
-  console.log(`TEST: [${moment().format('YYYY-MM-DD HH:mm:ss')}] ${message}`);
+  console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] ${message}`);
 };
 
 client.commands = new Discord.Collection();

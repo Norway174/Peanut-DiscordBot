@@ -10,4 +10,8 @@ module.exports = client => {
 	//client.on('guildMemberUpdate', reqEvent('guildMemberUpdate'));
 	//client.on('guildBanAdd', reqEvent('guildBanAdd'));
 	//client.on('guildBanRemove', reqEvent('guildBanRemove'));
+	
+	client.on("error", (e) => console.error(e));
+	client.on("warn", (e) => console.warn(e));
+	//client.on("debug", (e) => console.info(e));
 };

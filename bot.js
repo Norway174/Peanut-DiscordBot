@@ -2,15 +2,15 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const fs = require("fs");
 const moment = require('moment');
-const PersistentCollection = require("djs-collection-persistent");
-const widgets = new PersistentCollection({name: 'widgets'});
-//client.widgets = new PersistentCollection({name: 'widgets'});
-client.widgets = widgets;
+const Enmap = require("enmap");
+const EnmapLevel = require('enmap-level');
 
-//widgets.set("0", "Test")
-//console.log(widgets.get("0"));
+const provider = new EnmapLevel({name: 'widgets'});
+client.widgets = new Enmap({provider: provider});
+
 
 const settings = require("./settings.json");
+
 
 
 require('./util/eventLoader')(client);

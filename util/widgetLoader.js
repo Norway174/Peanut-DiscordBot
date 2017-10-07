@@ -12,7 +12,7 @@ module.exports = client => {
 			//client.log(`Procesing ${client.widgets.size}`);
 
 			client.widgets.forEach(widget => {
-				widget = JSON.parse(widget);
+				//widget = JSON.parse(widget);
 				/*
 				const widgetSettings = {
 					serverID: widget.serverID,

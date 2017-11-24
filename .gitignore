@@ -1,3 +1,5 @@
 settings.json
 node_modules/
 data/
+.eslintrc.js
+*.code-workspace

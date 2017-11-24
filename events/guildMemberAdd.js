@@ -6,11 +6,13 @@ module.exports = member => {
 	let client = member.client;
 	//guild.defaultChannel.send(`Please welcome ${member.user.username} to the server!`);
 
+	const channel = client.defaultChannel(guild);
+	
 	const embed = new Discord.RichEmbed()
 		//.setTitle("Status updated")
 		.setColor(0x90FF00)
 		.setDescription(`**Hi there, ${member.user.tag}!**\nWelcome to ${guild.name}! Feel free to introduce yourself; don't be afraid to ask any questions!\nYou may also use ` + "`" + `${settings.prefix}help` + "`" + ` to see what I can do for you.\n\nEnjoy your stay!`)
-	guild.defaultChannel.send({embed});
+		channel.send({embed});
 	
 	client.log(`${member.user.tag} has joined ${guild.name}.`);
 };

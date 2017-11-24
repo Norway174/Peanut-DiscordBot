@@ -10,8 +10,8 @@ module.exports = member => {
 	const embed = new Discord.RichEmbed()
 		//.setTitle("Status updated")
 		.setColor(0xF13F3F)
-		.setDescription(`${member.user.tag} has left ${guild.name}.`)
-		channel.send({embed});
+		.setDescription(`${member.user.tag} has left ${guild.name}.`);
+	channel.send({embed});
 
 	client.log(`${member.user.tag} has left ${guild.name}.`);
 };

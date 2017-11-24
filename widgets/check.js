@@ -1,7 +1,7 @@
 const settings = require("../settings.json");
 const Discord = require("discord.js");
-const mcPinger = require('minecraft-pinger');
-const moment = require('moment');
+const mcPinger = require("minecraft-pinger");
+const moment = require("moment");
 
 exports.run = function(client, widget){
 	
@@ -38,7 +38,7 @@ exports.run = function(client, widget){
 				//Then check if there is any players online
 				if(result.players.online != 0){
 					//If there is, then make a list.
-					stringBuilder += result.players.online + " / " + result.players.max + " Players online:\n```" + result.players.sample.map(c => `${c.name}`).join('\n') + "```";
+					stringBuilder += result.players.online + " / " + result.players.max + " Players online:\n```" + result.players.sample.map(c => `${c.name}`).join("\n") + "```";
 				} else {
 					//If there is none, then display a simple string.
 					stringBuilder += result.players.online + " / " + result.players.max + " Players online.";
@@ -51,7 +51,7 @@ exports.run = function(client, widget){
 					.setDescription( stringBuilder )
 					.setFooter("Widget ID: " + widget.name + " | Updates every " + widget.interval + " minutes", "http://www.rw-designer.com/icon-image/5547-256x256x32.png")
 					.setThumbnail("http://i.imgur.com/2JUhMfW.png")
-					.setTimestamp()
+					.setTimestamp();
 				
 				//And then edit the first message we sent. We don't want duplicate messages in our chat.
 				m.edit({embed});
@@ -69,20 +69,19 @@ exports.run = function(client, widget){
 					.setDescription("Offline")
 					.setFooter("Widget ID: " + widget.name + " | Updates every " + widget.interval + " minutes", "http://www.rw-designer.com/icon-image/5547-256x256x32.png")
 					.setThumbnail("http://i.imgur.com/AhMUw4E.png")
-					.setTimestamp()
+					.setTimestamp();
 				
 				//And the same as before, we edit the first message with the offline message.
 				m.edit({embed});
 				//Stop the typing effect.
 				//message.channel.stopTyping();
-			})
-			   
-	   });
+			});
+	});
 	
 };
 
 exports.help = {
-  name: 'check',
-  description: '(Semi)Real-Time Minecraft server checker.',
-  usage: 'IP/hostname to check (As a string).'
+	name: "check",
+	description: "(Semi)Real-Time Minecraft server checker.",
+	usage: "IP/hostname to check (As a string)."
 };

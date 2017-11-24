@@ -1,4 +1,4 @@
-const moment = require('moment');
+const moment = require("moment");
 
 exports.run = function(client, widget, data){
 	//client.log(`WIDGET PROCESSED: ${widget.name}`);
@@ -21,13 +21,13 @@ exports.run = function(client, widget, data){
 	*/
 	
 	client.guilds.get(widget.serverID).channels.get(widget.channelID).fetchMessage(widget.messageID).then(m => {
-		m.edit(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] ${widget.data}`)
+		m.edit(`[${moment().format("YYYY-MM-DD HH:mm:ss")}] ${widget.data}`);
 	});
 	
 };
 
 exports.help = {
-  name: 'time',
-  description: 'Proof of concept. A very simple clock widget.',
-  usage: 'No additional data required.'
+	name: "time",
+	description: "Proof of concept. A very simple clock widget.",
+	usage: "No additional data required."
 };

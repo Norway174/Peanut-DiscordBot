@@ -15,12 +15,12 @@ exports.run = function(client, message, args){
 		let evaled = eval(code);
 
 		if (typeof evaled !== "string")
-		evaled = require("util").inspect(evaled);
+			evaled = require("util").inspect(evaled);
 
-		message.channel.send(evalClean(evaled), {code:"xl",split:true});
+		message.channel.send(evalClean(evaled), {code:"xl", split:true});
 		
 	} catch (err) {
-	message.channel.send(`\`ERROR\` \`\`\`xl\n${evalClean(err)}\n\`\`\``);
+		message.channel.send(`\`ERROR\` \`\`\`xl\n${evalClean(err)}\n\`\`\``);
 	}
 	
 	function evalClean(text) {
@@ -32,14 +32,14 @@ exports.run = function(client, message, args){
 };
 
 exports.conf = {
-  enabled: true,
-  guildOnly: false,
-  aliases: ["e"],
-  permLevel: 4
+	enabled: true,
+	guildOnly: false,
+	aliases: ["e"],
+	permLevel: 4
 };
 
 exports.help = {
-  name: 'eval',
-  description: 'Run Javascript on the server, and output the result to the chat.',
-  usage: 'eval <javascript>'
+	name: "eval",
+	description: "Run Javascript on the server, and output the result to the chat.",
+	usage: "eval <javascript>"
 };

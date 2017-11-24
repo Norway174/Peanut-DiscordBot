@@ -7,14 +7,14 @@ exports.run = function(client, message, args){
 };
 
 exports.conf = {
-  enabled: true,
-  guildOnly: false,
-  aliases: ["delete", "del", "remove", "pu"],
-  permLevel: 3
+	enabled: true,
+	guildOnly: false,
+	aliases: ["delete", "del", "remove", "pu"],
+	permLevel: 3
 };
 
 exports.help = {
-  name: 'purge',
-  description: 'Purges X amount of messages from a given channel. Max 100 messages at once.',
-  usage: 'purge <number>'
+	name: "purge",
+	description: "Purges X amount of messages from a given channel. Max 100 messages at once.",
+	usage: "purge <number>"
 };

@@ -1,5 +1,5 @@
-const moment = require('moment');
+const moment = require("moment");
 
 module.exports = client => {
 	client.log(`${client.user.tag} ready!`);
-}
+};

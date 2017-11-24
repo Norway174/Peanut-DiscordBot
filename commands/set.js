@@ -1,14 +1,14 @@
-const settings = require('../settings.json');
+const settings = require("../settings.json");
 const Discord = require("discord.js");
 
 exports.run = function(client, message, args){
 	//let messagecount = parseInt(args.join(" "));
 	
 	let type = args[0];
-	args.splice(0, 1)
+	args.splice(0, 1);
 	let arg = args.join(" ");
 	
-	const embed = new Discord.RichEmbed()
+	const embed = new Discord.RichEmbed();
 	/*
 	.setTitle(hostname + ":" + port)
 	.setColor(0x009600)
@@ -17,35 +17,35 @@ exports.run = function(client, message, args){
 	.setThumbnail("http://i.imgur.com/2JUhMfW.png")
 	.setTimestamp()*/
 	
-	client.log("Selected: " + type)
+	client.log("Selected: " + type);
 	
-	if (arg == "") arg = null
+	if (arg == "") arg = null;
 	if(type == "game"  || type == "g"){
 		//client.log("Game selected!");
 		// Set Game
 		client.user.setPresence({ game: { name: arg, type: 0 } })
 			.then(user => {
 				//console.log("Game set to " + arg);
-				if (!arg) arg = "nothing."
+				if (!arg) arg = "nothing.";
 				const embed = new Discord.RichEmbed()
-				.setTitle("Game updated")
-				.setColor(0x7EFF00)
-				.setDescription("Game set to " + arg)
+					.setTitle("Game updated")
+					.setColor(0x7EFF00)
+					.setDescription("Game set to " + arg);
 				message.channel.send({embed});
 				
 			})
 			.catch(console.error);
 	} else
 	if (type == "status" || type == "s"){
-		if (!arg) arg = "online"
+		if (!arg) arg = "online";
 		// Set the status
 		client.user.setPresence({ status: arg })
 			.then(user => {
 				//client.log("Status set to " + arg);
 				const embed = new Discord.RichEmbed()
-				.setTitle("Status updated")
-				.setColor(0x7EFF00)
-				.setDescription("Status set to " + arg)
+					.setTitle("Status updated")
+					.setColor(0x7EFF00)
+					.setDescription("Status set to " + arg);
 				message.channel.send({embed});
 				
 			})
@@ -58,10 +58,10 @@ exports.run = function(client, message, args){
 			.then(user => {
 				console.log("New avatar set: " + arg);
 				const embed = new Discord.RichEmbed()
-				.setTitle("Avatar updated")
-				.setColor(0x7EFF00)
-				//.setDescription("Avatar updated.")
-				.setImage(arg)
+					.setTitle("Avatar updated")
+					.setColor(0x7EFF00)
+					//.setDescription("Avatar updated.")
+					.setImage(arg);
 				message.channel.send({embed});
 				
 			})
@@ -77,14 +77,14 @@ exports.run = function(client, message, args){
 };
 
 exports.conf = {
-  enabled: true,
-  guildOnly: false,
-  aliases: ["s"],
-  permLevel: 4
+	enabled: true,
+	guildOnly: false,
+	aliases: ["s"],
+	permLevel: 4
 };
 
 exports.help = {
-  name: 'set',
-  description: 'Sets the Game, Status or Avatar of the bot.',
-  usage: `set game <optional:game name>\n${settings.prefix}set status <optional:online|idle|invisible|dnd>\n${settings.prefix}set avatar <url|local path>`
+	name: "set",
+	description: "Sets the Game, Status or Avatar of the bot.",
+	usage: `set game <optional:game name>\n${settings.prefix}set status <optional:online|idle|invisible|dnd>\n${settings.prefix}set avatar <url|local path>`
 };

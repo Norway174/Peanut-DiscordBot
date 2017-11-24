@@ -1,9 +1,9 @@
-const moment = require('moment');
+const moment = require("moment");
 
 //const reqWidget = (widget) => require("../widgets/" + widget)
 
 module.exports = client => {
-	client.on('ready', () => {
+	client.on("ready", () => {
 		
 		//Load the widgets from the PCollection.
 		//client.widgets
@@ -45,19 +45,19 @@ module.exports = client => {
 					
 					
 					if (client.widgetsType.has(widget.type)){
-					client.reloadWidget(widget.type)
+						client.reloadWidget(widget.type);
 					
-					//client.log(`WIDGET TYPE Reloaded: ${widget.type}`);
+						//client.log(`WIDGET TYPE Reloaded: ${widget.type}`);
 					
 					
-					let command = widget.type;
-					let cmd = client.widgetsType.get(command);
+						let command = widget.type;
+						let cmd = client.widgetsType.get(command);
 
-					if (cmd) {
+						if (cmd) {
 						//client.log(`WIDGET PROCESSED: ${widget.name}`);
-						cmd.run(client, widget);
+							cmd.run(client, widget);
 						//log(`[USER: ${message.author.tag}] [${sourceLoc}] [COMMAND: ${msg}] [RESULT: Success.]`)
-					}
+						}
 					
 					
 					}
@@ -73,7 +73,7 @@ module.exports = client => {
 		
 		var interval = 60 * 1000;
 		let now = new Date();
-        let delay = interval - now % interval;
+		let delay = interval - now % interval;
 
 		
 		// 60000 miliseconds = 1 minute

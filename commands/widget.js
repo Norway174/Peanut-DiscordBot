@@ -1,4 +1,4 @@
-const settings = require('../settings.json');
+const settings = require("../settings.json");
 
 exports.run = function(client, message, args){
 	//Do stuff
@@ -8,29 +8,29 @@ exports.run = function(client, message, args){
 	let type = args[2];
 	let interval = parseInt(args[3]);
 	
-	args.splice(0, 4)
+	args.splice(0, 4);
 	let data = args.join(" ");
 	
 	if(action == "add"){
 		
-		if (!message.channel.type == "dm") message.delete()
+		if (!message.channel.type == "dm") message.delete();
 		
 		message.channel.send(`Widget placeholder. This is should be replaced soon. Identifier: '${id}'`)
-		.then( msg => {
-			const widgetSettings = {
-				serverID: msg.guild.id,
-				channelID: msg.channel.id,
-				messageID: msg.id,
-				name: id,
-				type: type,
-				interval: interval,
-				intervalCount: interval,
-				data: data
-			}
+			.then( msg => {
+				const widgetSettings = {
+					serverID: msg.guild.id,
+					channelID: msg.channel.id,
+					messageID: msg.id,
+					name: id,
+					type: type,
+					interval: interval,
+					intervalCount: interval,
+					data: data
+				};
 			
-			client.log(widgetSettings)
-			client.widgets.set(id, widgetSettings);
-		});
+				client.log(widgetSettings);
+				client.widgets.set(id, widgetSettings);
+			});
 		
 		
 		
@@ -41,15 +41,15 @@ exports.run = function(client, message, args){
 		let result = client.widgets.delete(id);
 		if (result){
 			//Deleted
-			message.channel.send(`'${id}' deleted.`)
+			message.channel.send(`'${id}' deleted.`);
 		} else
 		{
 			//Failed
-		message.channel.send(`Unable to delete. Make sure you typed '${id}' correctly.`)
+			message.channel.send(`Unable to delete. Make sure you typed '${id}' correctly.`);
 		}
 	} else
 	if (action == "update"){
-
+		//TODO
 	} else
 	{
 		//console.log("Not supported!");
@@ -57,15 +57,15 @@ exports.run = function(client, message, args){
 };
 
 exports.conf = {
-  enabled: true,
-  guildOnly: false,
-  aliases: ["w"],
-  permLevel: 3
+	enabled: true,
+	guildOnly: false,
+	aliases: ["w"],
+	permLevel: 3
 };
 
 
 exports.help = {
-  name: 'widget',
-  description: 'Controls for dynamaically updated messages, called widgets.',
-  usage: `widget add <unique name> <type> <interval> [data]\n${settings.prefix}widget delete <unique name>\n\n= Avalible widget types =\n{widgets}`
+	name: "widget",
+	description: "Controls for dynamaically updated messages, called widgets.",
+	usage: `widget add <unique name> <type> <interval> [data]\n${settings.prefix}widget delete <unique name>\n\n= Avalible widget types =\n{widgets}`
 };

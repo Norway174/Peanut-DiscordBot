@@ -9,7 +9,7 @@ module.exports = client => {
 		//client.widgets
 		
 		function processWidget() {
-			//client.log(`Procesing ${client.widgets.size}`);
+			//client.log(`Procesing ${client.widgets.size} widgets.`);
 
 			client.widgets.forEach(widget => {
 				//widget = JSON.parse(widget);
@@ -36,7 +36,7 @@ module.exports = client => {
 				
 				let intervalCount = widget.intervalCount + 1;
 				
-				//client.log(`WIDGET ${widget.name}, ${widget.type}, ${widget.interval} / ${widget.intervalCount}`);
+				//client.log(`WIDGET ${widget.name}, ${widget.type}, ${widget.intervalCount} / ${widget.interval}`);
 				
 				//client.log(`WIDGET Interval: ${widget.interval} Count: ${widget.intervalCount}`);
 				if(intervalCount >= widget.interval){

@@ -50,7 +50,7 @@ exports.run = function(client, widget){
 					.setColor(0x009600)
 					.setDescription( stringBuilder )
 					.setFooter("Widget ID: " + widget.name + " | Updates every " + widget.interval + " minutes", "http://www.rw-designer.com/icon-image/5547-256x256x32.png")
-					.setThumbnail("http://i.imgur.com/2JUhMfW.png")
+					.setThumbnail("http://mcapi.de/api/image/favicon/" + hostname + "/" + port)
 					.setTimestamp();
 				
 				//And then edit the first message we sent. We don't want duplicate messages in our chat.

@@ -51,7 +51,7 @@ exports.run = function(client, message, args){
 					} else {
 						stringBuilder += "Message of the day:```\n" + JSON.stringify(result.description) + "```\n";
 					}
-				
+
 					//Then check if there is any players online
 					if(result.players.online != 0){
 					//If there is, then make a list.
@@ -60,14 +60,16 @@ exports.run = function(client, message, args){
 					//If there is none, then display a simple string.
 						stringBuilder += result.players.online + " / " + result.players.max + " Players online.";
 					}
-				
+					
+					
+
 					//Here, we build the emblem for the online server.
 					const embed = new Discord.RichEmbed()
 						.setTitle(hostname + ":" + port)
 						.setColor(0x009600)
 						.setDescription( stringBuilder )
 						.setFooter("Minecraft status checker", "http://www.rw-designer.com/icon-image/5547-256x256x32.png")
-						.setThumbnail("http://i.imgur.com/2JUhMfW.png")
+						.setThumbnail("http://mcapi.de/api/image/favicon/" + hostname + "/" + port)
 						.setTimestamp();
 				
 					//And then edit the first message we sent. We don't want duplicate messages in our chat.

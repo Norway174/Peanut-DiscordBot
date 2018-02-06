@@ -11,6 +11,8 @@ exports.run = function(client, message, args){
 	args.splice(0, 4);
 	let data = args.join(" ");
 	
+	data = data.trim();
+	
 	if(action == "add"){
 		
 		if (!message.channel.type == "dm") message.delete();

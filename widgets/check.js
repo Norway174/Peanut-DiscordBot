@@ -17,13 +17,13 @@ exports.run = function(client, widget){
 			var pieces = hostname.split(":");
 			port = pieces[pieces.length-1];
 			
-			hostname = hostname.replace(":" + port, "");
+			hostname = hostname.replace(":" + port, "").trim();
 		}
 
 		//Then we do the check.
 		mcPinger.pingPromise(hostname, port)
 			.then(result => {
-				//client.log("Server is online running version " + result.version.name + " with " + result.players.online + " out of " + result.players.max + " players.");
+				//client.log("Server is online at '" + hostname + "', running version " + result.version.name + " with " + result.players.online + " out of " + result.players.max + " players.");
 				//client.log("Message of the day: " + JSON.stringify(result.description));
 				
 				//Make the body of the message

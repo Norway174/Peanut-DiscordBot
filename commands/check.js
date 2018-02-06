@@ -2,7 +2,11 @@ const settings = require("../settings.json");
 const Discord = require("discord.js");
 const mcPinger = require("minecraft-pinger");
 
+
 exports.run = function(client, message, args){
+	
+	
+	
 	
 	//var hostname = "minecraft.frag.land";
 	var hostname = "localhost";
@@ -16,7 +20,7 @@ exports.run = function(client, message, args){
 		var pieces = hostname.split(":");
 		port = pieces[pieces.length-1];
 		
-		hostname = hostname.replace(":" + port, "");
+		hostname = hostname.replace(":" + port, "").trim();
 	}
 	
 	//Make the first emblem, for checking status

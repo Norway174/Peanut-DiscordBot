@@ -3,7 +3,10 @@ const Discord = require("discord.js");
 module.exports = member => {
 	let guild = member.guild;
 	let client = member.client;
+	let settings = client.settings.get(guild.id);
 	//guild.defaultChannel.send(`Please welcome ${member.user.username} to the server!`);
+	
+	if(settings.welcomeMessageEnabled == false) return;
 
 	const channel = client.defaultChannel(guild);
 	

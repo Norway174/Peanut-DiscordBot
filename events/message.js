@@ -1,24 +1,26 @@
-const settings = require("../settings.json");
+//const = require("../json");
 const moment = require("moment");
 
 module.exports = message => {
-	
-	let client = message.client;
-	
 	if (message.author.bot) return;
+
+	let client = message.client;
+	let guild = message.guild;
+	let settings = client.settings.get(guild.id);
+	let prefix = settings.prefix;
 	
 	let iscmd = false;
-	if (message.content.startsWith(settings.prefix)) iscmd = true;
+	if (message.content.startsWith(prefix)) iscmd = true;
 	if (message.content.startsWith(client.user)) iscmd = true;
 	if (message.channel.type == "dm") iscmd = true;
 	
 	if (!iscmd) return;
 	
 	let msg = message.content;
-	if (message.content.startsWith(client.user)) msg = msg.replace(client.user + " ", settings.prefix);
-	if (message.channel.type == "dm" && !msg.startsWith(settings.prefix)) msg = settings.prefix + msg;
+	if (message.content.startsWith(client.user)) msg = msg.replace(client.user + " ", prefix);
+	if (message.channel.type == "dm" && !msg.startsWith(prefix)) msg = prefix + msg;
 	
-	let command = msg.split(" ")[0].slice(settings.prefix.length).toLowerCase();
+	let command = msg.split(" ")[0].slice(prefix.length).toLowerCase();
 	let params = msg.split(" ").slice(1);
 	let perms = client.elevation(message);
 	let cmd;
@@ -35,7 +37,7 @@ module.exports = message => {
 		cmd = client.commands.get(client.aliases.get(command));
 	} else {
 		client.log(`[USER: ${message.author.tag}] [${sourceLoc}] [COMMAND: ${msg}] [RESULT: Not found.]`);
-		message.channel.send(`No command found. Type '${settings.prefix}help'`, {code:"xl"});
+		message.channel.send(`No command found. Type '${prefix}help'`, {code:"xl"});
 	}
 	if (cmd) {
 		if (perms < cmd.conf.permLevel){
@@ -43,8 +45,8 @@ module.exports = message => {
 			message.channel.send("Access denied!", {code:"xl"});
 			return;
 		}
-		cmd.run(client, message, params, perms);
 		client.log(`[USER: ${message.author.tag}] [${sourceLoc}] [COMMAND: ${msg}] [RESULT: Success.]`);
+		cmd.run(client, message, params, perms);
 	}
 
 };

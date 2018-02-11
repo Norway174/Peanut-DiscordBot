@@ -9,9 +9,19 @@ const provider = new EnmapLevel({name: "widgets"});
 client.widgets = new Enmap({provider: provider});
 
 
-const settings = require("./settings.json");
+const settings = new Enmap({provider: new EnmapLevel({name: "settings"})});
+client.settings = settings;
 
+// Just setting up a default configuration object here, to have somethign to insert.
+client.defaultSettings = {
+	prefix: "#",
+	welcomeMessageEnabled: false,
+	welcomeMessageEmbed: true,
+	welcomeMessageChannel: "default",
+	welcomeMessageTxt: "Placeholder"
+};
 
+client.botSettings = require("./settings.json");
 
 require("./util/eventLoader")(client);
 require("./util/widgetLoader")(client);
@@ -67,7 +77,7 @@ client.elevation = message => {
 	// commands in private.
 
 	if (message.channel.type == "dm") {
-		if (message.author.id === settings.ownerid) permlvl = 4;
+		if (message.author.id === client.botSettings.ownerid) permlvl = 4;
 		return permlvl;
 	}
 
@@ -124,6 +134,6 @@ client.defaultChannel = guild => {
 };
 
 
-client.login(settings.token);
+client.login(client.botSettings.token);
 
 

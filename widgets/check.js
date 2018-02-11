@@ -43,6 +43,11 @@ exports.run = function(client, widget){
 					//If there is none, then display a simple string.
 					stringBuilder += result.players.online + " / " + result.players.max + " Players online.";
 				}
+
+				var favicon = null;
+				if(result.favicon){
+					favicon = "https://api.minetools.eu/favicon/" + hostname + "/" + port;
+				}
 				
 				//Here, we build the emblem for the online server.
 				const embed = new Discord.RichEmbed()
@@ -50,7 +55,7 @@ exports.run = function(client, widget){
 					.setColor(0x009600)
 					.setDescription( stringBuilder )
 					.setFooter("Widget ID: " + widget.name + " | Updates every " + widget.interval + " minutes", "http://www.rw-designer.com/icon-image/5547-256x256x32.png")
-					.setThumbnail("http://mcapi.de/api/image/favicon/" + hostname + "/" + port)
+					.setThumbnail(favicon)
 					.setTimestamp();
 				
 				//And then edit the first message we sent. We don't want duplicate messages in our chat.

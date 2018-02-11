@@ -46,6 +46,8 @@ exports.run = function(client, message, args){
 				.then(result => {
 					client.log("Server is online running version " + result.version.name + " with " + result.players.online + " out of " + result.players.max + " players.");
 					client.log("Message of the day: " + JSON.stringify(result.description));
+
+					//client.log(JSON.stringify(result));
 				
 					//Make the body of the message
 					var stringBuilder = "";
@@ -65,6 +67,10 @@ exports.run = function(client, message, args){
 						stringBuilder += result.players.online + " / " + result.players.max + " Players online.";
 					}
 					
+					var favicon = null;
+					if(result.favicon){
+						favicon = "https://api.minetools.eu/favicon/" + hostname + "/" + port;
+					}
 					
 
 					//Here, we build the emblem for the online server.
@@ -73,7 +79,7 @@ exports.run = function(client, message, args){
 						.setColor(0x009600)
 						.setDescription( stringBuilder )
 						.setFooter("Minecraft status checker", "http://www.rw-designer.com/icon-image/5547-256x256x32.png")
-						.setThumbnail("http://mcapi.de/api/image/favicon/" + hostname + "/" + port)
+						.setThumbnail(favicon)
 						.setTimestamp();
 				
 					//And then edit the first message we sent. We don't want duplicate messages in our chat.

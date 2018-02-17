@@ -24,10 +24,11 @@ exports.run = (client, message, params) => {
 		// REGEX to find Discord Custom Emoji
 		const regex2 = /<.[a-zA-Z0-9]*.[0-9]*>/g;
 
+		// Parse time
 		let i = parseInt(params[0]);
 		if(i){
 			time = i;
-			question.splice(1, 1);
+			params.splice(0, 1);
 		}
 	
 		//client.log(params + "\n" + params.length)
@@ -50,7 +51,7 @@ exports.run = (client, message, params) => {
 				let index = params.indexOf(match);
 				//client.log(`Removing Index of Unicode: ${index}: ${match}`);
 				if(index != -1) {
-					params.splice(index, 1);
+					//params.splice(index, 1);
 				}
 			});
 		}
@@ -74,7 +75,7 @@ exports.run = (client, message, params) => {
 				let index = params.indexOf(match);
 				//console.log(`Removing Index of Custom: ${index}: ${match}`);
 				if(index != -1) {
-					params.splice(index, 1);
+					//params.splice(index, 1);
 				}
 			});
 		}

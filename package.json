@@ -13,6 +13,7 @@
   "author": "Norway174",
   "license": "SEE LICENSE IN license.txt",
   "dependencies": {
+    "argsplit": "^1.0.5",
     "discord.js": "^11.3.0",
     "enmap": "^0.4.2",
     "enmap-level": "^1.0.0",

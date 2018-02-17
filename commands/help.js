@@ -15,9 +15,9 @@ exports.run = (client, message, params) => {
 
 			const commandNames = Array.from(client.widgetsType.keys());
 			const longest = commandNames.reduce((long, str) => Math.max(long, str.length), 0);
-			const widgets = client.widgetsType.map(c => `${c.help.name}${" ".repeat(longest - c.help.name.length)} :: ${c.help.description}\n//DATA: ${c.help.usage}]`).join("\n");
+			const widgets = client.widgetsType.map(c => `${c.help.name}${" ".repeat(longest - c.help.name.length)} :: ${c.help.description}\n//DATA: ${c.help.usage}`).join("\n");
 
-			message.channel.send( `= ${command.help.name.toUpperCase()} = \n${command.help.description}\n${prefix}${command.help.usage}`.replace("{widgets}", widgets), {code:"asciidoc"});
+			message.channel.send( `= ${command.help.name.toUpperCase()} = \n${command.help.description}\n${prefix}${command.help.usage}`.replace("{widgets}", widgets).replace("{widgetPrefix}", prefix), {code:"asciidoc"});
 		}
 	}
 };

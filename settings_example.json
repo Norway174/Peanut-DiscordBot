@@ -1,8 +1,4 @@
 {
 	"token":"Your supersecret bot token here",
-	"prefix" : "Your prefix here",
-	"ownerid" : "Your discord id here",
-	"modrolename" : "The name of your mod role",
-	"adminrolename" : "The name of your admin role",
-	"minecraft" : "Minecraft server ip"
+	"ownerid" : "Your discord id here"
 }

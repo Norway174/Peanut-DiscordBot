@@ -24,6 +24,7 @@ exports.run = function(client, message, args){
 	}
 	
 	function evalClean(text) {
+		text = text.replace(client.token, "[REDACTED]");
 		if (typeof(text) === "string")
 			return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
 		else

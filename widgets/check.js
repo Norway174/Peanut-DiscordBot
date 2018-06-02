@@ -7,7 +7,7 @@ exports.run = function(client, widget){
 	
 	//client.log("Checking server...");
 	
-	client.guilds.get(widget.serverID).channels.get(widget.channelID).fetchMessage(widget.messageID).then(m => {
+	client.guilds.get(widget.serverID).channels.get(widget.channelID).fetchMessage(widget.messageID).then(message => {
 		
 		var hostname = widget.data;
 		var port = 25565;
@@ -44,13 +44,29 @@ exports.run = function(client, widget){
 					stringBuilder += result.players.online + " / " + result.players.max + " Players online.";
 				}
 
+				// Get the favicon url
 				var favicon = null;
 				if(result.favicon){
 					favicon = "https://api.minetools.eu/favicon/" + hostname + "/" + port;
 				}
 				
+				// Remove Minecraft formatting from the results.
+				const regex = /[§]./g;
+				const str = stringBuilder;
+				let m;
+				while ((m = regex.exec(str)) !== null) {
+					// This is necessary to avoid infinite loops with zero-width matches
+					if (m.index === regex.lastIndex) {
+						regex.lastIndex++;
+					}					
+					// The result can be accessed through the `m`-variable.
+					m.forEach((match, groupIndex) => {
+						stringBuilder = stringBuilder.replace(m, "");
+					});
+				}
+
 				//Here, we build the emblem for the online server.
-				const embed = new Discord.RichEmbed()
+				const embed1 = new Discord.RichEmbed()
 					.setTitle(hostname + ":" + port)
 					.setColor(0x009600)
 					.setDescription( stringBuilder )
@@ -58,8 +74,12 @@ exports.run = function(client, widget){
 					.setThumbnail(favicon)
 					.setTimestamp();
 				
+				//client.log("Editing message...Online");
 				//And then edit the first message we sent. We don't want duplicate messages in our chat.
-				m.edit({embed});
+				message.edit(embed1);
+				//.then(msg => console.log(`New message content: ${msg}`))
+				//.catch(console.error);
+
 				//Stop the typing effect.
 				//message.channel.stopTyping();
 			})
@@ -76,10 +96,12 @@ exports.run = function(client, widget){
 					.setThumbnail("http://i.imgur.com/AhMUw4E.png")
 					.setTimestamp();
 				
+				//client.log("Editing message... Offline/Error");
 				//And the same as before, we edit the first message with the offline message.
-				m.edit({embed});
+				message.edit(embed);
 				//Stop the typing effect.
 				//message.channel.stopTyping();
+
 			});
 	});
 	

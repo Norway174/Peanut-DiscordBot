@@ -58,6 +58,8 @@ exports.run = function(client, message, args){
 						stringBuilder += "Message of the day:```\n" + JSON.stringify(result.description) + "```\n";
 					}
 
+					
+
 					//Then check if there is any players online
 					if(result.players.online != 0){
 					//If there is, then make a list.
@@ -72,6 +74,21 @@ exports.run = function(client, message, args){
 						favicon = "https://api.minetools.eu/favicon/" + hostname + "/" + port;
 					}
 					
+					const regex = /[§]./g;
+					const str = stringBuilder;
+					let m;
+
+					while ((m = regex.exec(str)) !== null) {
+						// This is necessary to avoid infinite loops with zero-width matches
+						if (m.index === regex.lastIndex) {
+							regex.lastIndex++;
+						}
+						
+						// The result can be accessed through the `m`-variable.
+						m.forEach((match, groupIndex) => {
+							stringBuilder = stringBuilder.replace(m, "");
+						});
+					}
 
 					//Here, we build the emblem for the online server.
 					const embed = new Discord.RichEmbed()

@@ -8,8 +8,15 @@ module.exports = message => {
 
 	// Definitions
 	let client = message.client;
-	let guild = message.guild;
-	let settings = client.settings.get(guild.id);
+	let guild;
+	let settings;
+	if (message.channel.type == "dm"){
+		guild = message.author;
+		settings = client.defaultSettings;
+	} else {
+		guild = message.guild;
+		settings = client.settings.get(guild.id);
+	}
 	let prefix = settings.prefix;
 	
 	// Check if message is a command

@@ -23,12 +23,14 @@ exports.run = function(client, message, args){
 			let settings = client.settings.get(message.guild.id);
 			const commandNames = Array.from(client.widgetsType.keys());
 			const longest = commandNames.reduce((long, str) => Math.max(long, str.length), 0);
+
 			const widgets = client.widgetsType.map(c => `${c.help.name}${" ".repeat(longest - c.help.name.length)} :: ${c.help.description}\n//DATA: ${c.help.usage}`).join("\n");
+			
 			message.channel.send(`Error making widget: Missing parameters!\n\`\`\`asciidoc\n${settings.prefix}${this.help.usage.replace("{widgets}", widgets).replace("{widgetPrefix}", settings.prefix)}\`\`\``);
 			return;
 		}
 
-		message.channel.send(`Widget placeholder. This is should be replaced soon. Identifier: '${id}'`)
+		message.channel.send(`Widget placeholder. This is should be replaced soon. Identifier: \`${id}\``)
 			.then( msg => {
 				const widgetSettings = {
 					serverID: msg.guild.id,
@@ -51,14 +53,14 @@ exports.run = function(client, message, args){
 	} else
 	if (action == "delete" || action == "del"){
 		
-		let result = client.widgets.delete(id);
-		if (result){
+		if (client.widgets.has(id)) {
 			//Deleted
-			message.channel.send(`'${id}' deleted.`);
-		} else
-		{
+			client.widgets.delete(id);
+			message.channel.send(`\`${id}\` deleted.`);
+		}
+		else {
 			//Failed
-			message.channel.send(`Unable to delete. Make sure you typed '${id}' correctly.`);
+			message.channel.send(`Unable to delete. Make sure you typed \`${id}\` correctly.`);
 		}
 	} else
 	if (action == "update"){

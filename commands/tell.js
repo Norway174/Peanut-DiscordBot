@@ -13,7 +13,7 @@ exports.run = (client, message, args) => {
 		args.splice(0, 1);
 		let msg = args.join(" ");
 
-		var conn = new Rcon("149.56.241.15", 25640, "qqsTPXHSvoYgPQrdWHqs");
+		var conn = new Rcon("149.56.241.15", 25640, "Secret");
 		// var conn = new Rcon("hostname", port, "password");
 
 		conn.on("auth", function() {

@@ -4,7 +4,7 @@
   "description": "Just a general all-purpose utility Discord bot.",
   "main": "bot.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node bot.js"
   },
   "keywords": [
     "discord",
@@ -21,6 +21,7 @@
     "minecraft-pinger": "^1.0.3",
     "moment": "^2.20.1",
     "moment-duration-format": "^1.3.0",
-    "node-fetch": "^1.7.3"
+    "node-fetch": "^1.7.3",
+    "rcon": "^1.0.3"
   }
 }

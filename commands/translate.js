@@ -4,7 +4,15 @@ const translate = require("google-translate-api");
 
 exports.run = (client, message, args) => {
 	
-	translate(args.join(" "), {to: "en"}).then(res => {
+	let language = "en";
+	let detection = "Detected: ";
+	
+	if (args[0].startsWith("-")){
+		language = args.shift().replace("-", "");
+		//detection = "Selected: ";
+	}
+	
+	translate(args.join(" "), {to: language}).then(res => {
 		
 		let lang = res.from.language.iso;
 		
@@ -14,9 +22,9 @@ exports.run = (client, message, args) => {
 			.setColor(0x4D90FE)
 			//.setDescription( res.text )
 			.setFooter( "Translated for " + message.author.username + "." )
-			.addField("Detected: " + langs[lang], args.join(" "), true)
+			.addField(detection + langs[lang], args.join(" "), true)
 			.addBlankField(true)
-			.addField("English", res.text, true);
+			.addField(langs[language], res.text, true);
 		//.setThumbnail("http://i.imgur.com/2JUhMfW.png")
 		//.setTimestamp()
 				
@@ -44,8 +52,8 @@ exports.conf = {
 
 exports.help = {
 	name: "translate",
-	description: "Translates the given text to English.",
-	usage: "translate <any text>"
+	description: "Translates the given text to English by default or spesificed language.",
+	usage: "translate -[language code] <any text>"
 };
 
 

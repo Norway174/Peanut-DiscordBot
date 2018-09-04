@@ -1,4 +1,5 @@
 {
 	"token":"Your supersecret bot token here",
-	"ownerid" : "Your discord id here"
+	"ownerid" : "Your discord id here",
+	"wolframAlphaID" : "Your Wolfram App ID here"
 }

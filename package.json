@@ -14,9 +14,9 @@
   "license": "SEE LICENSE IN license.txt",
   "dependencies": {
     "argsplit": "^1.0.5",
-    "discord.js": "^11.3.0",
-    "enmap": "^0.4.2",
-    "enmap-level": "^1.0.0",
+    "better-sqlite-pool": "^0.1.2",
+    "discord.js": "^11.4.2",
+    "enmap": "^4.0.12",
     "google-translate-api": "^2.3.0",
     "minecraft-pinger": "^1.0.3",
     "moment": "^2.20.1",

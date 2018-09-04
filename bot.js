@@ -3,14 +3,20 @@ const client = new Discord.Client();
 const fs = require("fs");
 const moment = require("moment");
 const Enmap = require("enmap");
-const EnmapLevel = require("enmap-level");
+//const EnmapLevel = require("enmap-level"); //Depricated.
 
-const provider = new EnmapLevel({name: "widgets"});
+/*const provider = new EnmapLevel({name: "widgets"});
 client.widgets = new Enmap({provider: provider});
 
 
 const settings = new Enmap({provider: new EnmapLevel({name: "settings"})});
-client.settings = settings;
+client.settings = settings;*/
+
+const widgetsEnmap = new Enmap({name: "widgets"});
+const settingsEnmap = new Enmap({name: "settings"});
+
+client.widgets = widgetsEnmap;
+client.settings = settingsEnmap;
 
 // Just setting up a default configuration object here, to have somethign to insert.
 client.defaultSettings = {
@@ -81,6 +87,9 @@ client.elevation = message => {
 		return permlvl;
 	}
 
+	//It will crash if a bot continues past this point.
+	//So let's make all bots have perm 0, same as in DM channels.
+	if (message.author.bot) return permlvl;
 
 	if (message.member.hasPermission("ADMINISTRATOR")) permlvl = 3;
 

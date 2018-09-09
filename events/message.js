@@ -63,7 +63,7 @@ module.exports = message => {
 		cmd = client.commands.get(client.aliases.get(command));
 	} else {
 		// If no command is found
-		client.log(`[USER: ${message.author.tag}] [${sourceLoc}] [COMMAND: ${command}] [RESULT: Not found.]`);
+		client.log(`[USER: ${message.author.tag}] [${sourceLoc}] [COMMAND: ${command} - ARGS: ${params}] [RESULT: Not found.]`);
 		message.channel.send(`No command found. Type '${prefix}help'`, {code:"xl"});
 	}
 	// If the command is found
@@ -71,12 +71,12 @@ module.exports = message => {
 		// Check the permission level for the command
 		if (perms < cmd.conf.permLevel){
 			// No permission!
-			client.log(`[USER: ${message.author.tag}] [${sourceLoc}] [COMMAND: ${command}] [RESULT: No access.]`);
+			client.log(`[USER: ${message.author.tag}] [${sourceLoc}] [COMMAND: ${command} - ARGS: ${params}] [RESULT: No access.]`);
 			message.channel.send("Access denied!", {code:"xl"});
 			return;
 		}
 		// Log & run the command!
-		client.log(`[USER: ${message.author.tag}] [${sourceLoc}] [COMMAND: ${command}] [RESULT: Success.]`);
+		client.log(`[USER: ${message.author.tag}] [${sourceLoc}] [COMMAND: ${command} - ARGS: ${params}] [RESULT: Success.]`);
 		cmd.run(client, message, params, perms);
 	}
 

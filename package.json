@@ -23,6 +23,7 @@
     "moment-duration-format": "^2.2.2",
     "node-fetch": "^2.2.0",
     "node-wolfram-alpha": "^1.2.5",
-    "rcon": "^1.0.3"
+    "rcon": "^1.0.3",
+    "steam-provider": "^0.3.2"
   }
 }

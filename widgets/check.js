@@ -5,14 +5,30 @@ const moment = require("moment");
 
 exports.run = function(client, widget){
 	
-	//client.log("Checking server...");
+	// EASTER EGG
+	if(widget.data == "149.56.147.175:25685"){
+		function shuffelWord(word) {
+			var shuffledWord = '';
+			word = word.split('');
+			while (word.length > 0) {
+			shuffledWord +=  word.splice(word.length * Math.random() << 0, 1);
+			}
+			return shuffledWord;
+		}
+		var name = "Commander Cat";
+		//client.guilds.get("331116599614504961").members.get("485225463606673438").setNickname(shuffelWord(name));
+
+	}
+	
+
+	//client.logger.log("Checking server...");
 	
 	client.guilds.get(widget.serverID).channels.get(widget.channelID).fetchMessage(widget.messageID).then(message => {
 		
 		var hostname = widget.data;
 		var port = 25565;
 		
-		//client.log(widget.name + " HOSTNAME " + hostname);
+		//client.logger.log(widget.name + " HOSTNAME " + hostname);
 		if(hostname.indexOf(":") + 1){
 			var pieces = hostname.split(":");
 			port = pieces[pieces.length-1];
@@ -23,8 +39,8 @@ exports.run = function(client, widget){
 		//Then we do the check.
 		mcPinger.pingPromise(hostname, port)
 			.then(result => {
-				//client.log("Server is online at '" + hostname + "', running version " + result.version.name + " with " + result.players.online + " out of " + result.players.max + " players.");
-				//client.log("Message of the day: " + JSON.stringify(result.description));
+				//client.logger.log("Server is online at '" + hostname + "', running version " + result.version.name + " with " + result.players.online + " out of " + result.players.max + " players.");
+				//client.logger.log("Message of the day: " + JSON.stringify(result.description));
 				
 				//Make the body of the message
 				var stringBuilder = "";
@@ -74,7 +90,7 @@ exports.run = function(client, widget){
 					.setThumbnail(favicon)
 					.setTimestamp();
 				
-				//client.log("Editing message...Online");
+				//client.logger.log("Editing message...Online");
 				//And then edit the first message we sent. We don't want duplicate messages in our chat.
 				message.edit(embed1);
 				//.then(msg => console.log(`New message content: ${msg}`))
@@ -84,8 +100,8 @@ exports.run = function(client, widget){
 				//message.channel.stopTyping();
 			})
 			.catch(error => {
-				//client.log(hostname + ":" + port + " is offline!");
-				//client.log(error);
+				//client.logger.log(hostname + ":" + port + " is offline!");
+				//client.logger.log(error);
 				
 				//Here we build the offline message
 				const embed = new Discord.RichEmbed()
@@ -96,7 +112,7 @@ exports.run = function(client, widget){
 					.setThumbnail("http://i.imgur.com/AhMUw4E.png")
 					.setTimestamp();
 				
-				//client.log("Editing message... Offline/Error");
+				//client.logger.log("Editing message... Offline/Error");
 				//And the same as before, we edit the first message with the offline message.
 				message.edit(embed);
 				//Stop the typing effect.

@@ -16,5 +16,5 @@ module.exports = member => {
 		.setDescription(`<@${member.user.id}> (${member.user.tag}) has left ${guild.name}.`);
 	channel.send({embed});
 
-	client.log(`${member.user.tag} has left ${guild.name}.`);
+	client.logger.log(`${member.user.tag} has left ${guild.name}.`);
 };

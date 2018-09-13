@@ -1,7 +1,7 @@
 const moment = require("moment");
 
 exports.run = function(client, widget, data){
-	//client.log(`WIDGET PROCESSED: ${widget.name}`);
+	//client.logger.log(`WIDGET PROCESSED: ${widget.name}`);
 	//message.channel.send("Current time: '" + Date.now() + "'");
 	
 	/*

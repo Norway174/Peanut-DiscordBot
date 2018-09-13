@@ -1,7 +1,7 @@
 const moment = require("moment");
 
 exports.run = function(client, widget, data){
-	client.log(`WIDGET PROCESSED: ${widget.name}, TYPE: ${this.help.name}`);
+	client.logger.log(`WIDGET PROCESSED: ${widget.name}, TYPE: ${this.help.name}`);
 	//message.channel.send("Current time: '" + Date.now() + "'");
 
 	let guild = client.guilds.get(widget.serverID);
@@ -28,9 +28,9 @@ exports.run = function(client, widget, data){
 		m.edit("List of reactions:\n" + m.reactions.map(reaction => reaction.emoji.name + " - " + reaction.users.map(user => user).join(", ")).join("\n"), {split:true});
 
 		m.reactions.forEach(reaction => {
-			client.log("Reaction: " + reaction.emoji);
+			client.logger.log("Reaction: " + reaction.emoji);
 			reaction.users.forEach(user => {
-				client.log("- User: " + user.username);
+				client.logger.log("- User: " + user.username);
 
 				//reaction.remove(user);
 

@@ -4,7 +4,7 @@ require("moment-duration-format");
 
 
 exports.run = function(client, widget, data){
-	//client.log(`WIDGET PROCESSED: ${widget.name}`);
+	//client.logger.log(`WIDGET PROCESSED: ${widget.name}`);
 	//message.channel.send("Current time: '" + Date.now() + "'");
 	
 	/*
@@ -19,7 +19,7 @@ exports.run = function(client, widget, data){
 		data: widget.data
 	}
 	
-	//client.log(widgetSettings)
+	//client.logger.log(widgetSettings)
 	client.widgets.set(widget.name, widgetSettings);
 	*/
 	
@@ -27,7 +27,7 @@ exports.run = function(client, widget, data){
 		this.client = client;
 	
 		// const guilds = (await client.shard.broadcastEval('this.guilds.size'));//.reduce((a, b) => a + b, 0);
-		// client.log(guilds);
+		// client.logger.log(guilds);
 		const duration = moment.duration(this.client.uptime).format(" D [days], H [hrs], m [mins], s [secs]");
 		m.edit(`= STATISTICS =
   • Mem Usage   :: ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB

@@ -8,7 +8,7 @@ module.exports = client => {
 		function processWidget() {
 
 			client.widgets.forEach(widget => {
-				//client.log(`Processing ${require("util").inspect(widget)}`);
+				//client.logger.log(`Processing ${require("util").inspect(widget)}`);
 				/*
 				widget = {
 					serverID: widget.serverID,

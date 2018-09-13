@@ -43,7 +43,7 @@ exports.run = function(client, message, args){
 					data: data
 				};
 			
-				client.log(widgetSettings);
+				client.logger.log(widgetSettings);
 				client.widgets.set(id, widgetSettings);
 			});
 		

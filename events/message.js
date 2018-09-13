@@ -63,7 +63,7 @@ module.exports = message => {
 		cmd = client.commands.get(client.aliases.get(command));
 	} else {
 		// If no command is found
-		client.log(`[USER: ${message.author.tag}] [${sourceLoc}] [COMMAND: ${command} - ARGS: ${params}] [RESULT: Not found.]`);
+		client.logger.cmd(`[USER: ${message.author.tag}] [${sourceLoc}] [COMMAND: ${command} - ARGS: ${params}] [RESULT: Not found.]`);
 		message.channel.send(`No command found. Type '${prefix}help'`, {code:"xl"});
 	}
 	// If the command is found

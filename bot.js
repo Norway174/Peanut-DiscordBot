@@ -26,6 +26,8 @@ client.defaultSettings = client.config.defaultSettings;
 require("./util/eventLoader")(client);
 require("./util/widgetLoader")(client);
 
+client.logger = require("./util/Logger");
+/* DEPRICATED
 client.log = message => {
 	console.log(`[${moment().format("YYYY-MM-DD HH:mm:ss")}] ${message}`);
 };

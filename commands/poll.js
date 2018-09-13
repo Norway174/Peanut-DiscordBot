@@ -31,7 +31,7 @@ exports.run = (client, message, params) => {
 			params.splice(0, 1);
 		}
 	
-		//client.log(params + "\n" + params.length)
+		//client.logger.log(params + "\n" + params.length)
 
 		const str = params.join();
 	
@@ -44,12 +44,12 @@ exports.run = (client, message, params) => {
 
 			// The result can be accessed through the `m`-variable.
 			m.forEach((match, groupIndex) => {
-			//client.log(`Found Unicode, group ${groupIndex}: ${match}`);
+			//client.logger.log(`Found Unicode, group ${groupIndex}: ${match}`);
 			
 				reactions.push(match);
 			
 				let index = params.indexOf(match);
-				//client.log(`Removing Index of Unicode: ${index}: ${match}`);
+				//client.logger.log(`Removing Index of Unicode: ${index}: ${match}`);
 				if(index != -1) {
 					//params.splice(index, 1);
 				}
@@ -94,11 +94,11 @@ exports.run = (client, message, params) => {
 		//Send the message.
 		message.channel.send({embed})
 			.then(message2 => {
-				//client.log("Poll started!")
+				//client.logger.log("Poll started!")
 		
 				reactions.forEach(emoji => {
 					message2.react(emoji);
-					//client.log("Reactions: " + emoji);
+					//client.logger.log("Reactions: " + emoji);
 				});
 	
 				// Create a reaction collector
@@ -107,10 +107,10 @@ exports.run = (client, message, params) => {
 					{ time: moment.duration(time, "minutes") }
 				);
 				collector.on("collect", r => {
-					//client.log(`Collected ${require("util").inspect(r)}`);
+					//client.logger.log(`Collected ${require("util").inspect(r)}`);
 				});
 				collector.on("end", collected => {
-					//client.log(`Collected ${require("util").inspect(collected)} items`);
+					//client.logger.log(`Collected ${require("util").inspect(collected)} items`);
 			
 					let resultBuilder = "";
 					collected.forEach(item => {
@@ -126,7 +126,7 @@ exports.run = (client, message, params) => {
 						let emoji = item.emoji.name;
 						if(item.emoji.id) emoji = client.emojis.get(item.emoji.id);
 						resultBuilder += `**${item.users.size - 1}** - ${emoji} Voters: ${voters}\n`;
-						//client.log("result builder: " + item.emoji.name);
+						//client.logger.log("result builder: " + item.emoji.name);
 					});
 			
 					const embed = new Discord.RichEmbed()

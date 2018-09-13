@@ -6,7 +6,7 @@ exports.run = function(client, message){
 		.then(res => {
 			return res.text();
 		}).then(function(body) {
-			client.log("JOKE: " + body);
+			client.logger.log("JOKE: " + body);
 			message.channel.send(body);
 		});
 

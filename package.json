@@ -15,6 +15,7 @@
   "dependencies": {
     "argsplit": "^1.0.5",
     "better-sqlite-pool": "^0.1.2",
+    "chalk": "^2.4.1",
     "discord.js": "^11.4.2",
     "enmap": "^4.0.12",
     "google-translate-api": "^2.3.0",

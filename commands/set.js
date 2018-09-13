@@ -17,11 +17,11 @@ exports.run = function(client, message, args){
 	.setThumbnail("http://i.imgur.com/2JUhMfW.png")
 	.setTimestamp()*/
 	
-	client.log("Selected: " + type);
+	client.logger.log("Selected: " + type);
 	
 	if (arg == "") arg = null;
 	if(type == "game"  || type == "g"){
-		//client.log("Game selected!");
+		//client.logger.log("Game selected!");
 		// Set Game
 		client.user.setPresence({ game: { name: arg, type: 0 } })
 			.then(user => {
@@ -41,7 +41,7 @@ exports.run = function(client, message, args){
 		// Set the status
 		client.user.setPresence({ status: arg })
 			.then(user => {
-				//client.log("Status set to " + arg);
+				//client.logger.log("Status set to " + arg);
 				const embed = new Discord.RichEmbed()
 					.setTitle("Status updated")
 					.setColor(0x7EFF00)
@@ -52,7 +52,7 @@ exports.run = function(client, message, args){
 			.catch(console.error);
 	} else
 	if (type == "avatar" || type == "a"){
-		//client.log("Avatar selected!");
+		//client.logger.log("Avatar selected!");
 		// Set avatar
 		client.user.setAvatar(arg)
 			.then(user => {
@@ -71,7 +71,7 @@ exports.run = function(client, message, args){
 			});
 	} else
 	{
-		//client.log("Not supported!");
+		//client.logger.log("Not supported!");
 	}
 	
 };

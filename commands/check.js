@@ -44,10 +44,10 @@ exports.run = function(client, message, args){
 		//Then we do the check.
 			mcPinger.pingPromise(hostname, port)
 				.then(result => {
-					client.log("Server is online running version " + result.version.name + " with " + result.players.online + " out of " + result.players.max + " players.");
-					client.log("Message of the day: " + JSON.stringify(result.description));
+					client.logger.log("Server is online running version " + result.version.name + " with " + result.players.online + " out of " + result.players.max + " players.");
+					client.logger.log("Message of the day: " + JSON.stringify(result.description));
 
-					//client.log(JSON.stringify(result));
+					//client.logger.log(JSON.stringify(result));
 				
 					//Make the body of the message
 					var stringBuilder = "";
@@ -105,8 +105,8 @@ exports.run = function(client, message, args){
 				//message.channel.stopTyping();
 				})
 				.catch(error => {
-					client.log(hostname + ":" + port + " is offline!");
-					client.log(error);
+					client.logger.log(hostname + ":" + port + " is offline!");
+					client.logger.log(error);
 				
 					//Here we build the offline message
 					const embed = new Discord.RichEmbed()

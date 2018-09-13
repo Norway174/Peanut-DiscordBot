@@ -1,4 +1,4 @@
-const settings = require("../settings.json");
+const settings = require("../config.js");
 
 exports.run = function(client, message, args){
 	//MAKE SURE ONLY THE HOST OF THIS BOT CAN RUN THIS COMMAND!

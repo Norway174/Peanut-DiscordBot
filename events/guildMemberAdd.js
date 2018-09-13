@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const settings = require("../settings.json");
+const settings = require("../config.js");
 
 module.exports = member => {
 	let guild = member.guild;

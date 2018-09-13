@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
-const botSettings = require("../settings.json");
-const token = botSettings.wolframAlphaID;
+const config = require("../config.js");
+const token = config.wolframAlphaID;
 
 const { WolframClient } = require('node-wolfram-alpha');
 const wolfram = new WolframClient(token);

@@ -18,16 +18,10 @@ const settingsEnmap = new Enmap({name: "settings"});
 client.widgets = widgetsEnmap;
 client.settings = settingsEnmap;
 
-// Just setting up a default configuration object here, to have somethign to insert.
-client.defaultSettings = {
-	prefix: "#",
-	welcomeMessageEnabled: false,
-	welcomeMessageEmbed: true,
-	welcomeMessageChannel: "default",
-	welcomeMessageTxt: "Placeholder"
-};
+client.config = require("./config.js");
 
-client.botSettings = require("./settings.json");
+// Just setting up a default configuration object here, to have somethign to insert.
+client.defaultSettings = client.config.defaultSettings;
 
 require("./util/eventLoader")(client);
 require("./util/widgetLoader")(client);

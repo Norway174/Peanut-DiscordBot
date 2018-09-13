@@ -1,4 +1,4 @@
-settings.json
+config.js
 node_modules/
 data/
 .eslintrc.js

@@ -1,0 +1,33 @@
+const config = {
+
+	// NOTICE: Make a copy of this file, and rename it to "config.js".
+	// And change out the values below with your own.
+	
+	// Bot token - Super secret! - Available on https://discordapp.com/developers/applications/me
+	"token":"MzQ5OTI3NDc2NTE4MDYwMDUy.DH8m6Q.rMX2xzXASd3E7wL4FVurGSNh2M4",
+
+	// Owner discord ID
+	"ownerid" : "118381238649225224",
+
+	// Wolfram Alpha ID - Get one for free at http://products.wolframalpha.com/developers/
+	"wolframAlphaID" : "635LVG-XP9LXU33JP", // OPTIONAL: If left blank, remember to disable the command too.
+
+	// Default configuation for the multi-guild support
+	"defaultSettings" : {
+		prefix: "#",
+		welcomeMessageEnabled: false,
+		welcomeMessageEmbed: true, // Placeholder.
+		welcomeMessageChannel: "default", // Placeholder.
+		welcomeMessageTxt: "Placeholder" // Placeholder.
+	},
+
+	// Configuration for the rcon module. You probably want to disable the whitelist command, and leave this blank.
+	"rcon" : {
+		hostname: "ip/hostname",
+		port: "port",
+		password: "secret"
+
+	}
+};
+
+module.exports = config;

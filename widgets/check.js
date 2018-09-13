@@ -1,4 +1,4 @@
-const settings = require("../settings.json");
+const settings = require("../config.js");
 const Discord = require("discord.js");
 const mcPinger = require("minecraft-pinger");
 const moment = require("moment");

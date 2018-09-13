@@ -1,13 +1,17 @@
-//const settings = require("../settings.json");
+//const settings = require("../config.js");
+const Discord = require("discord.js");
 exports.run = (client, message, params) => {
 
 	let settings = client.settings.get(message.guild.id);
 	let prefix = settings.prefix;
 
 	if (!params[0]) {
-		const commandNames = Array.from(client.commands.keys());
+		
+		const myCommands = client.commands.filter(cmd => client.elevation(message) >= cmd.conf.permLevel /*&& cmd.conf.guildOnly !== true*/);
+
+		const commandNames = Array.from(myCommands.keys());
 		const longest = commandNames.reduce((long, str) => Math.max(long, str.length), 0);
-		message.channel.send( `= Command List =\n\n[Use ${prefix}help <command> for details]\n\n${client.commands.map(c => `${prefix}${c.help.name}${" ".repeat(longest - c.help.name.length)} :: ${c.help.description}`).join("\n")}`, {code:"asciidoc"});
+		message.channel.send( `= Command List =\n\n[Use ${prefix}help <command> for details]\n\n${myCommands.map(c => `${prefix}${c.help.name}${" ".repeat(longest - c.help.name.length)} :: ${c.help.description}`).join("\n") }`, {code:"asciidoc"});
 	} else {
 		let command = params[0];
 		if (client.commands.has(command)) {

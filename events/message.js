@@ -4,7 +4,11 @@ const argsplit = require("argsplit");
 
 module.exports = message => {
 	// Ignore other bots!
-	if (message.author.bot) return;
+	//Allow bots in this channel.
+	if (message.channel.id != "485006424422744065"){ // Realm of Chaos -> In-Game
+		if (message.author.bot) return;
+	}
+	
 
 	// Definitions
 	let client = message.client;
@@ -40,11 +44,6 @@ module.exports = message => {
 
 	let params = argsplit(msg);
 
-	// Perms handler, elevate the perm if necessary
-	let perms = client.elevation(message);
-
-	// Define a null command.
-	let cmd;
 	
 	// Source formating for the server log
 	let sourceLoc;
@@ -55,29 +54,50 @@ module.exports = message => {
 	
 	// Command handler
 	command = command.toLowerCase();
-	if (client.commands.has(command)) {
-		// Get command from name
-		cmd = client.commands.get(command);
-	} else if (client.aliases.has(command)) {
-		// Get command from alias
-		cmd = client.commands.get(client.aliases.get(command));
-	} else {
+	// Check whether the command, or alias, exist in the collections defined
+	var cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
+
+	if (!cmd) {
 		// If no command is found
 		client.logger.cmd(`[USER: ${message.author.tag}] [${sourceLoc}] [COMMAND: ${command} - ARGS: ${params}] [RESULT: Not found.]`);
 		message.channel.send(`No command found. Type '${prefix}help'`, {code:"xl"});
+		return;
 	}
-	// If the command is found
-	if (cmd) {
-		// Check the permission level for the command
-		if (perms < cmd.conf.permLevel){
-			// No permission!
-			client.log(`[USER: ${message.author.tag}] [${sourceLoc}] [COMMAND: ${command} - ARGS: ${params}] [RESULT: No access.]`);
-			message.channel.send("Access denied!", {code:"xl"});
-			return;
-		}
-		// Log & run the command!
-		client.log(`[USER: ${message.author.tag}] [${sourceLoc}] [COMMAND: ${command} - ARGS: ${params}] [RESULT: Success.]`);
-		cmd.run(client, message, params, perms);
+
+	// Perms handler, elevate the perm if necessary
+	let perms = client.elevation(message);
+	// Check the permission level for the command
+	if (perms < cmd.conf.permLevel){
+		// No permission!
+		client.logger.cmd(`[USER: ${message.author.tag}] [${sourceLoc}] [COMMAND: ${command} - ARGS: ${params}] [RESULT: No access.]`);
+		message.channel.send("Access denied!", {code:"xl"});
+		return;
 	}
+
+	//Reload the command before we run it. Only enable for debugging.
+	var debug = true;
+	if(debug) {
+		client.reload(cmd.help.name)
+		.then(() => {
+			cmd = client.commands.get(cmd.help.name) || client.commands.get(client.aliases.get(cmd.help.name));
+
+			// Log & run the command!
+			client.logger.cmd(`[USER: ${message.author.tag}] [${sourceLoc}] [COMMAND: ${command} - ARGS: ${params}] [RESULT: Success.]`);
+			client.logger.debug("Command reloaded!");
+			cmd.run(client, message, params, perms);
+		})
+		.catch(e => {
+			// Log & run the command!
+			client.logger.cmd(`[USER: ${message.author.tag}] [${sourceLoc}] [COMMAND: ${command} - ARGS: ${params}] [RESULT: Success.]`);
+			client.logger.debug("Failed to reload command: " + e.stack);
+			cmd.run(client, message, params, perms);
+		})
+
+		return;
+	}
+
+	// Log & run the command!
+	client.logger.cmd(`[USER: ${message.author.tag}] [${sourceLoc}] [COMMAND: ${command} - ARGS: ${params}] [RESULT: Success.]`);
+	cmd.run(client, message, params, perms);
 
 };

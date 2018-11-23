@@ -139,6 +139,31 @@ const init = async () => {
 			.first();
 	};
 
+	/*
+		Borrowed from https://github.com/AnIdiotsGuide/guidebot/blob/fcd5bbda490474f42b5b488059beca1b800d40f8/modules/functions.js#L36
+
+		GUILD SETTINGS FUNCTION
+		This function merges the default settings (from config.defaultSettings) with any
+		guild override you might have for particular guild. If no overrides are present,
+		the default settings are used.
+	*/
+	client.getSettings = (guild) => {
+		// Comment these two lines to make default guild-settings NOT be auto-updated. May save some system resources?
+		delete require.cache[require.resolve(appRoot + "/config.js")];
+		client.config = require( appRoot + "/config.js");
+
+		const defaults = client.config.defaultSettings || {};
+		if (!guild) return defaults;
+
+		const guildData = client.settings.get(guild) || {};
+		const returnObject = {};
+
+		Object.keys(defaults).forEach((key) => {
+			returnObject[key] = guildData[key] ? guildData[key] : defaults[key];
+		});
+		return returnObject;
+	};
+
 
 	client.login(client.config.token);
 

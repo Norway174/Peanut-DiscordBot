@@ -19,7 +19,7 @@ module.exports = message => {
 		settings = client.defaultSettings;
 	} else {
 		guild = message.guild;
-		settings = client.settings.get(guild.id);
+		settings = client.getSettings(guild.id);
 	}
 	let prefix = settings.prefix;
 	

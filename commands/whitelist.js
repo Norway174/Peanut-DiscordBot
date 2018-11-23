@@ -1,13 +1,9 @@
 const Rcon = require("rcon");
 
-exports.run = (client, message, args) => {
+exports.run = (client, message, args, byCommand = true) => {
 	var hostname = client.config.rcon.hostname;
 	var port = client.config.rcon.port;
 	var password = client.config.rcon.password;
-
-
-	// We only want this command to be executed in one channel only.
-	if (message.channel.id != "488392710517030923") return; // Chaos Grid -> Whitelist
 
 	// Sets the parm. If we want to add or remove a user from the whitelist.
 	var parm = "add";
@@ -20,49 +16,53 @@ exports.run = (client, message, args) => {
 	var username = args.join(" ");
 	//client.logger.debug("username: " + username);
 
-	// Get the member role.
-	var role = message.guild.roles.find(r => r.name == "Member");
+	/*
+	"byCommand" basically dictates if this command was run by a user command in chat.
+	Or if this command was excecuted from somewhere else. This command is also executed from
+	"events/guildMemberRemove.js" and "events/guildBanAdd.js".
 
-	let membersWithRole = message.guild.roles.get(role.id).members;
-	//client.logger.debug(`Got ${membersWithRole.size} members with that role.`)
-	if(membersWithRole.find(mem => mem.displayName == username)) {
-		//client.logger.debug("Name is taken!");
-		message.channel.send("Sorry! Name already in use on this server.")
-		.then(m => {
-			m.delete(15000);
-		})
-		message.delete(15000);
-		return;
+	By default, we will assume this command was run from a user in chat.
+	*/
+	if (byCommand){
+		// We only want this command to be executed in one channel only.
+		if (message.channel.id != "488392710517030923") return; // Chaos Grid -> Whitelist
+
+		// Get the member role.
+		var role = message.guild.roles.find(r => r.name == "Member");
+
+		let membersWithRole = message.guild.roles.get(role.id).members;
+		//client.logger.debug(`Got ${membersWithRole.size} members with that role.`)
+		if(membersWithRole.find(mem => mem.displayName == username)) {
+			//client.logger.debug("Name is taken!");
+			message.channel.send("Sorry! Name already in use on this server.")
+			.then(m => {
+				m.delete(15000);
+			});
+			message.delete(15000);
+			return;
+		}
 	}
-
 	// Opens the connection to the RCON.
 	var conn = new Rcon(hostname, port, password);
-	// var conn = new Rcon("hostname", port, "password");
 
 	var done = false;
 
 	conn.on("auth", () => {
-		//console.log("Authed!");
+		console.log("Authed!");
 
 		conn.send(`whitelist ${parm} ${username}`);
-
-		/*
-		if(message.member.roles.has(role.id)){
-			//conn.send(`chunks unclaim_all all ${message.member.displayName}`);
-			conn.send(`whitelist remove ${message.member.displayName}`);
-			//client.logger.debug(`chunks unclaim_all all ${message.member.displayName}`);
-		}*/
 		
-
 		done = true;
 	})
 	.on("response", str => {
-		//console.log("Got response: " + str);
+		console.log("Got response: " + str);
 
-		message.channel.send(str)
-		.then(m => {
-			m.delete(15000);
-		})
+		if (byCommand){
+			message.channel.send(str)
+			.then(m => {
+				m.delete(15000);
+			});
+		}
 
 		if(str.startsWith("Could not add")){
 			// The user could not be added!
@@ -72,8 +72,6 @@ exports.run = (client, message, args) => {
 			//The user was added!
 
 			//client.logger.debug("Added user!")
-
-			
 
 			done = true;
 			if(message.member.roles.has(role.id)){
@@ -104,7 +102,7 @@ exports.run = (client, message, args) => {
 	})
 	.on("end", () => {
 		console.log("Socket closed!");
-		message.delete(15000);
+		if (byCommand) message.delete(15000);
 	});
 	
 	conn.connect();
@@ -120,6 +118,6 @@ exports.conf = {
 
 exports.help = {
 	name: "whitelist",
-	description: "Send to a Minecraft users. Only for Helm of Rifts.",
-	usage: "tell <username> <message>"
+	description: "Whitelist to a Minecraft users. Only for Chaos Grid.",
+	usage: "whitelist <username>"
 };

@@ -26,6 +26,7 @@
     "node-wolfram-alpha": "^1.2.5",
     "rcon": "^1.0.3",
     "rpg-dice-roller": "^2.0.0",
-    "steam-provider": "^0.3.2"
+    "steam-provider": "^0.3.2",
+    "webhook-discord": "^3.0.0"
   }
 }

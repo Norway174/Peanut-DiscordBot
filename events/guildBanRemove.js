@@ -1,12 +1,18 @@
 const Discord = require("discord.js");
 
-module.exports = (guild, user) => {
+module.exports = (guild, member) => {
+	//let guild = member.guild;
+	let client = member.client;
+	let settings = client.getSettings(guild.id);
+	//guild.defaultChannel.send(`Please welcome ${member.user.username} to the server!`);
 
-	guild.defaultChannel.send(`${user.tag} was just unbanned!`);
+	if(settings.welcomeMessageEnabled == false) return;
+
+	const channel = client.defaultChannel(guild);
+
 	const embed = new Discord.RichEmbed()
-		.setColor(0x00AE86)
-		.setTimestamp()
-		.setDescription(`**Action:** Unban\n**Target:** ${user.tag}\n**Moderator:** ${guild.client.unbanAuth.tag}\n**Reason:** ${guild.client.unbanReason}`);
-	return guild.channels.get(guild.channels.find("name", "mod-log").id).send({embed});
-
+		//.setTitle("Status updated")
+		.setColor(0x00FF00)
+		.setDescription(`<@${member.user.id}> (${member.user.tag}) has just been un-banned from ${guild.name}.`);
+	channel.send({embed});
 };

@@ -5,12 +5,13 @@ const mcPinger = require("minecraft-pinger");
 
 exports.run = function(client, message, args){
 	
-	
+	const guild = message.guild;
+	let guildSettings = client.getSettings(guild.id);
 	
 	
 	//var hostname = "minecraft.frag.land";
-	var hostname = "localhost";
-	var port = 25565;
+	var hostname = guildSettings.mc_host;
+	var port = guildSettings.mc_port;
 	
 	if(args != 0){
 		hostname = args.join(" ");

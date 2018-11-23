@@ -2,7 +2,7 @@
 const Discord = require("discord.js");
 exports.run = (client, message, params) => {
 
-	let settings = client.settings.get(message.guild.id);
+	let settings = client.getSettings(message.guild.id);
 	let prefix = settings.prefix;
 
 	if (!params[0]) {

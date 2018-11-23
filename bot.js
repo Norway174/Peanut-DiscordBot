@@ -67,6 +67,23 @@ const init = async () => {
 		});
 	};
 
+	/*
+	HANDLES MESSAGE PERMS
+
+	By default, everyone get perm 0.
+
+	DM channels get perm 0. For everyone but the bot owner.
+
+	Channel Moderators get perm 2. Requires perm: MANAGE_MESSAGES
+
+	Server Admins get perm 3. Requires server perm: ADMINISTRATOR
+
+	Bot Onwer get perm 4. Requires ownerID in config.
+
+	TODO: Add perm 2 for moderators.
+	Moderators are defined per channel inside of a server,
+	and are anyone who has the following permission: MANAGE_MESSAGES
+	*/
 	client.elevation = message => {
 		/* This function should resolve to an ELEVATION level which
 		is then sent to the command handler for verification*/
@@ -87,6 +104,8 @@ const init = async () => {
 		//It will crash if a bot continues past this point.
 		//So let's make all bots have perm 0, same as in DM channels.
 		if (message.author.bot) return permlvl;
+
+		if (message.member.hasPermission("MANAGE_MESSAGES")) permlvl = 2;
 
 		if (message.member.hasPermission("ADMINISTRATOR")) permlvl = 3;
 
@@ -120,14 +139,20 @@ const init = async () => {
 		});
 	};
 
+	/*
+		DEFAULT CHANNELS FUNCTION
+		Fetches the "default" channel for Discord.
+
+		TODO: Make this into a guild spesific setting.
+	*/
 	client.defaultChannel = guild => {
 		// get "original" default channel
 		if(guild.channels.has(guild.id))
 			return guild.channels.get(guild.id);
 
 		// Check for a "general" channel, which is often default chat
-		if(guild.channels.exists("name", "general"))
-			return guild.channels.find("name", "general");
+		if(guild.channels.some(chan => chan.name === "general"))
+			return guild.channels.find(chan => chan.name === "general");
 
 		// Now we get into the heavy stuff: first channel in order where the bot can speak
 		// hold on to your hats!

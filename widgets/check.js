@@ -25,16 +25,25 @@ exports.run = function(client, widget){
 	
 	client.guilds.get(widget.serverID).channels.get(widget.channelID).fetchMessage(widget.messageID).then(message => {
 		
-		var hostname = widget.data;
-		var port = 25565;
-		
-		//client.logger.log(widget.name + " HOSTNAME " + hostname);
-		if(hostname.indexOf(":") + 1){
-			var pieces = hostname.split(":");
-			port = pieces[pieces.length-1];
+		if(!widget.data){
+			const guild = message.guild;
+			let guildSettings = client.getSettings(guild.id);
+
+			var hostname = guildSettings.mc_host;
+			var port = guildSettings.mc_port;
+		} else {
+			var hostname = widget.data;
+			var port = 25565;
 			
-			hostname = hostname.replace(":" + port, "").trim();
+			//client.logger.log(widget.name + " HOSTNAME " + hostname);
+			if(hostname.indexOf(":") + 1){
+				var pieces = hostname.split(":");
+				port = pieces[pieces.length-1];
+				
+				hostname = hostname.replace(":" + port, "").trim();
+			}
 		}
+		
 
 		//Then we do the check.
 		mcPinger.pingPromise(hostname, port)

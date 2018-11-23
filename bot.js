@@ -3,22 +3,26 @@ const client = new Discord.Client();
 const fs = require("fs");
 const moment = require("moment");
 const Enmap = require("enmap");
+const path = require('path');
+const appRoot = path.resolve(__dirname);
 
-const widgetsEnmap = new Enmap({name: "widgets"});
-const settingsEnmap = new Enmap({name: "settings"});
+const widgetsEnmap = new Enmap({name: "widgets", dataDir: appRoot + "/data"});
+const settingsEnmap = new Enmap({name: "settings", dataDir: appRoot + "/data"});
 
 client.widgets = widgetsEnmap;
 client.settings = settingsEnmap;
 
-client.config = require("./config.js");
+client.appRoot = appRoot;
 
-// Just setting up a default configuration object here, to have somethign to insert.
+client.config = require( appRoot + "/config.js");
+
+// Just setting up a default configuration object here, to have something to insert.
 client.defaultSettings = client.config.defaultSettings;
 
-require("./util/eventLoader")(client);
-require("./util/widgetLoader")(client);
+require( appRoot + "/util/eventLoader")(client);
+require( appRoot + "/util/widgetLoader")(client);
 
-client.logger = require("./util/Logger");
+client.logger = require( appRoot + "/util/logger");
 /* DEPRICATED
 client.log = message => {
 	console.log(`[${moment().format("YYYY-MM-DD HH:mm:ss")}] ${message}`);
@@ -30,11 +34,11 @@ const init = async () => {
 
 	client.commands = new Discord.Collection();
 	client.aliases = new Discord.Collection();
-	fs.readdir("./commands/", (err, files) => {
+	fs.readdir( appRoot + "/commands/", (err, files) => {
 		if (err) console.error(err);
 		client.logger.log(`Loading a total of ${files.length} commands.`);
 		files.forEach(f => {
-			let props = require(`./commands/${f}`);
+			let props = require( appRoot + `/commands/${f}`);
 			client.logger.log(`Loading Command: ${props.help.name}`);
 			client.commands.set(props.help.name, props);
 			props.conf.aliases.forEach(alias => {
@@ -46,8 +50,8 @@ const init = async () => {
 	client.reload = command => {
 		return new Promise((resolve, reject) => {
 			try {
-				delete require.cache[require.resolve(`./commands/${command}`)];
-				let cmd = require(`./commands/${command}`);
+				delete require.cache[require.resolve( appRoot + `/commands/${command}`)];
+				let cmd = require( appRoot + `/commands/${command}`);
 				client.commands.delete(command);
 				client.aliases.forEach((cmd, alias) => {
 					if (cmd === command) client.aliases.delete(alias);
@@ -92,11 +96,11 @@ const init = async () => {
 
 
 	client.widgetsType = new Discord.Collection();
-	fs.readdir("./widgets/", (err, files) => {
+	fs.readdir( appRoot + "/widgets/", (err, files) => {
 		if (err) console.error(err);
 		client.logger.log(`Loading a total of ${files.length} widgets.`);
 		files.forEach(f => {
-			let props = require(`./widgets/${f}`);
+			let props = require( appRoot + `/widgets/${f}`);
 			client.logger.log(`Loading Widget: ${props.help.name}`);
 			client.widgetsType.set(props.help.name, props);
 		});
@@ -105,8 +109,8 @@ const init = async () => {
 	client.reloadWidget = widget => {
 		return new Promise((resolve, reject) => {
 			try {
-				delete require.cache[require.resolve(`./widgets/${widget}`)];
-				let cmd = require(`./widgets/${widget}`);
+				delete require.cache[require.resolve( appRoot + `/widgets/${widget}`)];
+				let cmd = require( appRoot + `/widgets/${widget}`);
 				client.widgets.delete(widget);
 				client.widgetsType.set(widget, cmd);
 				resolve();

@@ -7,7 +7,7 @@ const config = {
 	"token":"SECRET",
 
 	// Owner discord ID
-	"ownerid" : "000000000",
+	"ownerid" : "000000000000000000",
 
 	// Wolfram Alpha ID - Get one for free at http://products.wolframalpha.com/developers/
 	"wolframAlphaID" : "SECRET", // OPTIONAL: If left blank, remember to disable the command too.
@@ -15,17 +15,17 @@ const config = {
 	// Default configuation for the multi-guild support
 	"defaultSettings" : {
 		prefix: "#",
-		welcomeMessageEnabled: false,
-		welcomeMessageEmbed: true, // Placeholder.
-		welcomeMessageChannel: "default", // Placeholder.
-		welcomeMessageTxt: "Placeholder" // Placeholder.
+		welcome: "false",
+		channel: "default",
+		mc_host: "localhost", mc_port: "25565",
+		fivem_host: "localhost", fivem_port: "30120"
 	},
 
 	// Configuration for the rcon module. You probably want to disable the whitelist command, and leave this blank.
 	"rcon" : {
-		hostname: "ip/hostname",
-		port: "port",
-		password: "secret"
+		hostname: "",
+		port: "",
+		password: ""
 
 	}
 };

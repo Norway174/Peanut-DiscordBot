@@ -27,7 +27,7 @@ exports.run = function(client, widget, data){
 		const embed = new Discord.RichEmbed()
 		.setTitle(`Welcome to ${client.guilds.get(widget.serverID).name}`)
 		.setColor(0x009600)
-		.setDescription( "This server uses an automatic whitelist system.\nAll you have to do to get whitelisted is type `#signup <Your Minecraft username>`.\n\nMake sure your username is correct. As this is what will be whitelisted. If you have another account you'd like to whitelist. Then please return to this channel, and do the same again. But with the new username. Please note, you may only whitelist one Minecraft account per Discord account.\n\nIf you leave this server, or change your whitelisted account, all your claimed chunks will become unclaimed.\n\nEnjoy your stay! :)" )
+		.setDescription( "This server uses an automatic whitelist system.\nAll you have to do to get whitelisted is type `#signup <Your Minecraft username>`.\n\nMake sure your username is correct as this is what will be whitelisted. If you have another account you'd like to whitelist, then please return to this channel and do the same again, but with the new username. Please note, you may only whitelist one Minecraft account per Discord account.\n\nIf you leave this server, or change your whitelisted account, all your claimed chunks will become unclaimed.\n\nEnjoy your stay! :)" )
 		.setFooter("Widget ID: " + widget.name + " | Updates every " + widget.interval + " minutes")
 		//.setThumbnail(favicon)
 		.setTimestamp();

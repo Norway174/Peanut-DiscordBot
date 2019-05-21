@@ -6,9 +6,18 @@ module.exports = (guild, member) => {
 	let settings = client.getSettings(guild.id);
 	//guild.defaultChannel.send(`Please welcome ${member.user.username} to the server!`);
 
-	if(settings.welcomeMessageEnabled == false) return;
+	if(settings.welcome == "false") return;
 
 	const channel = client.defaultChannel(guild);
+	
+	if(settings.channel != "default"){
+		if(guild.channels.has(guild.id)){
+			channel = guild.channels.get(guild.id);
+		} else
+		if (guild.channels.find(chan => chan.name === settings.channel)){
+			channel = guild.channels.find(chan => chan.name === settings.channel);
+		}
+	}
 
 	const embed = new Discord.RichEmbed()
 		//.setTitle("Status updated")

@@ -63,7 +63,7 @@ exports.run = function(client, widget){
 				//Then check if there is any players online
 				if(result.players.online != 0){
 					//If there is, then make a list.
-					stringBuilder += result.players.online + " / " + result.players.max + " Players online:\n```" + result.players.sample.map(c => `${c.name}`).join("\n") + "```";
+					stringBuilder += result.players.online + " / " + result.players.max + " Players online:\n```" + result.players.sample.map(c => `${c.name}`)/*.join("\n")*/ + "```";
 				} else {
 					//If there is none, then display a simple string.
 					stringBuilder += result.players.online + " / " + result.players.max + " Players online.";

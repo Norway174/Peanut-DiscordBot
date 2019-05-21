@@ -39,21 +39,21 @@ exports.run = function(client, widget){
 
 		var server = {};
 
-		console.log(`Running Get info on ${serverURL}...`);
+		//console.log(`Running Get info on ${serverURL}...`);
 		//getInfo();
 		getName();
-		console.log("Ran Get info.");
+		//console.log("Ran Get info.");
 
 		function getInfo(){
-			console.log("Getting info...");
+			//console.log("Getting info...");
 			fetch(infoURL)
 				.then(res => {
-					console.log(res);
+					//console.log(res);
 					return res.text();
 				})
 				.then(json => {
 					// Success!
-					console.log(json)
+					//console.log(json)
 
 					server.infos = json;
 
@@ -62,19 +62,19 @@ exports.run = function(client, widget){
 				})
 				.catch(err => {
 					// Error! / Offline?
-					console.error(err)
+					client.logger.error(err)
 
 					failed();
 				});
 		};
 
 		function getPlayers(){
-			console.log("Getting players...");
+			//console.log("Getting players...");
 			fetch(playersURL)
 				.then(res => res.json())
 				.then(json => {
 					// Success!
-					console.log(json)
+					//console.log(json)
 
 					server.players = json;
 
@@ -83,19 +83,19 @@ exports.run = function(client, widget){
 				})
 				.catch(err => {
 					// Error! / Offline?
-					console.error(err)
+					client.logger.error(err)
 
 					failed();
 				});
 		};
 
 		function getName(){
-			console.log("Getting name...");
+			//console.log("Getting name...");
 			fetch(masterURL)
 				.then(res => res.json())
 				.then(json => {
 					// Success!
-					console.log(json)
+					//console.log(json)
 
 					//server.players = json;
 
@@ -117,7 +117,7 @@ exports.run = function(client, widget){
 				})
 				.catch(err => {
 					// Error! / Offline?
-					console.log(err)
+					client.logger.error(err)
 
 					failed();
 				});

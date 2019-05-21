@@ -9,8 +9,13 @@ exports.run = function(client, message, args){
 		We're also adding some variables that we can use later.
 
 	*/
+	const guild = message.guild;
+
+	let guildSettings = client.getSettings(guild.id);
+
+
 	let action = args[0];
-	if(!action) return message.reply("Invalid action. Please run `" + guildSettings.prefix + "help settings`.");
+	if(!action) action = "show";
 	action = action.toLowerCase();
 
 	let key = args[1]
@@ -18,9 +23,7 @@ exports.run = function(client, message, args){
 	args.splice(0, 2);
 	let value = args.join(" ");
 
-	const guild = message.guild;
-
-	let guildSettings = client.getSettings(guild.id);
+	
 
 	/*
 		STEP 2: Decisions...

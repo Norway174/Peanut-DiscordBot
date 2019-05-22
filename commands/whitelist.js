@@ -1,6 +1,7 @@
 const Rcon = require("rcon");
+const Discord = require("discord.js");
 
-exports.run = (client, message, args, perms, byCommand = true) => {
+exports.run = (client, message, args, perms, byCommand = true, leaveMsg = "", defChannel) => {
 	var hostname = client.config.rcon.hostname;
 	var port = client.config.rcon.port;
 	var password = client.config.rcon.password;
@@ -16,7 +17,7 @@ exports.run = (client, message, args, perms, byCommand = true) => {
 
 	// Sets the username.
 	var username = args.join(" ");
-	//client.logger.debug("username: " + username);
+	client.logger.debug("username: " + username + " | Args: " + args.length);
 
 	// Get the member role.
 	var role = message.guild.roles.find(r => r.name == "Server Whitelisted");
@@ -36,11 +37,18 @@ exports.run = (client, message, args, perms, byCommand = true) => {
 
 		//client.logger.debug(role);
 
+		if(args == 0){
+			// If the user typed "-remove" without a username. Then assume the user means themselves.
+			username = message.member.displayName;
+			client.logger.debug("No username: New username set to: " + username + " | Args: " + args.length);
+		}
+
 		let membersWithRole = message.guild.roles.get(role.id).members;
-		membersWithRole = membersWithRole.filter(f => f.displayName != message.member.user.username)
-		client.logger.debug(`Got ${membersWithRole.size} members with that role: ${membersWithRole.map(mem => mem.displayName)}`)
-		if(membersWithRole.find(mem => mem.displayName == username)) {
-			//client.logger.debug("Name is taken!");
+		membersWithRole = membersWithRole.filter(f => f.displayName.toLowerCase() != message.member.displayName.toLowerCase());
+		client.logger.debug(`Got ${membersWithRole.size} members with that role: ${membersWithRole.map(mem => mem.displayName)}`);
+		
+		if(membersWithRole.find(mem => mem.displayName.toLowerCase() == username.toLowerCase())) {
+			client.logger.debug("Name is taken!");
 			if(parm != "remove"){
 				message.channel.send("Sorry! Name already in use on this server.")
 				.then(m => {
@@ -48,8 +56,14 @@ exports.run = (client, message, args, perms, byCommand = true) => {
 				});
 				message.delete(15000);
 				return;
+			} else {
+				message.channel.send("You can't remove someone else's whitelist!")
+				.then(m => {
+					m.delete(15000);
+				});
+				message.delete(15000);
+				return;
 			}
-			
 		}
 
 		// Makes sure you can't sign up again with the same name.
@@ -62,9 +76,21 @@ exports.run = (client, message, args, perms, byCommand = true) => {
 			message.delete(15000);
 			return;
 		}
+
+		// Makes sure you can't sign up again with the same name.
+		if(!message.member.roles.has(role.id) && parm == "remove"){
+			
+			message.channel.send("You don't have a whitelist to remove.")
+			.then(m => {
+				m.delete(15000);
+			});
+			message.delete(15000);
+			return;
+		}
+
 	}
 
-	var byCommandReturn = ""; // This is the return string we return if this was not ran as a command.
+	var byCommandReturn = []; // This is the return string we return if this was not ran as a command.
 
 	// Opens the connection to the RCON.
 	var conn = new Rcon(hostname, port, password);
@@ -81,13 +107,34 @@ exports.run = (client, message, args, perms, byCommand = true) => {
 	.on("response", str => {
 		client.logger.log("Got response: " + str);
 
+		var formatStr = "";
 
-		if(byCommand) message.channel.send(str)
+		if(str.endsWith("' cannot be found")){
+			// The user could not be found when trying to remove their chunks.
+			// " Player 'Notch' cannot be found "
+			FormatStr = "[Claim] No team found.";
+		} else
+		/*if(str.startsWith("Removed")) {
+			// The user was successfully removed.
+			// " Removed Notch from the whitelist "
+			FormatStr = "[Whitelist]" + str;
+		} else*/
+		if(str.endsWith("whitelist")) {
+			//The user was added!
+			FormatStr = "[Whitelist] " + str;
+
+		}
+
+
+		if(byCommand) message.channel.send(FormatStr)
 		.then(m => {
 			m.delete(15000);
 		});
 
-		if(!byCommand) byCommandReturn = byCommandReturn + "\n" + str;
+		if(!byCommand){
+			byCommandReturn.push(FormatStr)
+			client.logger.log("By command Return: " + byCommandReturn.toString())
+		}
 		
 
 		if(str.startsWith("Could not add")){
@@ -105,15 +152,14 @@ exports.run = (client, message, args, perms, byCommand = true) => {
 				conn.send(`whitelist remove ${message.member.displayName}`);
 			}
 
-			message.member.setNickname(username, "Whitelist");
-			message.member.addRole(role);
+			
+			setNickRole();
 	
 		} else if(str.startsWith("Removed")) {
 			// The user was successfully removed.
 			if(parm == "remove" && byCommand) {
 				if(message.member){
-					message.member.setNickname(message.member.user.username);
-					message.member.removeRole(role);
+					removeNickRole();
 				}
 			}
 			//client.logger.debug("Unclaiming all of " + message.member.displayName + " claims.");
@@ -121,7 +167,7 @@ exports.run = (client, message, args, perms, byCommand = true) => {
 			//client.logger.debug("Unclaimed.")
 			done = true;
 
-		} else if(str.startsWith("' cannot be found")){
+		} else if(str.endsWith("' cannot be found")){
 			// The user could not be found when trying to remove their chunks.
 
 			done = true;
@@ -135,7 +181,20 @@ exports.run = (client, message, args, perms, byCommand = true) => {
 	.on("end", () => {
 		client.logger.log("Socket closed!");
 		if (byCommand) message.delete(15000);
-		if (!byCommand) return byCommandReturn;
+
+		if (!byCommand) {
+			client.logger.log("Tried to return to the user left message: " + byCommandReturn)
+			
+			var embed = new Discord.RichEmbed()
+			//.setTitle("Status updated")
+			.setColor(0xF13F3F)
+			.setDescription(leaveMsg + "\n\nUser was whitelisted:```" + byCommandReturn.join("\n") + "```");
+			defChannel.send({embed});
+
+			client.logger.log(leaveMsg);
+
+		};
+		
 	})
 	.on("error", err => {
 		client.logger.log("Socket: " + err);
@@ -145,10 +204,49 @@ exports.run = (client, message, args, perms, byCommand = true) => {
 				m.delete(15000);
 			});
 			message.delete(15000);
+		} else
+		if (!byCommand) {
+			var embed = new Discord.RichEmbed()
+			//.setTitle("Status updated")
+			.setColor(0xF13F3F)
+			.setDescription(leaveMsg + "\n\nUser was whitelisted: Error: ```" + err + "```");
+			defChannel.send({embed});
+
+			client.logger.log(leaveMsg);
 		}
-		if (!byCommand) return "\nError:```" + err + "```";
 	});
 	conn.connect();
+
+
+	// FUNCTIONS:
+	async function setNickRole(){
+		try {
+			await message.member.setNickname(username, "Auto-Whitelist")
+				.then(mem => client.logger.log(mem.displayName + "'s nickname was updated."));
+	
+			//await 20;
+	
+			await message.member.addRole(role, "Auto-Whitelist")
+				.then(mem => client.logger.log(mem.displayName + "'s role was updated."));
+	
+		} catch (err) {
+			client.logger.error("Error with nicnkame or role: " + err);
+		}
+	}
+	async function removeNickRole(){
+		try {
+			await message.member.setNickname(message.member.user.username, "Auto-Whitelist")
+				.then(mem => client.logger.log(mem.displayName + "'s nickname was reset."));
+	
+			//await 20;
+	
+			await message.member.removeRole(role, "Auto-Whitelist")
+				.then(mem => client.logger.log(mem.displayName + "'s role was removed."));
+	
+		} catch (err) {
+			client.logger.error("Error with nicnkame or role: " + err);
+		}
+	}
 		
 };
 

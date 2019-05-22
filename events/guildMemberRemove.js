@@ -11,56 +11,6 @@ module.exports = async(member) => {
 	let settings = client.getSettings(guild.id);
 	//guild.defaultChannel.send(`Please welcome ${member.user.username} to the server!`);
 
-	/*
-
-	STEP 1.5: Figure out if the server has an active whitelist widget, and then remove the user from the whitelist.
-
-	*/
-	var whitelistTxt = "";
-	let widgets = client.widgets;
-	widgets.forEach(widget => {
-		//client.logger.log(`Processing ${require("util").inspect(widget)}`);
-		/*
-		widget = {
-			serverID: widget.serverID,
-			channelID: widget.channelID,
-			messageID: widget.messageID,
-			name: widget.name,
-			type: widget.type,
-			interval: widget.interval,
-			intervalCount: 0,
-			data: widget.data
-		}
-		*/
-
-		if(widget.type == "whitelist" && widget.serverID == guild.id){
-			console.log("Has widget!");
-
-			var role = guild.roles.find(r => r.name == "Server Whitelisted");
-			
-			if(role != null && member.roles.has(role.id)){
-				console.log("^ And user is whitelisted!");
-
-				var cmdName = "whitelist"
-				client.reload(cmdName)
-					.then(() => {
-						cmd = client.commands.get(cmdName);
-						params = [member.displayName, "-remove"];
-
-						var result = cmd.run(client, member, params, null, byCommand = false);
-						client.logger.log("^ Result: " + result);
-						whitelistTxt = "\n\nUser was whitelisted. Attempted to remove the whitelist. But there is no gurantee it worked. This feature is still a WIP.";
-					});
-
-			} else {
-				console.log("^ And user is NOT whitelisted!");
-			}
-		} else {
-			console.log("DO NOT have the widget!");
-		}
-
-	});
-
 
 	/*
 
@@ -108,16 +58,71 @@ module.exports = async(member) => {
 		}
 	}
 
-/*
+	/*
 
-	STEP 4: Post the message. (& Log it.)
+	STEP 4: Figure out if the server has an active whitelist widget, and then remove the user from the whitelist.
 
-*/
-	var embed = new Discord.RichEmbed()
-		//.setTitle("Status updated")
-		.setColor(0xF13F3F)
-		.setDescription(leaveMsg + whitelistTxt);
-	channel.send({embed});
+	*/
+	var send = true;
+	let widgets = client.widgets;
+	widgets.forEach(widget => {
+		//client.logger.log(`Processing ${require("util").inspect(widget)}`);
+		/*
+		widget = {
+			serverID: widget.serverID,
+			channelID: widget.channelID,
+			messageID: widget.messageID,
+			name: widget.name,
+			type: widget.type,
+			interval: widget.interval,
+			intervalCount: 0,
+			data: widget.data
+		}
+		*/
 
-	client.logger.log(leaveMsg);
+		if(widget.type == "whitelist" && widget.serverID == guild.id){
+			console.log("Has widget!");
+
+			var role = guild.roles.find(r => r.name == "Server Whitelisted");
+			
+			if(role != null && member.roles.has(role.id)){
+				console.log("^ And user is whitelisted!");
+
+				send = false
+
+				var cmdName = "whitelist"
+				client.reload(cmdName)
+					.then(() => {
+						cmd = client.commands.get(cmdName);
+						params = [member.displayName, "-remove"];
+
+						
+
+						cmd.run(client, member, params, null, byCommand = false, leaveMsg, channel);
+
+					});
+
+			} else {
+				console.log("^ And user is NOT whitelisted!");
+			}
+		} else {
+			console.log("DO NOT have the widget!");
+		}
+
+	});
+
+	/*
+
+		STEP 5: Post the message. (& Log it.)
+
+	*/
+	if(send){
+		var embed = new Discord.RichEmbed()
+			//.setTitle("Status updated")
+			.setColor(0xF13F3F)
+			.setDescription(leaveMsg);
+		channel.send({embed});
+
+		client.logger.log(leaveMsg);
+	}
 };

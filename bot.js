@@ -8,9 +8,11 @@ const appRoot = path.resolve(__dirname);
 
 const widgetsEnmap = new Enmap({name: "widgets", dataDir: appRoot + "/data"});
 const settingsEnmap = new Enmap({name: "settings", dataDir: appRoot + "/data"});
+const reactionsRoleEnmap = new Enmap({name: "reactionsRole", dataDir: appRoot + "/data"});
 
 client.widgets = widgetsEnmap;
 client.settings = settingsEnmap;
+client.reactionsRole = reactionsRoleEnmap;
 
 client.appRoot = appRoot;
 
@@ -21,6 +23,7 @@ client.defaultSettings = client.config.defaultSettings;
 
 require( appRoot + "/util/eventLoader")(client);
 require( appRoot + "/util/widgetLoader")(client);
+require( appRoot + "/util/reactionsRoleLoader")(client);
 
 client.logger = require( appRoot + "/util/logger");
 /* DEPRICATED

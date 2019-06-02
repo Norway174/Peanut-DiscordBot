@@ -1,7 +1,10 @@
 const moment = require("moment");
 
-exports.run = function(client, widget, data){
-	client.logger.log(`WIDGET PROCESSED: ${widget.name}, TYPE: ${this.help.name}`);
+exports.run = function(client, widget, data, packet = null){
+
+	return; // STOP HERE. This widget is being handled by an event.
+
+	client.logger.log(`WIDGET PROCESSED: ${widget.name}, TYPE: ${this.help.name}, PACKET: ${packet}`);
 	//message.channel.send("Current time: '" + Date.now() + "'");
 
 	let guild = client.guilds.get(widget.serverID);
@@ -18,26 +21,10 @@ exports.run = function(client, widget, data){
 		interval: widget.interval,
 		intervalCount: 0,
 		data: widget.data
-	}
+	}*/
 	
-	//console.log(widgetSettings)
-	client.widgets.set(widget.name, widgetSettings);
-	*/
+
 	
-	message.then(m => {
-		m.edit("List of reactions:\n" + m.reactions.map(reaction => reaction.emoji.name + " - " + reaction.users.map(user => user).join(", ")).join("\n"), {split:true});
-
-		m.reactions.forEach(reaction => {
-			client.logger.log("Reaction: " + reaction.emoji);
-			reaction.users.forEach(user => {
-				client.logger.log("- User: " + user.username);
-
-				//reaction.remove(user);
-
-			});
-			m.clearReactions();
-		});
-	});
 	
 };
 

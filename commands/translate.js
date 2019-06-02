@@ -1,6 +1,5 @@
 const Discord = require("discord.js");
-const translate = require("google-translate-api");
-//const langs = require("../util/langs.json")
+const translate = require("@vitalets/google-translate-api");
 
 exports.run = (client, message, args) => {
 	
@@ -12,32 +11,44 @@ exports.run = (client, message, args) => {
 		//detection = "Selected: ";
 	}
 	
-	translate(args.join(" "), {to: language}).then(res => {
-		
-		let lang = res.from.language.iso;
-		
-		//Here, we build the emblem for the online server.
-		const embed = new Discord.RichEmbed()
-			//.setTitle("Translate")
-			.setColor(0x4D90FE)
-			//.setDescription( res.text )
-			.setFooter( "Translated for " + message.author.username + "." )
-			.addField(detection + langs[lang], args.join(" "), true)
+	const embed = new Discord.RichEmbed()
+			.setColor(0xFEF44D)
+			.setFooter( "Translating for " + message.author.username + "." )
+			.addField("From: ", args.join(" "), true)
 			.addBlankField(true)
-			.addField(langs[language], res.text, true);
-		//.setThumbnail("http://i.imgur.com/2JUhMfW.png")
-		//.setTimestamp()
-				
-		//And then edit the first message we sent. We don't want duplicate messages in our chat.
-		message.channel.send({embed});
+			.addField("To: " + langs[language], "Please wait...", true);
+
+	message.channel.send({embed})
+	.then(msg => {
+		translate(args.join(" "), {to: language}).then(res => {
 		
-		//console.log(res.text);
-		//=> I speak English
-		//console.log(langs[lang]);
-		//=> nl
-	}).catch(err => {
-		console.error(err);
-	});
+			let lang = res.from.language.iso;
+			
+			const embed = new Discord.RichEmbed()
+				.setColor(0x4D90FE)
+				.setFooter( "Translated for " + message.author.username + "." )
+				.addField("To: " + langs[language], res.text, true)
+				.addBlankField(true)
+				.addField("From: " + detection + langs[lang], args.join(" "), true);
+
+			msg.edit({embed});
+
+			client.logger.debug("Translated to: " + res.text);
+			
+		}).catch(err => {
+			client.logger.error(err);
+
+			const embed = new Discord.RichEmbed()
+			.setColor(0xFE4D4D)
+			.setFooter( "Translated for " + message.author.username + "." )
+			.addField("From: ", args.join(" "), true)
+			.addBlankField(true)
+			.addField("Error translating to:", err, true);
+
+			msg.edit({embed});
+		});
+	})
+	
 	
 	//message.delete(5);
 

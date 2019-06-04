@@ -5,22 +5,6 @@ const moment = require("moment");
 
 exports.run = function(client, widget){
 	
-	// EASTER EGG
-	if(widget.data == "149.56.147.175:25685"){
-		function shuffelWord(word) {
-			var shuffledWord = '';
-			word = word.split('');
-			while (word.length > 0) {
-			shuffledWord +=  word.splice(word.length * Math.random() << 0, 1);
-			}
-			return shuffledWord;
-		}
-		var name = "Commander Cat";
-		//client.guilds.get("331116599614504961").members.get("485225463606673438").setNickname(shuffelWord(name));
-
-	}
-	
-
 	//client.logger.log("Checking server...");
 	
 	client.guilds.get(widget.serverID).channels.get(widget.channelID).fetchMessage(widget.messageID).then(message => {
@@ -29,21 +13,20 @@ exports.run = function(client, widget){
 			const guild = message.guild;
 			let guildSettings = client.getSettings(guild.id);
 
-			var hostname = guildSettings.mc_host;
-			var port = guildSettings.mc_port;
+			var hostname = guildSettings.minecraft;
 		} else {
 			var hostname = widget.data;
-			var port = 25565;
-			
-			//client.logger.log(widget.name + " HOSTNAME " + hostname);
-			if(hostname.indexOf(":") + 1){
-				var pieces = hostname.split(":");
-				port = pieces[pieces.length-1];
-				
-				hostname = hostname.replace(":" + port, "").trim();
-			}
 		}
-		
+
+		var hostname_org = hostname;
+		var port;
+		//client.logger.log(widget.name + " HOSTNAME " + hostname);
+		if(hostname.includes(":")){
+			var pieces = hostname.split(":");
+			port = pieces[pieces.length-1];
+			
+			hostname = hostname.replace(":" + port, "").trim();
+		}
 
 		//Then we do the check.
 		mcPinger.pingPromise(hostname, port)
@@ -63,7 +46,7 @@ exports.run = function(client, widget){
 				//Then check if there is any players online
 				if(result.players.online != 0){
 					//If there is, then make a list.
-					stringBuilder += result.players.online + " / " + result.players.max + " Players online:\n```" + result.players.sample.map(c => `${c.name}`)/*.join("\n")*/ + "```";
+					stringBuilder += result.players.online + " / " + result.players.max + " Players online:```\n" + result.players.sample.map(c => `${c.name}`).join("\n") + "```";
 				} else {
 					//If there is none, then display a simple string.
 					stringBuilder += result.players.online + " / " + result.players.max + " Players online.";
@@ -72,7 +55,7 @@ exports.run = function(client, widget){
 				// Get the favicon url
 				var favicon = null;
 				if(result.favicon){
-					favicon = "https://api.minetools.eu/favicon/" + hostname + "/" + port;
+					favicon = "https://api.minetools.eu/favicon/" + hostname_org.replace(":", "/");
 				}
 				
 				// Remove Minecraft formatting from the results.
@@ -92,7 +75,7 @@ exports.run = function(client, widget){
 
 				//Here, we build the emblem for the online server.
 				const embed1 = new Discord.RichEmbed()
-					.setTitle(hostname + ":" + port)
+					.setTitle(hostname_org)
 					.setColor(0x009600)
 					.setDescription( stringBuilder )
 					.setFooter("Widget ID: " + widget.name + " | Updates every " + widget.interval + " minutes", "http://www.rw-designer.com/icon-image/5547-256x256x32.png")
@@ -114,7 +97,7 @@ exports.run = function(client, widget){
 				
 				//Here we build the offline message
 				const embed = new Discord.RichEmbed()
-					.setTitle(hostname + ":" + port)
+					.setTitle(hostname_org)
 					.setColor(0xE40000)
 					.setDescription("Offline")
 					.setFooter("Widget ID: " + widget.name + " | Updates every " + widget.interval + " minutes", "http://www.rw-designer.com/icon-image/5547-256x256x32.png")

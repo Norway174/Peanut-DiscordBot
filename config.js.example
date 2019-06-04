@@ -17,7 +17,7 @@ const config = {
 		prefix: "#",
 		welcome: "false",
 		channel: "default",
-		mc_host: "localhost", mc_port: "25565",
+		minecraft: "localhost:25565",
 		fivem_host: "localhost", fivem_port: "30120"
 	},
 

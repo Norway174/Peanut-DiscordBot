@@ -10,14 +10,16 @@ exports.run = function(client, message, args){
 	
 	
 	//var hostname = "minecraft.frag.land";
-	var hostname = guildSettings.mc_host;
-	var port = guildSettings.mc_port;
+	var hostname = guildSettings.minecraft;
+	var port;
 	
 	if(args != 0){
 		hostname = args.join(" ");
 	}
 	
-	if(hostname.indexOf(":") + 1){
+	var hostname_org = hostname;
+	
+	if(hostname.includes(":")){
 		var pieces = hostname.split(":");
 		port = pieces[pieces.length-1];
 		
@@ -26,7 +28,7 @@ exports.run = function(client, message, args){
 	
 	//Make the first emblem, for checking status
 	const embed = new Discord.RichEmbed()
-		.setTitle(hostname + ":" + port)
+		.setTitle(hostname_org)
 		.setColor(0xFFD200)
 		.setDescription( "Checking...")
 		.setFooter("Minecraft status checker", "http://www.rw-designer.com/icon-image/5547-256x256x32.png")
@@ -64,7 +66,7 @@ exports.run = function(client, message, args){
 					//Then check if there is any players online
 					if(result.players.online != 0){
 					//If there is, then make a list.
-						stringBuilder += result.players.online + " / " + result.players.max + " Players online:\n```" + result.players.sample.map(c => `${c.name}`).join("\n") + "```";
+						stringBuilder += result.players.online + " / " + result.players.max + " Players online:```\n" + result.players.sample.map(c => `${c.name}`).join("\n") + "```";
 					} else {
 					//If there is none, then display a simple string.
 						stringBuilder += result.players.online + " / " + result.players.max + " Players online.";
@@ -72,7 +74,7 @@ exports.run = function(client, message, args){
 					
 					var favicon = null;
 					if(result.favicon){
-						favicon = "https://api.minetools.eu/favicon/" + hostname + "/" + port;
+						favicon = "https://api.minetools.eu/favicon/" + hostname_org.replace(":", "/");
 					}
 					
 					const regex = /[§]./g;
@@ -93,7 +95,7 @@ exports.run = function(client, message, args){
 
 					//Here, we build the emblem for the online server.
 					const embed = new Discord.RichEmbed()
-						.setTitle(hostname + ":" + port)
+						.setTitle(hostname_org)
 						.setColor(0x009600)
 						.setDescription( stringBuilder )
 						.setFooter("Minecraft status checker", "http://www.rw-designer.com/icon-image/5547-256x256x32.png")
@@ -106,12 +108,12 @@ exports.run = function(client, message, args){
 				//message.channel.stopTyping();
 				})
 				.catch(error => {
-					client.logger.log(hostname + ":" + port + " is offline!");
+					client.logger.log(hostname_org + " is offline!");
 					client.logger.log(error);
 				
 					//Here we build the offline message
 					const embed = new Discord.RichEmbed()
-						.setTitle(hostname + ":" + port)
+						.setTitle(hostname_org)
 						.setColor(0xE40000)
 						.setDescription("Offline")
 						.setFooter("Minecraft status checker", "http://www.rw-designer.com/icon-image/5547-256x256x32.png")

@@ -14,7 +14,7 @@ module.exports = client => {
 		// We don't want this to run on unrelated packets. We also need this here, because the other events won't fire unless the message is cached. Which it may not always be.
 		if (!['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE'].includes(packet.t)) return;
 
-		messageReact(packet);
+		messageReact(client, packet);
 
 		// No point in continueing at the moment.
 
@@ -45,7 +45,7 @@ module.exports = client => {
 
 };
 
-function messageReact(packet){
+function messageReact(client, packet){
 
 	let reactionsRole = client.reactionsRole;
 

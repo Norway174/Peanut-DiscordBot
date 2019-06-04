@@ -32,6 +32,7 @@ exports.run = function(client, message, args){
 
 		message.channel.send(`Widget placeholder. This is should be replaced soon. Identifier: \`${id}\``)
 			.then( msg => {
+				// Set the widget
 				const widgetSettings = {
 					serverID: msg.guild.id,
 					channelID: msg.channel.id,
@@ -45,6 +46,19 @@ exports.run = function(client, message, args){
 			
 				client.logger.log(widgetSettings);
 				client.widgets.set(id, widgetSettings);
+
+				// Run the widget
+				if (client.widgetsType.has(widgetSettings.type)){
+					client.reloadWidget(widgetSettings.type);
+
+					let command = widgetSettings.type;
+					let cmd = client.widgetsType.get(command);
+
+					if (cmd) {
+						cmd.run(client, widgetSettings);
+					}
+				}
+
 			});
 		
 		
@@ -74,7 +88,7 @@ exports.run = function(client, message, args){
 exports.conf = {
 	enabled: true,
 	guildOnly: false,
-	aliases: ["w"],
+	aliases: ["widgets"],
 	permLevel: 3
 };
 

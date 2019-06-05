@@ -12,21 +12,12 @@ client.on('messageReactionRemove', (reaction, user) => {
 module.exports = client => {
 	client.on('raw', packet => {
 		
-		if (['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE'].includes(packet.t)) {
+		if (['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE', 'MESSAGE_REACTION_REMOVE_ALL'].includes(packet.t)) {
 			messageReact(client, packet);
-		} else
-		if (['MESSAGE_DELETE'].includes(packet.t)){
-			client.reactionsRole.forEach( (reactRole, key ) => {
-				if(!reactRole) return;
-				client.channels.get(packet.d.channel_id).fetchMessage(key).catch(err => {
-					client.reactionsRole.delete(key);
-					client.logger.log("ReactionsRole enabled message has been deleted: " + key);
-				});
-			});
-			
 		}
 
 	});
+
 };
 
 function messageReact(client, packet){
@@ -39,6 +30,7 @@ function messageReact(client, packet){
 	//var reactionRole = reactionsRole.find(packet.d.message_id)
 
 	if(!reactionsRole) return;
+	if(client.user.id == packet.d.user_id) return;
 
 	var cmdName = "role-reactor"
 	client.reload(cmdName)

@@ -1,28 +1,34 @@
-const moment = require("moment");
 
-module.exports = client => {
+async function asyncForEach(array, callback) {
+	for (let index = 0; index < array.length; index++) {
+	  await callback(array[index], index, array);
+	}
+  }
+
+//const moment = require("moment");
+
+module.exports = async (client) => {
+
+	// Clean up old, no longer exsiting RoleReactions messages.
+	client.logger.log(`Checking ${client.reactionsRole.count} RoleReactions.`)
+
+	await asyncForEach( client.reactionsRole.array(), async (reactRole) => {
+		if(!reactRole) return;
+
+		var channel = client.channels.get(reactRole.channel_id);
+			
+		await channel.fetchMessage(reactRole.msg_id)
+			.then(msg => {
+				client.logger.log(`ReactionsRole check complete: ${reactRole.msg_id}`);
+			})
+			.catch(err => {
+				client.reactionsRole.delete(reactRole.msg_id);
+				client.logger.log("ReactionsRole has been deleted: " + reactRole.msg_id + " | Error: " + err);
+			});
+		
+		
+	});
+
+
 	client.logger.log(`${client.user.tag} ready!`, "ready");
-
-	/*
-	!!! DEPRICATED !!!
-
-	CHECK GUILD SETTINGS
-	Make sure there is guild settings for every guild the bot is a part of.
-
-	This is being depricated because it's much more difficult to compare settings if I update guild settings later.
-	And it's much easier to only save the unique settings, and use the default settings for the rest.
-
-	/*
-
-	/*client.guilds.forEach(function(guild){
-		//client.logger.log(`${guild.name} checked!`);
-		if(client.settings.get(guild.id) == null) {
-			//ADD SETTINGS HERE IF NONE IS FOUND!
-			//client.logger.log("^ No settings!");
-
-			client.settings.set(guild.id, client.defaultSettings);
-		} else {
-			//client.logger.log("^ Have settings!");
-		}
-	});*/
 };

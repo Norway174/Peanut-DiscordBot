@@ -1,3 +1,10 @@
+
+async function asyncForEach(array, callback) {
+	for (let index = 0; index < array.length; index++) {
+	  await callback(array[index], index, array);
+	}
+  }
+
 exports.run = async (client, message, args) => {
 	var msg = message.content;
 	var lines = msg.split("\n");
@@ -12,6 +19,8 @@ exports.run = async (client, message, args) => {
 	//console.log(lines);
 
 	var ReactionsRole = [];
+
+	
 
 	await lines.forEach(async (line) => {
 		var emoji = line.match(regex);
@@ -30,7 +39,7 @@ exports.run = async (client, message, args) => {
 
 			
 
-			ReactionsRole.push({emoji: emoji, role: role.id, id: message.id})
+			ReactionsRole.push({emoji: emoji, role: role.id})
 
 		}
 
@@ -39,17 +48,30 @@ exports.run = async (client, message, args) => {
 
 	//console.log(ReactionsRole);
 
+
 	if(ReactionsRole){
+		//var wait = ms => new Promise((r, j)=>setTimeout(r, ms))
 
-		client.reactionsRole.set(message.id, ReactionsRole);
+		client.reactionsRole.set(message.id, {msg_id: message.id, channel_id: message.channel.id, ReactionsRole});
 
-		ReactionsRole.forEach(async (ReactRole) => {
+		/*ReactionsRole.forEach( async (ReactRole) => {
 			
-			message.react(ReactRole.emoji)
+			await message.react(ReactRole.emoji)
+				.then((async () => { await wait(20000); console.warn('done') })())
 				.catch(err => {
 					console.log("Error adding role: " + err);
 				});
+			
+		});*/
 
+		asyncForEach(ReactionsRole, async (ReactRole) => {
+			
+			await message.react(ReactRole.emoji)
+				.then()
+				.catch(err => {
+					console.log("Error adding role: " + err);
+				});
+			
 		});
 
 
@@ -58,6 +80,34 @@ exports.run = async (client, message, args) => {
 };
 
 exports.reactions = async (client, packet, reactionRole) => {
+
+	if (['MESSAGE_REACTION_REMOVE_ALL'].includes(packet.t)) {
+
+		var channel = client.channels.get(packet.d.channel_id);
+		
+		channel.fetchMessage(packet.d.message_id)
+			.then(msg => {
+				client.logger.log(`Reactions removed for: ${msg.id}`);
+
+				asyncForEach(reactionRole.ReactionsRole, async (ReactRole) => {
+
+					await msg.react(ReactRole.emoji)
+						.then()
+						.catch(err => {
+							console.log("Error adding role: " + err);
+						});
+			
+				});
+			})
+			.catch(err => {
+				//client.reactionsRole.delete(key);
+				client.logger.log("Unable to find ReactionsRole message: " + msg.id + " | Error: " + err);
+			});
+
+		
+		
+		return;
+	}
 
 	var guild = client.guilds.get(packet.d.guild_id);
 
@@ -68,27 +118,29 @@ exports.reactions = async (client, packet, reactionRole) => {
 
 	//console.log(ReactionRole);
 
-	var reactEmoji = reactionRole.find(re => re.emoji == packet.d.emoji.id || re.emoji == packet.d.emoji.name);
+	var reactEmoji = reactionRole.ReactionsRole.find(re => re.emoji == packet.d.emoji.id || re.emoji == packet.d.emoji.name);
 	if(!reactEmoji) return;
 	var reactRole = guild.roles.get(reactEmoji.role);
 
-	console.log(reactRole);
+	//console.log(reactRole.name);
 
 	var member = guild.members.get(packet.d.user_id)
 
-	console.log(member);
+	//client.logger.log(`${member.displayName} reacted on ${reactRole.name}`);
 
 	if (packet.t === 'MESSAGE_REACTION_ADD') {
 		//client.emit('messageReactionAdd', reaction, client.users.get(packet.d.user_id));
 
-		member.addRole(reactRole).catch(console.error);
+		member.addRole(reactRole).catch(client.logger.error);
+		client.logger.log(`${member.displayName} added ${reactRole.name} to their roles.`);
 
 	} else
 	if (packet.t === 'MESSAGE_REACTION_REMOVE') {
 		//if(!reaction) reaction = packet.d.emoji;
 		//client.emit('messageReactionRemove', reaction, client.users.get(packet.d.user_id));
 
-		member.removeRole(reactRole).catch(console.error);
+		member.removeRole(reactRole).catch(client.logger.error);
+		client.logger.log(`${member.displayName} deleted ${reactRole.name} from the roles.`);
 	}
 
 

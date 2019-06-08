@@ -9,10 +9,12 @@ const appRoot = path.resolve(__dirname);
 const widgetsEnmap = new Enmap({name: "widgets", dataDir: appRoot + "/data"});
 const settingsEnmap = new Enmap({name: "settings", dataDir: appRoot + "/data"});
 const reactionsRoleEnmap = new Enmap({name: "reactionsRole", dataDir: appRoot + "/data"});
+const exchangeRatesEnmap = new Enmap({name: "exchangeRates", dataDir: appRoot + "/data"});
 
 client.widgets = widgetsEnmap;
 client.settings = settingsEnmap;
 client.reactionsRole = reactionsRoleEnmap;
+client.exchangeRates = exchangeRatesEnmap;
 
 client.appRoot = appRoot;
 

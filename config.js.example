@@ -12,6 +12,9 @@ const config = {
 	// Wolfram Alpha ID - Get one for free at http://products.wolframalpha.com/developers/
 	"wolframAlphaID" : "SECRET", // OPTIONAL: If left blank, remember to disable the command too.
 
+	// Fixer API Access key - Sign up for a free API key on https://fixer.io/ - This is used for for currency conversion.
+	"fixer" : "SECRET", // OPTIONAL: If left blank, remember to disable the command too.
+
 	// Default configuation for the multi-guild support
 	"defaultSettings" : {
 		prefix: "#",

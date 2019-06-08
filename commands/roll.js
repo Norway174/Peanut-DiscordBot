@@ -5,7 +5,7 @@ const util = require('util');
 
 exports.run = function(client, message, args){
 
-	var userInput = args.join(" ");
+	var userInput = args.join("");
 	var rolled = roll.roll(userInput);
 	var output = rolled.output.replace(userInput + ": ", "");
 

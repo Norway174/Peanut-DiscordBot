@@ -126,7 +126,7 @@ exports.run = function(client, message, args){
 
 exports.conf = {
 	enabled: true,
-	guildOnly: true,
+	guildOnly: false,
 	aliases: ["setting", "options", "option", "conf", "confs", "config", "configs"],
 	permLevel: 3
 };

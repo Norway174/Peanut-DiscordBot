@@ -50,7 +50,7 @@ Please get in touch with staff if you have any questions.`;
 
 exports.conf = {
 	enabled: true,
-	guildOnly: false,
+	guildOnly: true,
 	aliases: [],
 	permLevel: 3
 };

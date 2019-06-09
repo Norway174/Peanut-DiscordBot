@@ -1,40 +1,84 @@
 //const settings = require("../config.js");
 const Discord = require("discord.js");
-exports.run = (client, message, params) => {
+exports.run = (client, message, args) => {
 
 	let settings = client.getSettings(message.guild.id);
 	let prefix = settings.prefix;
 
-	if (!params[0]) {
-		
-		const myCommands = client.commands.filter(cmd => client.elevation(message) >= cmd.conf.permLevel /*&& cmd.conf.guildOnly !== true*/);
+	var cmd = args[0]
 
-		const commandNames = Array.from(myCommands.keys());
-		const longest = commandNames.reduce((long, str) => Math.max(long, str.length), 0);
-		message.channel.send( `= Command List =\n\n[Use ${prefix}help <command> for details]\n\n${myCommands.map(c => `${prefix}${c.help.name}${" ".repeat(longest - c.help.name.length)} :: ${c.help.description}`).join("\n") }`, {code:"asciidoc"});
-	} else {
-		let command = params[0];
-		if (client.commands.has(command)) {
-			command = client.commands.get(command);
-
-			const commandNames = Array.from(client.widgetsType.keys());
-			const longest = commandNames.reduce((long, str) => Math.max(long, str.length), 0);
-			const widgets = client.widgetsType.map(c => `${c.help.name}${" ".repeat(longest - c.help.name.length)} :: ${c.help.description}\n//DATA: ${c.help.usage}`).join("\n");
-
-			message.channel.send( `= ${command.help.name.toUpperCase()} = \n${command.help.description}\n${prefix}${command.help.usage}`.replace("{widgets}", widgets).replace("{widgetPrefix}", prefix), {code:"asciidoc"});
-		}
+	var single = false
+	
+	var full = false;
+	if(message.content.toLowerCase().includes("all")){
+		full = true;
 	}
+
+	const embed = new Discord.RichEmbed()
+	.setTitle(`Peanut Commands`) // ${Math.round(toAmount * 100) / 100}
+	.setColor(0x78FF00)
+	
+	.setDescription(`Use \`${prefix}help <command name/'all'>\` for more information.\nNote: Use of the \`all\` keyword will PM you a big list.`)
+	.setTimestamp();
+
+	var myCommands = client.commands.filter(cmd => client.elevation(message) >= cmd.conf.permLevel /*&& cmd.conf.guildOnly == false*/ )
+
+	if (cmd && client.commands.has(cmd)) {
+		myCommands = myCommands.filter(com => com.help.name == cmd);
+		single = true;
+	}
+
+	const commandNames = Array.from(client.widgetsType.keys());
+	const longest = commandNames.reduce((long, str) => Math.max(long, str.length), 0);
+	const widgets = client.widgetsType.map(c => `${c.help.name}${" ".repeat(longest - c.help.name.length)} :: ${c.help.description}\n//DATA: ${c.help.usage}`).join("\n");
+
+	var countCmds = 0;
+	myCommands.forEach(command => {
+		countCmds += 1;
+		
+		if(full || single) {
+			embed.addField(`${prefix}${command.help.name}`, `${command.help.description} \`[Usability: ${PermName(command.conf.permLevel)}]\`\n\`\`\`asciidoc\n${prefix}${command.help.usage}\`\`\``.replace(/{prefix}/mg, prefix).replace("{widgets}", widgets), true)
+		} else {
+			embed.addField(`\u200b`, `\`\`\`${prefix}${command.help.name}\`\`\``, true)
+		}
+		
+	});
+	embed.setFooter(`Your permission level: ${PermName(client.elevation(message))} | Showing ${countCmds} out of ${client.commands.size} total commands`)
+
+	if(full){
+		message.author.send(embed);
+		const embed2 = new Discord.RichEmbed()
+			.setTitle(`Peanut Commands`) // ${Math.round(toAmount * 100) / 100}
+			.setColor(0x78FF00)
+			.setFooter("Your permission level: " + PermName(client.elevation(message)))
+			.setDescription(`A list of all the commands has been compiled, and PMed to: <@${message.author.id}>. (${message.author.tag})`)
+			.setTimestamp();
+		message.channel.send(embed2);
+	} else {
+		message.channel.send(embed);
+	}
+	
 };
 
 exports.conf = {
 	enabled: true,
 	guildOnly: false,
-	aliases: ["h", "halp"],
+	aliases: [],
 	permLevel: 0
 };
 
 exports.help = {
 	name: "help",
 	description: "Displays all the available commands for your permission level.",
-	usage: "help <command>"
+	usage: "help [<command>]"
+};
+
+function PermName(permLevel) {
+	var perms = {
+		'0': 'Everyone',
+		'2': 'Moderators',
+		'3': 'Administrators',
+		'4': 'Owner'
+	};
+	return (perms[permLevel] || permLevel);
 };

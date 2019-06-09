@@ -86,5 +86,5 @@ exports.conf = {
 exports.help = {
 	name: "set",
 	description: "Sets the Game, Status or Avatar of the bot.",
-	usage: `set game <optional:game name>\n${settings.prefix}set status <optional:online|idle|invisible|dnd>\n${settings.prefix}set avatar <url|local path>`
+	usage: `set game <optional:game name>\n{prefix}set status <optional:online|idle|invisible|dnd>\n{prefix}set avatar <url|local path>`
 };

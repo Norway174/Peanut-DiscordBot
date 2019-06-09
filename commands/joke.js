@@ -23,6 +23,6 @@ exports.conf = {
 
 exports.help = {
 	name: "joke",
-	description: "The best dad jokes! Courtesy of https://icanhazdadjoke.com/",
+	description: "The best dad jokes! Courtesy of https://icanhazdadjoke.com/ ",
 	usage: "joke"
 };

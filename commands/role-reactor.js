@@ -148,7 +148,7 @@ exports.reactions = async (client, packet, reactionRole) => {
 
 exports.conf = {
 	enabled: true,
-	guildOnly: true,
+	guildOnly: false,
 	aliases: [],
 	permLevel: 3
 };

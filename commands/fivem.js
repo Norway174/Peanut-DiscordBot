@@ -183,5 +183,5 @@ exports.conf = {
 exports.help = {
 	name: "fivem",
 	description: "Check the status of a FiveM server. Default: [localhost:25565]",
-	usage: "check <optional IP/Hostname>"
+	usage: "fivem <optional IP/Hostname>"
 };

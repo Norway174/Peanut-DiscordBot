@@ -17,7 +17,7 @@ exports.run = (client, message, args, perms, byCommand = true, leaveMsg = "", de
 
 	// Sets the username.
 	var username = args.join(" ");
-	client.logger.debug("username: " + username + " | Args: " + args.length);
+	client.logger.debug("username: " + username + " | Args: " + args.join(" | "));
 
 	// Get the member role.
 	var role = message.guild.roles.find(r => r.name == "Server Whitelisted");
@@ -106,34 +106,36 @@ exports.run = (client, message, args, perms, byCommand = true, leaveMsg = "", de
 	})
 	.on("response", str => {
 		client.logger.log("Got response: " + str);
-
-		var formatStr = "";
-
-		if(str.endsWith("' cannot be found")){
+		
+		var FormatStr;
+		if(str.endsWith("' cannot be found") || str === "You must be in a Team to do that!"){
 			// The user could not be found when trying to remove their chunks.
 			// " Player 'Notch' cannot be found "
-			FormatStr = "[Claim] No team found.";
+			byCommandReturn.push("[Claim] No team found.");
+			FormatStr = "[Claim] " + str;
+			client.logger.log("[Claim]: " + str);
 		} else
-		/*if(str.startsWith("Removed")) {
-			// The user was successfully removed.
+		if(str.endsWith("whitelist")) {
+			// Matches:
 			// " Removed Notch from the whitelist "
+			// " Added Notch to the whitelist "
+			byCommandReturn.push("[Whitelist] " + str);
+			FormatStr = "[Whitelist] " + str;
+			client.logger.log("[Whitelist]: " + str);
+		}
+		/*if(str.startsWith("Removed")) {
+			
 			FormatStr = "[Whitelist]" + str;
 		} else*/
-		if(str.endsWith("whitelist")) {
-			//The user was added!
-			FormatStr = "[Whitelist] " + str;
-
-		}
 
 
-		if(byCommand) message.channel.send(FormatStr)
+		if(byCommand) message.channel.send( FormatStr ? FormatStr : str)
 		.then(m => {
 			m.delete(15000);
 		});
 
 		if(!byCommand){
-			byCommandReturn.push(FormatStr)
-			client.logger.log("By command Return: " + byCommandReturn.toString())
+			client.logger.log("By command Return: " + byCommandReturn.toString());
 		}
 		
 

@@ -10,7 +10,7 @@ async function asyncForEach(array, callback) {
 module.exports = async (client) => {
 
 	// Clean up old, no longer exsiting RoleReactions messages.
-	client.logger.log(`Checking ${client.reactionsRole.count} RoleReactions.`)
+	client.logger.log(`Checking ${client.reactionsRole.size} RoleReactions.`)
 
 	await asyncForEach( client.reactionsRole.array(), async (reactRole) => {
 		if(!reactRole) return;

@@ -74,7 +74,12 @@ module.exports = message => {
 		return;
 	}
 
-	//Reload the command before we run it. Only enable for debugging.
+	// Stats!
+	const statGuild = (message.channel.type == "text" ) ? `CMD-${message.guild.id}-${cmd.help.name}` : 'CMD-DM-${cmd.help.name}';
+	client.stats.ensure(statGuild, 0)
+	client.stats.inc(statGuild)
+
+	// Reload the command before we run it. Only enable for debugging.
 	var debug = true;
 	if(debug) {
 		client.reload(cmd.help.name)

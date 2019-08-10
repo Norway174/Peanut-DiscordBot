@@ -8,12 +8,17 @@ exports.run = function(client, message, args){ // eslint-disable-line no-unused-
 	// const guilds = (await client.shard.broadcastEval('this.guilds.size'));//.reduce((a, b) => a + b, 0);
 	// console.log(guilds);
 	const duration = moment.duration(this.client.uptime).format(" D [days], H [hrs], m [mins], s [secs]");
+
+	var commands = client.stats.filterArray( (val, key) => key.includes("CMD"));
+	commands = commands.reduce((total, amount) => total + amount);
+
 	message.channel.send(`= STATISTICS =
   • Mem Usage  :: ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB
   • Uptime     :: ${duration}
   • Users      :: ${this.client.users.size.toLocaleString()}
   • Servers    :: ${this.client.guilds.size.toLocaleString()}
   • Channels   :: ${this.client.channels.size.toLocaleString()}
+  • Cmds Exec  :: ${commands}
   • Discord.js :: v${version}
   • Node       :: ${process.version}
   • Source     :: https://github.com/Norway174/Peanut-DiscordBot`, {code: "asciidoc"});

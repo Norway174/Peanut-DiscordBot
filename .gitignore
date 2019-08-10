@@ -1,6 +1,7 @@
 config.js
 node_modules/
 data/
+test_data/
 build/
 .eslintrc.js
 *.code-workspace

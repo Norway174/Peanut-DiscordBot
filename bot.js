@@ -6,15 +6,18 @@ const Enmap = require("enmap");
 const path = require('path');
 const appRoot = path.resolve(__dirname);
 
-const widgetsEnmap = new Enmap({name: "widgets", dataDir: appRoot + "/data"});
-const settingsEnmap = new Enmap({name: "settings", dataDir: appRoot + "/data"});
-const reactionsRoleEnmap = new Enmap({name: "reactionsRole", dataDir: appRoot + "/data"});
-const exchangeRatesEnmap = new Enmap({name: "exchangeRates", dataDir: appRoot + "/data"});
+const DataLoc = "/test_data"
+const widgetsEnmap = new Enmap({name: "widgets", dataDir: appRoot + DataLoc});
+const settingsEnmap = new Enmap({name: "settings", dataDir: appRoot + DataLoc});
+const reactionsRoleEnmap = new Enmap({name: "reactionsRole", dataDir: appRoot + DataLoc});
+const exchangeRatesEnmap = new Enmap({name: "exchangeRates", dataDir: appRoot + DataLoc});
+const statsEnmap = new Enmap({name: "stats", dataDir: appRoot + DataLoc});
 
 client.widgets = widgetsEnmap;
 client.settings = settingsEnmap;
 client.reactionsRole = reactionsRoleEnmap;
 client.exchangeRates = exchangeRatesEnmap;
+client.stats = statsEnmap;
 
 client.appRoot = appRoot;
 
@@ -28,11 +31,6 @@ require( appRoot + "/util/widgetLoader")(client);
 require( appRoot + "/util/reactionsRoleLoader")(client);
 
 client.logger = require( appRoot + "/util/logger");
-/* DEPRICATED
-client.log = message => {
-	console.log(`[${moment().format("YYYY-MM-DD HH:mm:ss")}] ${message}`);
-};
-*/
 
 const init = async () => {
 
@@ -198,5 +196,10 @@ const init = async () => {
 	client.login(client.config.token);
 
 };
+
+settingsEnmap.defer.then( () => {
+	console.log(settingsEnmap.size + " keys loaded");
+	client.stats.ensure("Timestamp", moment())
+  });
 
 init();

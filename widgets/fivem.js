@@ -117,7 +117,7 @@ exports.run = function(client, widget){
 				})
 				.catch(err => {
 					// Error! / Offline?
-					client.logger.error(err)
+					client.logger.error("FiveM Widget error: \n" + err)
 
 					failed();
 				});

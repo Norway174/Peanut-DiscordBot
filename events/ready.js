@@ -16,6 +16,12 @@ module.exports = async (client) => {
 		if(!reactRole) return;
 
 		var channel = client.channels.get(reactRole.channel_id);
+
+		if(channel == null) {
+			client.reactionsRole.delete(reactRole.msg_id);
+				client.logger.log("ReactionsRole has been deleted: " + reactRole.msg_id);
+				return;
+		}
 			
 		await channel.fetchMessage(reactRole.msg_id)
 			.then(msg => {

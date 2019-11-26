@@ -6,7 +6,7 @@ const Enmap = require("enmap");
 const path = require('path');
 const appRoot = path.resolve(__dirname);
 
-const DataLoc = "/test_data"
+const DataLoc = "/data"
 const widgetsEnmap = new Enmap({name: "widgets", dataDir: appRoot + DataLoc});
 const settingsEnmap = new Enmap({name: "settings", dataDir: appRoot + DataLoc});
 const reactionsRoleEnmap = new Enmap({name: "reactionsRole", dataDir: appRoot + DataLoc});

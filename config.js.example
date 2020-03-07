@@ -9,6 +9,10 @@ const config = {
 	// Owner discord ID
 	"ownerid" : "000000000000000000",
 
+
+	// Logger Discord Webhook URL
+	"webhook" : "SECRET", // OPTIONAL: If left blank, remember to disable Logger.
+
 	// Wolfram Alpha ID - Get one for free at http://products.wolframalpha.com/developers/
 	"wolframAlphaID" : "SECRET", // OPTIONAL: If left blank, remember to disable the command too.
 

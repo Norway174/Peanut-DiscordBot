@@ -7,11 +7,15 @@
 Logger class for easy and aesthetically pleasing console logging 
 */
 
+const path = require('path');
+const appRoot = path.resolve(__dirname);
+config = require( appRoot + "/.././config.js");
+
 const chalk = require("chalk");
 const moment = require("moment");
 
-const webhook = require("webhook-discord")
-const Hook = new webhook.Webhook("https://discordapp.com/api/webhooks/504380856165728266/KUi5E95f8KerIJ-uzPgHN2ZhLyAlXf7NrohCBJRkKvcGu_YcjFuhpm4FMQ2CFaeOhda-")
+const webhook = require("webhook-discord");
+const Hook = new webhook.Webhook(config.webhook);
 
 exports.log = (content, type = "log") => {
 	const timestamp = `[${moment().format("YYYY-MM-DD HH:mm:ss")}]:`;

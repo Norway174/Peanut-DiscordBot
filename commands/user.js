@@ -11,24 +11,28 @@ exports.run = async function(client, message, args){
 	// This should get all the members, so we can search for the correct one. Might take a while?
 	if(message.guild.memberCount >= 250) await message.guild.fetchMembers();
 	
-	let dUser = message.guild.member(message.mentions.users.first()) // First we try to get the first mention. Simple & Quick!
-	|| message.guild.members.get(args[0]) // Then we check if the supplied arg is a an ID.
-	|| message.guild.members.find(mems => { // If that fails, we move on to the heavy stuff.
-		if (mems.displayName.toLowerCase() === args.join(' ').toLowerCase()){ // Check if a user has the display name. Inclduing a custon nickname.
-			return mems;
-		} else
-		if (mems.user.username.toLowerCase() === args.join(' ').toLowerCase()){ // Then check their real username.
-			return mems;
-		} else
-		if (mems.user.tag.toLowerCase() === args.join(' ').toLowerCase()){ // Then we check their real username + tag.
-			return mems;
+	let dUser = null;
+	if(args[0] === true){
+		dUser = args[1];
+	} else {
+		dUser = message.guild.member(message.mentions.users.first()) // First we try to get the first mention. Simple & Quick!
+		|| message.guild.members.get(args[0]) // Then we check if the supplied arg is a an ID.
+		|| message.guild.members.find(mems => { // If that fails, we move on to the heavy stuff.
+			if (mems.displayName.toLowerCase() === args.join(' ').toLowerCase()){ // Check if a user has the display name. Inclduing a custon nickname.
+				return mems;
+			} else
+			if (mems.user.username.toLowerCase() === args.join(' ').toLowerCase()){ // Then check their real username.
+				return mems;
+			} else
+			if (mems.user.tag.toLowerCase() === args.join(' ').toLowerCase()){ // Then we check their real username + tag.
+				return mems;
+			}
+		});
+		if (!dUser) {
+			// If all of them fails. Then we report back. :(
+			return message.channel.send("Can't find user!")
 		}
-	});
-	if (!dUser) {
-		// If all of them fails. Then we report back. :(
-		return message.channel.send("Can't find user!")
 	}
-
 	var joinedAt = moment(dUser.joinedTimestamp);
 	var joined = joinedAt.format(_format)
 	var createdAt = moment(dUser.user.createdAt);

@@ -17,7 +17,7 @@ module.exports = async(member) => {
 	STEP 2: Get the settings. And decides wether or not to post any message at all.
 
 	*/
-	if(settings.welcome == "false") return;
+	if(settings.leave == "false") return;
 
 	var channel = client.defaultChannel(guild);
 	

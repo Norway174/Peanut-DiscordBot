@@ -28,4 +28,16 @@ module.exports = async(member) => {
 	channel.send({embed});
 	
 	client.logger.log(`${member.user.tag} has joined ${guild.name}.`);
+
+
+	// Post "User" command to a seperately defined channel. ONLY if it is defined at all.
+	if(settings.post_user_info_to_channel == "") return;
+	secret_channel = guild.channels.get(settings.post_user_info_to_channel);
+	if(!secret_channel) return;
+
+
+	member.channel = secret_channel;
+	cmd = client.commands.get("user")
+	if(cmd){ cmd.run(client, member, [true, member]); }
+
 };

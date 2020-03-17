@@ -23,7 +23,9 @@ const config = {
 	"defaultSettings" : {
 		prefix: "#",
 		welcome: "false",
+		leave: "false",
 		channel: "default",
+		post_user_info_to_channel: "",
 		minecraft: "localhost:25565",
 		fivem_host: "localhost", fivem_port: "30120"
 	},

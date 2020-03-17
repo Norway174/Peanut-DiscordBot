@@ -42,7 +42,7 @@ exports.run = function(client, message, args){
 		.setTimestamp();
 		//var desc = "";
 		Object.keys(guildSettings).forEach((key) => {
-			embed.addField("```"+ key + "```", "```" + guildSettings[key] + "``````[" + client.defaultSettings[key] + "]```", true);
+			embed.addField("```"+ key + "```", "```" + guildSettings[key] + "``` ```[" + client.defaultSettings[key] + "]```", true);
 			//desc += "```" + key + " -> " + guildSettings[key] + " [" + client.defaultSettings[key] + "]```"
 		});
 		//embed.setDescription(desc);
@@ -56,7 +56,7 @@ exports.run = function(client, message, args){
 
 		key = key.toLowerCase(); // Convert the key to lowercase, incase someone uses capital letters, or got their caps lock stuck.
 
-		if(!guildSettings[key]) return message.reply("This key (`" + key + "`) does not exists in the settings. Please run `" + guildSettings.prefix + "help settings`.\n```js\n" + JSON.stringify(guildSettings, null, 4) + "```");
+		if(!guildSettings.hasOwnProperty(key)) return message.reply("This key (`" + key + "`) does not exists in the settings. Please run `" + guildSettings.prefix + "help settings`.\n```js\n" + JSON.stringify(guildSettings, null, 4) + "```");
 		// The key is NOT missing, but it's either typed wrong. Or it doesn't exists as a setting. In whixh case we have to inform the user and stop execution here.
 
 		if(!value) return message.reply("Missing value to add to the key. Please run `" + guildSettings.prefix + "help settings`.");

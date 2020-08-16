@@ -11,6 +11,9 @@
     "bot"
   ],
   "author": "Norway174",
+  "engines": {
+    "node": "12.x"
+  },
   "license": "SEE LICENSE IN license.txt",
   "dependencies": {
     "@vitalets/google-translate-api": "^2.8.0",

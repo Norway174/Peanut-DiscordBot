@@ -3,5 +3,6 @@ node_modules/
 data/
 test_data/
 build/
+.stfolder/
 .eslintrc.js
 *.code-workspace

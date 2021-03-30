@@ -31,7 +31,7 @@ exports.run = function(client, message, args){
 	const masterURL = "http://servers-live.fivem.net/api/servers/";
 
 	//Make the first emblem, for checking status
-	const embed = new Discord.RichEmbed()
+	const embed = new Discord.MessageEmbed()
 		.setTitle(ip)
 		.setColor(0xFFD200)
 		.setDescription( "Checking...")
@@ -145,7 +145,7 @@ exports.run = function(client, message, args){
 				}
 
 				//Here, we build the emblem for the online server.
-				const embed = new Discord.RichEmbed()
+				const embed = new Discord.MessageEmbed()
 					.setTitle(server.hostname)
 					.setColor(0x009600)
 					.setDescription( stringBuilder )
@@ -159,7 +159,7 @@ exports.run = function(client, message, args){
 
 			function failed(){
 				//Here we build the offline message
-				const embed = new Discord.RichEmbed()
+				const embed = new Discord.MessageEmbed()
 					.setTitle(ip)
 					.setColor(0xE40000)
 					.setDescription("Offline")

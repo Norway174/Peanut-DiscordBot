@@ -1,7 +1,7 @@
 
 exports.run = function(client, message, args){
 
-	let dUser = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]);
+	let dUser = message.guild.member(message.mentions.users.first()) || message.guild.members.cache.get(args[0]);
 	if (!dUser) return message.channel.send("Can't find user!")
 
 	const settings = client.getSettings(message.guild.id);

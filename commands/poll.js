@@ -84,7 +84,7 @@ exports.run = (client, message, params) => {
 			reactions.push("1⃣", "2⃣");
 		}
 	
-		const embed = new Discord.RichEmbed()
+		const embed = new Discord.MessageEmbed()
 			.setTitle("Poll in progress...")
 			.setColor(color())
 			.setDescription( `**POLL:** ${params.join(" ")}\n**TIME:** ${moment.duration(time, "minutes").humanize()}.`)
@@ -129,7 +129,7 @@ exports.run = (client, message, params) => {
 						//client.logger.log("result builder: " + item.emoji.name);
 					});
 			
-					const embed = new Discord.RichEmbed()
+					const embed = new Discord.MessageEmbed()
 						.setTitle("Poll closed!")
 						.setColor(0xF32E2E)
 						.setDescription( `**POLL:** ${params.join(" ")}\n**TIME:** ${moment.duration(time, "minutes").humanize()}.\n**RESULT:**\n${resultBuilder}`)

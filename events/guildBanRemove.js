@@ -12,14 +12,14 @@ module.exports = (guild, member) => {
 	
 	if(settings.channel != "default"){
 		if(guild.channels.has(guild.id)){
-			channel = guild.channels.get(guild.id);
+			channel = guild.channels.cache.get(guild.id);
 		} else
-		if (guild.channels.find(chan => chan.name === settings.channel)){
-			channel = guild.channels.find(chan => chan.name === settings.channel);
+		if (guild.channels.cache.find(chan => chan.name === settings.channel)){
+			channel = guild.channels.cache.find(chan => chan.name === settings.channel);
 		}
 	}
 
-	const embed = new Discord.RichEmbed()
+	const embed = new Discord.MessageEmbed()
 		//.setTitle("Status updated")
 		.setColor(0x00FF00)
 		.setDescription(`<@${member.user.id}> (${member.user.tag}) has just been un-banned from ${guild.name}.`);

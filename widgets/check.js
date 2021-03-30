@@ -7,7 +7,7 @@ exports.run = function(client, widget){
 	
 	//client.logger.log("Checking server...");
 	
-	client.guilds.get(widget.serverID).channels.get(widget.channelID).fetchMessage(widget.messageID).then(message => {
+	client.guilds.cache.get(widget.serverID).channels.cache.get(widget.channelID).messages.fetch(widget.messageID).then(message => {
 		
 		if(!widget.data){
 			const guild = message.guild;
@@ -74,7 +74,7 @@ exports.run = function(client, widget){
 				}
 
 				//Here, we build the emblem for the online server.
-				const embed1 = new Discord.RichEmbed()
+				const embed1 = new Discord.MessageEmbed()
 					.setTitle(hostname_org)
 					.setColor(0x009600)
 					.setDescription( stringBuilder )
@@ -96,7 +96,7 @@ exports.run = function(client, widget){
 				//client.logger.log(error);
 				
 				//Here we build the offline message
-				const embed = new Discord.RichEmbed()
+				const embed = new Discord.MessageEmbed()
 					.setTitle(hostname_org)
 					.setColor(0xE40000)
 					.setDescription("Offline")

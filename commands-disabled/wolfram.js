@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const config = require("../config.js");
 const token = config.wolframAlphaID;
 
-const { WolframClient } = require('node-wolfram-alpha');
+const { WolframClient } = require('wolfram-alpha-node');
 const wolfram = new WolframClient(token);
 
 
@@ -17,7 +17,7 @@ exports.run = (client, message, args) => {
 			const result = await wolfram.query(args.join(" "), { podindex: 2 });
 			
 			if(result["data"]["queryresult"]["numpods"] == 0){
-				const embed = new Discord.RichEmbed()
+				const embed = new Discord.MessageEmbed()
 					.setTitle("Answer:")
 					.setColor(0xDD1100)
 					.setDescription( "Sorry! No results." )
@@ -27,7 +27,7 @@ exports.run = (client, message, args) => {
 
 				message.channel.send({embed});
 			} else {
-				const embed = new Discord.RichEmbed()
+				const embed = new Discord.MessageEmbed()
 					.setTitle("Answer:")
 					.setColor(0xFF7C00)
 					.setDescription( result["data"]["queryresult"]["pods"][0]["subpods"][0]["plaintext"] )

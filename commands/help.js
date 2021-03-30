@@ -14,7 +14,7 @@ exports.run = (client, message, args) => {
 		full = true;
 	}
 
-	const embed = new Discord.RichEmbed()
+	const embed = new Discord.MessageEmbed()
 	.setTitle(`Peanut Commands`) // ${Math.round(toAmount * 100) / 100}
 	.setColor(0x78FF00)
 	
@@ -47,7 +47,7 @@ exports.run = (client, message, args) => {
 
 	if(full){
 		message.author.send(embed);
-		const embed2 = new Discord.RichEmbed()
+		const embed2 = new Discord.MessageEmbed()
 			.setTitle(`Peanut Commands`) // ${Math.round(toAmount * 100) / 100}
 			.setColor(0x78FF00)
 			.setFooter("Your permission level: " + PermName(client.elevation(message)))

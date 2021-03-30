@@ -20,7 +20,7 @@ exports.run = function(client, widget, data){
 	client.widgets.set(widget.name, widgetSettings);
 	*/
 	
-	client.guilds.get(widget.serverID).channels.get(widget.channelID).fetchMessage(widget.messageID).then(m => {
+	client.guilds.cache.get(widget.serverID).channels.cache.get(widget.channelID).messages.fetch(widget.messageID).then(m => {
 		m.edit(`[${moment().format("YYYY-MM-DD HH:mm:ss")}] ${widget.data}`);
 	});
 	

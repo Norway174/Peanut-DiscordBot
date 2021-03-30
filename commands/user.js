@@ -9,15 +9,15 @@ exports.run = async function(client, message, args){
 
 	// If a guild has more than 250 members, not every member will be cached.
 	// This should get all the members, so we can search for the correct one. Might take a while?
-	if(message.guild.memberCount >= 250) await message.guild.fetchMembers();
+	if(message.guild.memberCount >= 250) await message.guild.members.fetch();
 	
 	let dUser = null;
 	if(args[0] === true){
 		dUser = args[1];
 	} else {
 		dUser = message.guild.member(message.mentions.users.first()) // First we try to get the first mention. Simple & Quick!
-		|| message.guild.members.get(args[0]) // Then we check if the supplied arg is a an ID.
-		|| message.guild.members.find(mems => { // If that fails, we move on to the heavy stuff.
+		|| message.guild.members.cache.get(args[0]) // Then we check if the supplied arg is a an ID.
+		|| message.guild.members.cache.find(mems => { // If that fails, we move on to the heavy stuff.
 			if (mems.displayName.toLowerCase() === args.join(' ').toLowerCase()){ // Check if a user has the display name. Inclduing a custon nickname.
 				return mems;
 			} else
@@ -46,12 +46,12 @@ exports.run = async function(client, message, args){
 
 	var roles = dUser.roles.filter(role => { if(role.name !== "@everyone") return role } )
 
-	const embed = new Discord.RichEmbed()
+	const embed = new Discord.MessageEmbed()
 		.setAuthor(dUser.user.tag, dUser.user.displayAvatarURL)
 		.setDescription(dUser)
 		.setColor(dUser.displayColor)
 		.setFooter(message.guild.name)
-		.setThumbnail(dUser.user.avatarURL)
+		.setThumbnail(dUser.user.avatarURL())
 		.addField("Display Name", dUser.displayName, true)
 		.addField("User ID", dUser.id, true)
 		.addField("Status", dUser.user.presence.status, true)

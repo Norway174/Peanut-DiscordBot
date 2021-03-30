@@ -14,7 +14,7 @@ exports.run = async (client, message, args) => {
 	//console.log(overwrite_msg_id);
 	if (overwrite_msg_id !== null ){
 		overwrite_msg_id = overwrite_msg_id[0].replace("-", "");
-		var ovr_msg = await message.channel.fetchMessage(overwrite_msg_id)
+		var ovr_msg = await message.channel.messages.fetch(overwrite_msg_id)
 		.catch(err => {
 			message.channel.send("Unable to find message.");
 			//client.logger.error(err);
@@ -53,7 +53,7 @@ exports.run = async (client, message, args) => {
 
 		if(emoji && role){
 			role = role.join("").replace("<@&", "").replace(">", "");
-			role = message.guild.roles.get(role);
+			role = message.guild.roles.cache.get(role);
 			emoji = emoji.join("").replace(EmojiRegex, `$1`);
 
 			//console.log("Line: " + line + " | Emoji: " + emoji + " | Role: " + role);
@@ -104,9 +104,9 @@ exports.reactions = async (client, packet, reactionRole) => {
 
 	if (['MESSAGE_REACTION_REMOVE_ALL'].includes(packet.t)) {
 
-		var channel = client.channels.get(packet.d.channel_id);
+		var channel = client.channels.cache.get(packet.d.channel_id);
 		
-		channel.fetchMessage(packet.d.message_id)
+		channel.messages.fetch(packet.d.message_id)
 			.then(msg => {
 				client.logger.log(`Reactions removed for: ${msg.id}`);
 
@@ -130,7 +130,7 @@ exports.reactions = async (client, packet, reactionRole) => {
 		return;
 	}
 
-	var guild = client.guilds.get(packet.d.guild_id);
+	var guild = client.guilds.cache.get(packet.d.guild_id);
 
 	if(!guild.me.hasPermission("MANAGE_ROLES")){
 		client.logger.warn("RoleReactions Error: Missing permissions!")
@@ -141,29 +141,26 @@ exports.reactions = async (client, packet, reactionRole) => {
 
 	var reactEmoji = reactionRole.ReactionsRole.find(re => re.emoji == packet.d.emoji.id || re.emoji == packet.d.emoji.name);
 	if(!reactEmoji) return;
-	var reactRole = guild.roles.get(reactEmoji.role);
+	var reactRole = guild.roles.cache.get(reactEmoji.role);
 
 	//console.log(reactRole.name);
 
-	var member = guild.members.get(packet.d.user_id)
+	var member = guild.members.cache.get(packet.d.user_id);
 
 	//client.logger.log(`${member.displayName} reacted on ${reactRole.name}`);
 
-	if (packet.t === 'MESSAGE_REACTION_ADD') {
-		//client.emit('messageReactionAdd', reaction, client.users.get(packet.d.user_id));
-
-		member.addRole(reactRole).catch(client.logger.error);
-		client.logger.log(`${member.displayName} added ${reactRole.name} to their roles.`);
-
-	} else
-	if (packet.t === 'MESSAGE_REACTION_REMOVE') {
-		//if(!reaction) reaction = packet.d.emoji;
-		//client.emit('messageReactionRemove', reaction, client.users.get(packet.d.user_id));
-
-		member.removeRole(reactRole).catch(client.logger.error);
-		client.logger.log(`${member.displayName} deleted ${reactRole.name} from the roles.`);
+	if (packet.t === 'MESSAGE_REACTION_ADD' || packet.t === 'MESSAGE_REACTION_REMOVE') {
+		if(member.roles.cache.get(reactRole.id) == null) {
+			member.roles.add(reactRole)
+			.then(member => client.logger.log(`${member.displayName} added ${reactRole.name} from the roles.`))
+			.catch(e => client.logger.warn(`Failed to add ${reactRole.name} to ${member.displayName}. Error: ${e}`));
+		} else{
+			member.roles.remove(reactRole)
+			.then(member => client.logger.log(`${member.displayName} removed ${reactRole.name} from the roles.`))
+			.catch(e => client.logger.warn(`Failed to remove ${reactRole.name} from ${member.displayName}. Error: ${e}`));
+			verb = "removed";
+		}
 	}
-
 
 };
 

@@ -35,7 +35,7 @@ exports.run = function(client, message, args){
 		// SHOW or GET -> Simply outputs all the variables in a neatly formated embed.
 		//message.channel.send(JSON.stringify(guildSettings, null, 4), {code: "json"});
 
-		const embed = new Discord.RichEmbed()
+		const embed = new Discord.MessageEmbed()
 		.setTitle("**ALL CONFIGS FOR: **" + message.guild.name)
 		.setColor(30975)
 		.setFooter(message.guild.name)
@@ -70,7 +70,7 @@ exports.run = function(client, message, args){
 		if(!client.settings.has(guild.id)) client.settings.set(guild.id, {});
 		// Check if the guild already has an entry in the settings Enmap. If not, create it. So we can poplaute it.
 
-		const embed = new Discord.RichEmbed()
+		const embed = new Discord.MessageEmbed()
 		.setTitle("**CONFIG CHANGES**")
 		.setColor(5177088)
 		.setFooter(message.guild.name)
@@ -93,7 +93,7 @@ exports.run = function(client, message, args){
 
 		client.settings.delete(message.guild.id, key);
 
-		const embed = new Discord.RichEmbed()
+		const embed = new Discord.MessageEmbed()
 		.setTitle("**CONFIG DELETED**")
 		.setColor(15146526)
 		.setFooter(message.guild.name)
@@ -112,7 +112,7 @@ exports.run = function(client, message, args){
 
 		client.settings.delete(message.guild.id);
 		
-		const embed = new Discord.RichEmbed()
+		const embed = new Discord.MessageEmbed()
 		.setTitle("**!!!ALL CONFIGS DELETED FOR THIS SERVER!!!** (This can't be undone.)")
 		.setColor(15146526)
 		.setFooter(message.guild.name)

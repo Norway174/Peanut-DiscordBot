@@ -15,7 +15,7 @@ module.exports = async (client) => {
 	await asyncForEach( client.reactionsRole.array(), async (reactRole) => {
 		if(!reactRole) return;
 
-		var channel = client.channels.get(reactRole.channel_id);
+		var channel = client.channels.cache.get(reactRole.channel_id);
 
 		if(channel == null) {
 			client.reactionsRole.delete(reactRole.msg_id);
@@ -23,7 +23,7 @@ module.exports = async (client) => {
 				return;
 		}
 			
-		await channel.fetchMessage(reactRole.msg_id)
+		await channel.messages.fetch(reactRole.msg_id)
 			.then(msg => {
 				client.logger.log(`ReactionsRole check complete: ${reactRole.msg_id}`);
 			})

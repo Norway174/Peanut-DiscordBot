@@ -8,7 +8,7 @@ exports.run = function(client, message, args){
 	args.splice(0, 1);
 	let arg = args.join(" ");
 	
-	const embed = new Discord.RichEmbed();
+	const embed = new Discord.MessageEmbed();
 	/*
 	.setTitle(hostname + ":" + port)
 	.setColor(0x009600)
@@ -27,7 +27,7 @@ exports.run = function(client, message, args){
 			.then(user => {
 				//console.log("Game set to " + arg);
 				if (!arg) arg = "nothing.";
-				const embed = new Discord.RichEmbed()
+				const embed = new Discord.MessageEmbed()
 					.setTitle("Game updated")
 					.setColor(0x7EFF00)
 					.setDescription("Game set to " + arg);
@@ -42,7 +42,7 @@ exports.run = function(client, message, args){
 		client.user.setPresence({ status: arg })
 			.then(user => {
 				//client.logger.log("Status set to " + arg);
-				const embed = new Discord.RichEmbed()
+				const embed = new Discord.MessageEmbed()
 					.setTitle("Status updated")
 					.setColor(0x7EFF00)
 					.setDescription("Status set to " + arg);
@@ -57,7 +57,7 @@ exports.run = function(client, message, args){
 		client.user.setAvatar(arg)
 			.then(user => {
 				console.log("New avatar set: " + arg);
-				const embed = new Discord.RichEmbed()
+				const embed = new Discord.MessageEmbed()
 					.setTitle("Avatar updated")
 					.setColor(0x7EFF00)
 					//.setDescription("Avatar updated.")

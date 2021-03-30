@@ -11,7 +11,7 @@ exports.run = (client, message, args) => {
 		//detection = "Selected: ";
 	}
 	
-	const embed = new Discord.RichEmbed()
+	const embed = new Discord.MessageEmbed()
 			.setColor(0xFEF44D)
 			.setFooter( "Translating for " + message.author.username + "." )
 			.addField("From: ", args.join(" "), true)
@@ -24,7 +24,7 @@ exports.run = (client, message, args) => {
 		
 			let lang = res.from.language.iso;
 			
-			const embed = new Discord.RichEmbed()
+			const embed = new Discord.MessageEmbed()
 				.setColor(0x4D90FE)
 				.setFooter( "Translated for " + message.author.username + "." )
 				.addField("To: " + langs[language], res.text, true)
@@ -38,7 +38,7 @@ exports.run = (client, message, args) => {
 		}).catch(err => {
 			client.logger.error(err);
 
-			const embed = new Discord.RichEmbed()
+			const embed = new Discord.MessageEmbed()
 			.setColor(0xFE4D4D)
 			.setFooter( "Translated for " + message.author.username + "." )
 			.addField("From: ", args.join(" "), true)

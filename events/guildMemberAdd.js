@@ -12,16 +12,16 @@ module.exports = async(member) => {
 		
 		if(settings.channel != "default"){
 			if(guild.channels.has(settings.channel)){
-				channel = guild.channels.get(settings.channel);
+				channel = guild.channels.cache.get(settings.channel);
 			} else
-			if (guild.channels.find(chan => chan.name === settings.channel)){
-				channel = guild.channels.find(chan => chan.name === settings.channel);
+			if (guild.channels.cache.find(chan => chan.name === settings.channel)){
+				channel = guild.channels.cache.find(chan => chan.name === settings.channel);
 			}
 		}
 		
 
 		
-		var embed = new Discord.RichEmbed()
+		var embed = new Discord.MessageEmbed()
 			//.setTitle("Status updated")
 			.setColor(0x90FF00)
 			.setDescription(`**Hi there, <@${member.user.id}>!** (${member.user.tag})\nWelcome to ${guild.name}! Feel free to introduce yourself; don't be afraid to ask any questions!\nYou may also use ` + "`" + `${settings.prefix}help` + "`" + " to see what I can do for you.\n\nEnjoy your stay!");
@@ -32,7 +32,7 @@ module.exports = async(member) => {
 
 	// Post "User" command to a seperately defined channel. ONLY if it is defined at all.
 	if(settings.post_user_info_to_channel == "") return;
-	secret_channel = guild.channels.get(settings.post_user_info_to_channel);
+	secret_channel = guild.channels.cache.get(settings.post_user_info_to_channel);
 	if(!secret_channel) return;
 
 

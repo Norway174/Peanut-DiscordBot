@@ -22,10 +22,10 @@ exports.run = function(client, widget, data){
 	client.widgets.set(widget.name, widgetSettings);
 	*/
 	
-	client.guilds.get(widget.serverID).channels.get(widget.channelID).fetchMessage(widget.messageID).then(m => {
+	client.guilds.cache.get(widget.serverID).channels.cache.get(widget.channelID).messages.fetch(widget.messageID).then(m => {
 		//Here, we build the emblem for the online server.
-		const embed = new Discord.RichEmbed()
-		.setTitle(`Welcome to ${client.guilds.get(widget.serverID).name}`)
+		const embed = new Discord.MessageEmbed()
+		.setTitle(`Welcome to ${client.guilds.cache.get(widget.serverID).name}`)
 		.setColor(0x009600)
 		.setDescription( "This server uses an automatic whitelist system.\nAll you have to do to get whitelisted is type `#signup <Your Minecraft username>`.\n\nMake sure your username is correct as this is what will be whitelisted. If you have another account you'd like to whitelist, then please return to this channel and do the same again, but with the new username. Please note, you may only whitelist one Minecraft account per Discord account.\n\nIf you leave this server, or change your whitelisted account, all your claimed chunks will become unclaimed.\n\nEnjoy your stay! :)" )
 		.setFooter("Widget ID: " + widget.name + " | Updates every " + widget.interval + " minutes")
@@ -35,7 +35,7 @@ exports.run = function(client, widget, data){
 		m.edit(embed);
 	});
 
-	client.guilds.get(widget.serverID).channels.get(widget.channelID).fetchMessages()
+	client.guilds.cache.get(widget.serverID).channels.cache.get(widget.channelID).messages.fetch()
 	.then(messages => {
 		//client.logger.debug("Size: " + messages.size)
 		if(messages.size == 1) return;

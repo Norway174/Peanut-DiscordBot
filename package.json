@@ -13,22 +13,21 @@
   "author": "Norway174",
   "license": "SEE LICENSE IN license.txt",
   "dependencies": {
-    "@vitalets/google-translate-api": "^2.8.0",
+    "@vitalets/google-translate-api": "^5.1.0",
     "argsplit": "^1.0.5",
     "axios": ">=0.19.0",
-    "better-sqlite-pool": "^0.1.2",
     "chalk": "^2.4.2",
-    "discord.js": "^11.5.1",
-    "enmap": "^4.8.7",
+    "discord.js": "^12.5.1",
+    "enmap": "^5.8.4",
     "fixer-io-utility": "^1.0.1",
     "minecraft-pinger": "^1.0.3",
     "moment": "^2.24.0",
     "moment-duration-format": "^2.2.2",
     "node-fetch": "^2.6.0",
-    "node-wolfram-alpha": "^1.2.5",
     "rcon": "^1.0.3",
     "rpg-dice-roller": "^2.0.0",
     "steam-provider": "^0.3.2",
-    "webhook-discord": "^3.2.0"
+    "webhook-discord": "^3.2.0",
+    "wolfram-alpha-node": "^0.0.3"
   }
 }

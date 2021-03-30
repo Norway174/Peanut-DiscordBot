@@ -13,7 +13,7 @@ exports.run = async function(client, message, args){
 		return words.some(word => input.toLowerCase().includes(word.toLowerCase()));
 	}
 	if(checkInput(message.content, ["codes", "code"])){
-		const embedInvalid = new Discord.RichEmbed()
+		const embedInvalid = new Discord.MessageEmbed()
 			.setDescription(`All avalible currency codes:\n\`\`\`${keys.map(key => `${key}	`).join("")}\`\`\``)
 			.setColor(0x78FF00)
 			.setFooter("Codes supplied by Fixer.io")
@@ -70,7 +70,7 @@ exports.run = async function(client, message, args){
 
 	if(!isValid) {
 		var customKeys = ['USD', 'CAD', 'EUR', 'NOK', 'GBP', 'BTC'];
-		const embedInvalid = new Discord.RichEmbed()
+		const embedInvalid = new Discord.MessageEmbed()
 			.setDescription(`${reason.join("\n")}\nPlease use: \n\`\`\`${client.getSettings(message.guild).prefix}${this.help.usage}\`\`\`\nCommon currency codes:\n\`\`\`${customKeys.map(key => `${key}	`).join("")}\`\`\``)
 			.setColor(0xFA3C3C)
 			.setFooter("Ooops! Something went wrong...")
@@ -94,7 +94,7 @@ exports.run = async function(client, message, args){
 	amount = new Intl.NumberFormat({ style: 'currency', currency: from }).format(amount);
 	toAmount = new Intl.NumberFormat({ style: 'currency', currency: to }).format(Math.round(toAmount * 100) / 100);
 
-	const embed = new Discord.RichEmbed()
+	const embed = new Discord.MessageEmbed()
 		.setTitle(`${amount} ${from} = ${toAmount} ${to}`) // ${Math.round(toAmount * 100) / 100}
 		.setColor(0x78FF00)
 		.setFooter("Converted using Fixer.io")
@@ -151,7 +151,7 @@ async function getRates(client, message){
 	if(fetch){
 		console.time("getRates");
 
-		const embed = new Discord.RichEmbed()
+		const embed = new Discord.MessageEmbed()
 			.setTitle("Fetching rates from the API... Please wait...")
 			.setColor(0xFFF000)
 			.setFooter("Converting using Fixer.io")
@@ -187,7 +187,7 @@ async function getRates(client, message){
 
 async function ShowRates(client, message, msg, keys, rates){
 
-	const embedRates = new Discord.RichEmbed()
+	const embedRates = new Discord.MessageEmbed()
 		.setDescription(`All avalible currency rates:`)
 		.setColor(0x78FF00)
 		.setFooter("Rates supplied by Fixer.io")
@@ -233,7 +233,7 @@ async function ShowRates(client, message, msg, keys, rates){
 
 	message.author.send(embedRates)
 	.then(msg => {
-		const embed2 = new Discord.RichEmbed()
+		const embed2 = new Discord.MessageEmbed()
 			.setColor(0x78FF00)
 			.setDescription(`A list of all the rates has been compiled, and PMed to: <@${message.author.id}>. (${message.author.tag})`)
 			.setFooter("Rates supplied by Fixer.io")
@@ -246,7 +246,7 @@ async function ShowRates(client, message, msg, keys, rates){
 		}
 	})
 	.catch(err => {
-		const embed2 = new Discord.RichEmbed()
+		const embed2 = new Discord.MessageEmbed()
 			.setColor(0xFA3C3C)
 			.setDescription(`Unable to PM: <@${message.author.id}>. (${message.author.tag})`)
 			.setFooter("Uh oh...")

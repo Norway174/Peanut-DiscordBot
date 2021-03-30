@@ -12,12 +12,14 @@ const settingsEnmap = new Enmap({name: "settings", dataDir: appRoot + DataLoc});
 const reactionsRoleEnmap = new Enmap({name: "reactionsRole", dataDir: appRoot + DataLoc});
 const exchangeRatesEnmap = new Enmap({name: "exchangeRates", dataDir: appRoot + DataLoc});
 const statsEnmap = new Enmap({name: "stats", dataDir: appRoot + DataLoc});
+//const twitchEnmap = new Enmap({name: "twitch", dataDir: appRoot + DataLoc});
 
 client.widgets = widgetsEnmap;
 client.settings = settingsEnmap;
 client.reactionsRole = reactionsRoleEnmap;
 client.exchangeRates = exchangeRatesEnmap;
 client.stats = statsEnmap;
+//client.twitch = twitchEnmap;
 
 client.appRoot = appRoot;
 
@@ -29,6 +31,7 @@ client.defaultSettings = client.config.defaultSettings;
 require( appRoot + "/util/eventLoader")(client);
 require( appRoot + "/util/widgetLoader")(client);
 require( appRoot + "/util/reactionsRoleLoader")(client);
+//require( appRoot + "/util/twitchLoader")(client);
 
 client.logger = require( appRoot + "/util/logger");
 
@@ -151,11 +154,11 @@ const init = async () => {
 	client.defaultChannel = guild => {
 		// get "original" default channel
 		if(guild.channels.has(guild.id))
-			return guild.channels.get(guild.id);
+			return guild.channels.cache.get(guild.id);
 
 		// Check for a "general" channel, which is often default chat
 		if(guild.channels.some(chan => chan.name === "general"))
-			return guild.channels.find(chan => chan.name === "general");
+			return guild.channels.cache.find(chan => chan.name === "general");
 
 		// Now we get into the heavy stuff: first channel in order where the bot can speak
 		// hold on to your hats!

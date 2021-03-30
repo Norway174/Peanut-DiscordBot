@@ -23,10 +23,10 @@ module.exports = async(member) => {
 	
 	if(settings.channel != "default"){
 		if(guild.channels.has(settings.channel)){
-			channel = guild.channels.get(settings.channel);
+			channel = guild.channels.cache.get(settings.channel);
 		} else
-		if (guild.channels.find(chan => chan.name === settings.channel)){
-			channel = guild.channels.find(chan => chan.name === settings.channel);
+		if (guild.channels.cache.find(chan => chan.name === settings.channel)){
+			channel = guild.channels.cache.find(chan => chan.name === settings.channel);
 		}
 	}
 
@@ -117,7 +117,7 @@ module.exports = async(member) => {
 
 	*/
 	if(send){
-		var embed = new Discord.RichEmbed()
+		var embed = new Discord.MessageEmbed()
 			//.setTitle("Status updated")
 			.setColor(0xF13F3F)
 			.setDescription(leaveMsg);

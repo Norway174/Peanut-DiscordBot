@@ -12,9 +12,9 @@ exports.run = (client, message, args, perms) => {
 
 	if(role == null) return;
 
-	let membersWithRole = message.guild.roles.get(role.id).members.map(mem => mem.displayName);
+	let membersWithRole = message.guild.roles.cache.get(role.id).members.map(mem => mem.displayName);
 
-	var embed = new Discord.RichEmbed()
+	var embed = new Discord.MessageEmbed()
 			//.setTitle("Status updated")
 			.setColor('#0099ff');
 			

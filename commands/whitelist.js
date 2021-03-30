@@ -43,7 +43,7 @@ exports.run = (client, message, args, perms, byCommand = true, leaveMsg = "", de
 			client.logger.debug("No username: New username set to: " + username + " | Args: " + args.length);
 		}
 
-		let membersWithRole = message.guild.roles.get(role.id).members;
+		let membersWithRole = message.guild.roles.cache.get(role.id).members;
 		membersWithRole = membersWithRole.filter(f => f.displayName.toLowerCase() != message.member.displayName.toLowerCase());
 		client.logger.debug(`Got ${membersWithRole.size} members with that role: ${membersWithRole.map(mem => mem.displayName)}`);
 		
@@ -187,7 +187,7 @@ exports.run = (client, message, args, perms, byCommand = true, leaveMsg = "", de
 		if (!byCommand) {
 			client.logger.log("Tried to return to the user left message: " + byCommandReturn)
 			
-			var embed = new Discord.RichEmbed()
+			var embed = new Discord.MessageEmbed()
 			//.setTitle("Status updated")
 			.setColor(0xF13F3F)
 			.setDescription(leaveMsg + "\n\nUser was whitelisted:```" + byCommandReturn.join("\n") + "```");
@@ -208,7 +208,7 @@ exports.run = (client, message, args, perms, byCommand = true, leaveMsg = "", de
 			message.delete(15000);
 		} else
 		if (!byCommand) {
-			var embed = new Discord.RichEmbed()
+			var embed = new Discord.MessageEmbed()
 			//.setTitle("Status updated")
 			.setColor(0xF13F3F)
 			.setDescription(leaveMsg + "\n\nUser was whitelisted: Error: ```" + err + "```");
@@ -228,7 +228,7 @@ exports.run = (client, message, args, perms, byCommand = true, leaveMsg = "", de
 	
 			//await 20;
 	
-			await message.member.addRole(role, "Auto-Whitelist")
+			await message.member.roles.add(role, "Auto-Whitelist")
 				.then(mem => client.logger.log(mem.displayName + "'s role was updated."));
 	
 		} catch (err) {
@@ -242,7 +242,7 @@ exports.run = (client, message, args, perms, byCommand = true, leaveMsg = "", de
 	
 			//await 20;
 	
-			await message.member.removeRole(role, "Auto-Whitelist")
+			await message.member.roles.remove(role, "Auto-Whitelist")
 				.then(mem => client.logger.log(mem.displayName + "'s role was removed."));
 	
 		} catch (err) {

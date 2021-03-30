@@ -27,12 +27,12 @@ module.exports = client => {
 				if(intervalCount >= widget.interval){
 					intervalCount = 0;
 
-					if(!client.guilds.get(widget.serverID)){
+					if(!client.guilds.cache.get(widget.serverID)){
 						client.logger.log("Server doesn't exist for " + widget.name + ", widget has been removed.")
 						client.widgets.delete(widget.name);
 						return;
 					} else
-					if(!client.channels.get(widget.channelID)){
+					if(!client.channels.cache.get(widget.channelID)){
 						client.logger.log("Channel doesn't exist for " + widget.name + ", widget has been removed.")
 						client.widgets.delete(widget.name);
 						return;
@@ -40,8 +40,8 @@ module.exports = client => {
 
 					var newMsg = false;
 
-					const channel = client.channels.get(widget.channelID);
-					await channel.fetchMessage(widget.messageID)
+					const channel = client.channels.cache.get(widget.channelID);
+					await channel.messages.fetch(widget.messageID)
 						.then(msg => {
 							//if(msg.content == "") return; // Remove ghost message.
 							//console.log(msg);

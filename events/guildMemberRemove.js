@@ -22,7 +22,7 @@ module.exports = async(member) => {
 	var channel = client.defaultChannel(guild);
 	
 	if(settings.channel != "default"){
-		if(guild.channels.has(settings.channel)){
+		if(guild.channels.cache.has(settings.channel)){
 			channel = guild.channels.cache.get(settings.channel);
 		} else
 		if (guild.channels.cache.find(chan => chan.name === settings.channel)){

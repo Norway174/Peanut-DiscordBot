@@ -23,7 +23,7 @@
     "minecraft-pinger": "^1.0.3",
     "moment": "^2.24.0",
     "moment-duration-format": "^2.2.2",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.7",
     "rcon": "^1.0.3",
     "rpg-dice-roller": "^2.0.0",
     "steam-provider": "^0.3.2",

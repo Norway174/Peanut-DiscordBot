@@ -21,7 +21,7 @@
     "enmap": "^5.8.4",
     "fixer-io-utility": "^1.0.1",
     "minecraft-pinger": "^1.0.3",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "moment-duration-format": "^2.2.2",
     "node-fetch": "^2.6.0",
     "rcon": "^1.0.3",

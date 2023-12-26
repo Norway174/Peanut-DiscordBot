@@ -44,13 +44,13 @@ exports.run = async function(client, message, args){
 		return `${timestamp.format(_format)} [${timestamp.fromNow()}]\n${lastMsg.channel}\n\`\`\`${lastMsg.cleanContent}\`\`\``;
 	}
 
-	var roles = dUser.roles.filter(role => { if(role.name !== "@everyone") return role } )
+	var roles = dUser.roles.cache.filter(role => { if(role.name !== "@everyone") return role } )
 
 	const embed = new Discord.MessageEmbed()
 		.setAuthor(dUser.user.tag, dUser.user.displayAvatarURL)
 		.setDescription(dUser)
 		.setColor(dUser.displayColor)
-		.setFooter(message.guild.name)
+		.setFooter("User lookup")
 		.setThumbnail(dUser.user.avatarURL())
 		.addField("Display Name", dUser.displayName, true)
 		.addField("User ID", dUser.id, true)
@@ -62,7 +62,7 @@ exports.run = async function(client, message, args){
 
 		embed
 		.addField(`Roles [${roles.size}]`, roles.size != 0 ? roles.array().join(" ") : 'No roles.')
-		.addField("Avatar URL", dUser.user.displayAvatarURL, true)
+		.addField("Avatar URL", dUser.user.displayAvatarURL(), true)
 		.setTimestamp();
 
 		message.channel.send(embed)

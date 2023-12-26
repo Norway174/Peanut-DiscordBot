@@ -20,7 +20,7 @@ exports.run = (client, message, args, perms, byCommand = true, leaveMsg = "", de
 	client.logger.debug("username: " + username + " | Args: " + args.join(" | "));
 
 	// Get the member role.
-	var role = message.guild.roles.find(r => r.name == "Server Whitelisted");
+	var role = message.guild.roles.cache.find(r => r.name == "Server Whitelisted");
 
 	/*
 	"byCommand" basically dictates if this command was run by a user command in chat.
@@ -67,7 +67,7 @@ exports.run = (client, message, args, perms, byCommand = true, leaveMsg = "", de
 		}
 
 		// Makes sure you can't sign up again with the same name.
-		if(message.member.roles.has(role.id) && message.member.displayName == username && parm != "remove"){
+		if(message.guild.roles.cache.has(role.id) && message.member.displayName == username && parm != "remove"){
 			
 			message.channel.send("You can't whitelist your own name again.")
 			.then(m => {
@@ -78,7 +78,7 @@ exports.run = (client, message, args, perms, byCommand = true, leaveMsg = "", de
 		}
 
 		// Makes sure you can't sign up again with the same name.
-		if(!message.member.roles.has(role.id) && parm == "remove"){
+		if(!message.guild.roles.cache.has(role.id) && parm == "remove"){
 			
 			message.channel.send("You don't have a whitelist to remove.")
 			.then(m => {
@@ -149,7 +149,7 @@ exports.run = (client, message, args, perms, byCommand = true, leaveMsg = "", de
 			//client.logger.debug("Added user!")
 
 			done = true;
-			if(message.member.roles.has(role.id)){
+			if(message.guild.roles.cache.has(role.id)){
 				done = false;
 				conn.send(`whitelist remove ${message.member.displayName}`);
 			}

@@ -1,5 +1,8 @@
 const Discord = require("discord.js");
 const moment = require("moment");
+const emojiRegex = require('emoji-regex');
+
+//const EMOJIREGEX = /((?<!\\)<:[^:]+:(\d+)>)|\p{Emoji_Presentation}|\p{Extended_Pictographic}/gmu;
 
 const colors = Array(0xE7F32E, 0xABF32E, 0x37F32E, 0x2EF3DE, 0x2E8FF3, 0x662EF3, 0x62E7A1, 0x1BC10E, 0x97F207);
 const color = () => {
@@ -18,9 +21,10 @@ exports.run = (client, message, params) => {
 	
 		let p = 0;
 	
-		// REGEX to find Unicode Emoji
-		const regex = /[\u{1f300}-\u{1f5ff}\u{1f900}-\u{1f9ff}\u{1f600}-\u{1f64f}\u{1f680}-\u{1f6ff}\u{2600}-\u{26ff}\u{2700}-\u{27bf}\u{1f1e6}-\u{1f1ff}\u{1f191}-\u{1f251}\u{2934}-\u{1f18e}]/gu;
-	
+		// // REGEX to find Unicode Emoji
+		// const regex = /[\u{1f300}-\u{1f5ff}\u{1f900}-\u{1f9ff}\u{1f600}-\u{1f64f}\u{1f680}-\u{1f6ff}\u{2600}-\u{26ff}\u{2700}-\u{27bf}\u{1f1e6}-\u{1f1ff}\u{1f191}-\u{1f251}\u{2934}-\u{1f18e}]/gu;
+		const regex = emojiRegex();
+
 		// REGEX to find Discord Custom Emoji
 		const regex2 = /<.[a-zA-Z0-9]*.[0-9]*>/g;
 
@@ -35,7 +39,7 @@ exports.run = (client, message, params) => {
 
 		const str = params.join();
 	
-		let m;
+/*  		let m;
 		while ((m = regex.exec(str)) !== null) {
 		// This is necessary to avoid infinite loops with zero-width matches
 			if (m.index === regex.lastIndex) {
@@ -54,6 +58,12 @@ exports.run = (client, message, params) => {
 					//params.splice(index, 1);
 				}
 			});
+		} */
+
+		for (const match of str.matchAll(regex)) {
+			const emoji = match[0];
+			//console.log(`Matched sequence ${ emoji } — code points: ${ [...emoji].length }`);
+			reactions.push(emoji);
 		}
 	
 	
@@ -79,6 +89,15 @@ exports.run = (client, message, params) => {
 				}
 			});
 		}
+
+
+		//reactions = str.match(EMOJIREGEX);
+
+/* 		params.forEach(parm => {
+			if(parm.match(EMOJIREGEX)){
+				reactions.push(parm);
+			}
+		}); */
 
 		if(reactions.length == 0){
 			reactions.push("1⃣", "2⃣");
@@ -115,7 +134,7 @@ exports.run = (client, message, params) => {
 					let resultBuilder = "";
 					collected.forEach(item => {
 						let voters = "";
-						item.users.forEach(user => {
+						item.users.cache.forEach(user => {
 							if(client.user.id != user.id){
 								//log("Users who voted: " + user.username);
 								voters += user.username + ", ";
@@ -125,7 +144,7 @@ exports.run = (client, message, params) => {
 				
 						let emoji = item.emoji.name;
 						if(item.emoji.id) emoji = client.emojis.get(item.emoji.id);
-						resultBuilder += `**${item.users.size - 1}** - ${emoji} Voters: ${voters}\n`;
+						resultBuilder += `**${(item.users.cache.size - 1)}** - ${emoji} Voters: ${voters}\n`;
 						//client.logger.log("result builder: " + item.emoji.name);
 					});
 			

@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const translate = require("@vitalets/google-translate-api");
+//const translate = require("@vitalets/google-translate-api");
 
 exports.run = (client, message, args) => {
 	
@@ -18,7 +18,7 @@ exports.run = (client, message, args) => {
 			.addBlankField(true)
 			.addField("To: " + langs[language], "Please wait...", true);
 
-	message.channel.send({embed})
+/* 	message.channel.send({embed})
 	.then(msg => {
 		translate(args.join(" "), {to: language}).then(res => {
 		
@@ -47,7 +47,7 @@ exports.run = (client, message, args) => {
 
 			msg.edit({embed});
 		});
-	})
+	}) */
 	
 	
 	//message.delete(5);

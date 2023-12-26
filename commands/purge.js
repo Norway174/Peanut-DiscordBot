@@ -1,9 +1,16 @@
 exports.run = function(client, message, args){
-	let messagecount = parseInt(args.join(" "));
-	message.channel.messages.fetch({
-		limit: messagecount
-	}).then(messages => message.channel.bulkDelete(messages));
-	message.delete(1);
+	let messagecount = parseInt(args.join(' '));
+
+	if(messagecount == NaN){
+		client.logger.warn("Purge recived a NaN:" + messagecount);
+		return;
+	}
+
+	if(messagecount => 99)
+		messagecount = 99;
+
+	message.channel.bulkDelete(messagecount + 1);
+
 };
 
 exports.conf = {

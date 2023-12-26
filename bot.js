@@ -160,14 +160,18 @@ const init = async () => {
 		if(guild.channels.cache.some(chan => chan.name === "general"))
 			return guild.channels.cache.find(chan => chan.name === "general");
 
+
+		// DISABLED. Requires Long module. But this method is not reliable or a good way of detecting the channel.
 		// Now we get into the heavy stuff: first channel in order where the bot can speak
 		// hold on to your hats!
-		return guild.channels
+		/* return guild.channels.cache
 			.filter(c => c.type === "text" &&
 		c.permissionsFor(guild.client.user).has("SEND_MESSAGES"))
 			.sort((a, b) => a.position - b.position || 
 		Long.fromString(a.id).sub(Long.fromString(b.id)).toNumber())
-			.first();
+			.first(); */
+
+		return null;
 	};
 
 	/*
